@@ -1,9 +1,24 @@
 // 1. Our "Database" of articles
 const articles = [
-    { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest', enter the password provided at the front desk..." },
-    { id: 2, title: "Reset your Email Password", category: "Accounts", content: "Go to the portal at identity.company.com and click 'Forgot Password'..." },
-    { id: 3, title: "Setting up a New Printer", category: "Hardware", content: "Open Settings > Devices > Printers. Click 'Add a printer' and select the floor model..." },
-    { id: 4, title: "VPN Connection Issues", category: "Remote Work", content: "Ensure you are using the GlobalProtect client and your internet is stable..." }
+    // NETWORK CATEGORY
+    { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest' from your WiFi list. Enter the password 'Welcome2024'. If the login page doesn't appear, browse to 'neverssl.com'." },
+    { id: 2, title: "VPN Connection Issues", category: "Network", content: "Ensure you are using the GlobalProtect client. If it fails to connect, try switching from 'Automatic' to 'Internal Gateway' in the settings." },
+    { id: 3, title: "Slow Internet Troubleshooting", category: "Network", content: "If your connection is slow, try disabling your VPN temporarily to see if speed improves. Otherwise, restart your router and clear your browser cache." },
+
+    // ACCOUNTS CATEGORY
+    { id: 4, title: "Reset your Email Password", category: "Accounts", content: "Go to identity.company.com. Click 'Forgot Password' and follow the prompts to receive a reset code on your registered mobile device." },
+    { id: 5, title: "Requesting Software Access", category: "Accounts", content: "To request access to tools like Jira or Salesforce, please submit an access request ticket via the manager approval portal." },
+    { id: 6, title: "Multi-Factor Authentication (MFA) Setup", category: "Accounts", content: "Download the Microsoft Authenticator app. Scan the QR code provided in your security settings to link your account." },
+
+    // HARDWARE CATEGORY
+    { id: 7, title: "Setting up a New Printer", category: "Hardware", content: "Open Settings > Devices > Printers. Click 'Add a printer'. Search for the printer name labeled on the device (e.g., PRN-FLOOR2)." },
+    { id: 8, title: "Monitor Not Detecting Laptop", category: "Hardware", content: "Check the HDMI/DisplayPort cable. Press 'Win + P' on your keyboard and ensure 'Extend' or 'Duplicate' is selected." },
+    { id: 9, title: "Ordering a New Keyboard/Mouse", category: "Hardware", content: "Replacement peripherals can be picked up at the IT walk-in desk on the 3rd floor without a ticket. Just bring your employee ID." },
+
+    // REMOTE WORK CATEGORY
+    { id: 10, title: "Zoom/Teams Audio Issues", category: "Remote Work", content: "Check your 'Input Device' in the app settings. Ensure the correct microphone is selected and that you aren't muted by system-level settings." },
+    { id: 11, title: "Home Office Ergonomics Guide", category: "Remote Work", content: "Keep your monitor at eye level. Use an external keyboard and mouse to avoid wrist strain. Take a 5-minute break every hour." },
+    { id: 12, title: "Accessing Shared Network Drives", category: "Remote Work", content: "You must be connected to the VPN. Open File Explorer and type '\\storage-server\department' into the address bar." }
 ];
 
 // 2. Function to show articles on the screen
