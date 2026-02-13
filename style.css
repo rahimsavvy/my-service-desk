@@ -1,10 +1,33 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    background-color: #f4f7f6;
-    color: #333;
+/* Define our color buckets */
+:root {
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --header-bg: #0056b3;
 }
 
+/* Define the colors when 'dark-mode' is active */
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --card-bg: #2d2d2d;
+    --text-color: #eeeeee;
+    --header-bg: #111111;
+}body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: var(--bg-color); /* Uses the variable */
+    color: var(--text-color);          /* Uses the variable */
+    transition: background 0.3s, color 0.3s;
+}
+
+.article-card {
+    background-color: var(--card-bg); /* Uses the variable */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    color: var(--text-color);         /* Uses the variable */
+}
 header {
     background-color: #0056b3;
     color: white;
@@ -160,3 +183,37 @@ footer {
     color: #999;
     margin-top: 30px;
 }
+.theme-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 24px;
+    position: relative;
+    width: 50px;
+}
+
+.theme-switch input { display:none; }
+
+.slider {
+    background-color: #ccc;
+    bottom: 0; cursor: pointer;
+    left: 0; position: absolute;
+    right: 0; top: 0;
+    transition: .4s; border-radius: 34px;
+}
+
+.slider:before {
+    background-color: #fff;
+    bottom: 4px; content: "";
+    height: 16px; left: 4px;
+    position: absolute; transition: .4s;
+    width: 16px; border-radius: 50%;
+}
+
+input:checked + .slider { background-color: #2ab934; }
+input:checked + .slider:before { transform: translateX(26px); }
