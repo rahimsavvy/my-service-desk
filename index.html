@@ -31,6 +31,31 @@
     <button onclick="quickSearch('VPN')">VPN Help</button>
 </div>
     </header>
+    <section id="categorySection" class="category-grid-container">
+    <h2 style="text-align: center; margin-bottom: 30px;">Browse by Category</h2>
+    <div class="category-grid">
+        <div class="category-card" onclick="quickSearch('Network')">
+            <div class="cat-icon">🌐</div>
+            <h3>Network</h3>
+            <p>WiFi, VPN, and Internet</p>
+        </div>
+        <div class="category-card" onclick="quickSearch('Accounts')">
+            <div class="cat-icon">👤</div>
+            <h3>Accounts</h3>
+            <p>Passwords and Identity</p>
+        </div>
+        <div class="category-card" onclick="quickSearch('Hardware')">
+            <div class="cat-icon">💻</div>
+            <h3>Hardware</h3>
+            <p>Printers, Laptops, Monitors</p>
+        </div>
+        <div class="category-card" onclick="quickSearch('Remote Work')">
+            <div class="cat-icon">🏠</div>
+            <h3>Remote Work</h3>
+            <p>Work from home tools</p>
+        </div>
+    </div>
+</section>
 
     <main id="articleContainer">
         <p class="loading-msg">Loading helpful articles...</p>

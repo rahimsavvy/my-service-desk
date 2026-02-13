@@ -98,25 +98,17 @@ function quickSearch(term) {
     const searchInput = document.getElementById('searchInput');
     const clearBtn = document.getElementById('clearSearch');
     
-    searchInput.value = term; // Put the word in the box
-    clearBtn.style.display = 'block'; // Show the 'X'
+    searchInput.value = term;
+    clearBtn.style.display = 'block';
     
-    // Filter the articles just like we do when typing
     const filtered = articles.filter(article => {
         return article.title.toLowerCase().includes(term.toLowerCase()) || 
-               article.content.toLowerCase().includes(term.toLowerCase());
+               article.content.toLowerCase().includes(term.toLowerCase()) ||
+               article.category.toLowerCase().includes(term.toLowerCase());
     });
     
-    displayArticles(filtered); // Show the results!
-}
-const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    displayArticles(filtered);
 
-function switchTheme(e) {
-    if (e.target.checked) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-    }    
+    // This makes the page slide down to the results automatically!
+    document.getElementById('articleContainer').scrollIntoView({ behavior: 'smooth' });
 }
-
-toggleSwitch.addEventListener('change', switchTheme, false);
