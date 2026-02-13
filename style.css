@@ -100,4 +100,23 @@ main {
     font-size: 28px;
     cursor: pointer;
     color: #aaa;
+}.quick-links {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #e0e0e0;
+}
+
+.quick-links button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 6px 15px;
+    border-radius: 20px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.quick-links button:hover {
+    background: rgba(255, 255, 255, 0.4);
 }

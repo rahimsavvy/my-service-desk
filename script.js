@@ -94,3 +94,18 @@ document.addEventListener('click', function(event) {
 
 // Initial load
 displayArticles(articles);
+function quickSearch(term) {
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearch');
+    
+    searchInput.value = term; // Put the word in the box
+    clearBtn.style.display = 'block'; // Show the 'X'
+    
+    // Filter the articles just like we do when typing
+    const filtered = articles.filter(article => {
+        return article.title.toLowerCase().includes(term.toLowerCase()) || 
+               article.content.toLowerCase().includes(term.toLowerCase());
+    });
+    
+    displayArticles(filtered); // Show the results!
+}
