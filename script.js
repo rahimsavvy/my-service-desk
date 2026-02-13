@@ -18,13 +18,14 @@ function displayArticles(results) {
 
     // Map each article into HTML code
     container.innerHTML = results.map(article => `
-        <div class="article-card">
-<span class="badge badge-${article.category.toLowerCase().replace(' ', '-')}">
-    ${article.category}
-</span>            <h3 style="margin: 10px 0;">${article.title}</h3>
-            <p style="color: #666; line-height: 1.5;">${article.content}</p>
-        </div>
-    `).join('');
+    <div class="article-card" onclick="openArticle(${article.id})" style="cursor: pointer;">
+        <span class="badge badge-${article.category.toLowerCase().replace(' ', '-')}">
+            ${article.category}
+        </span>
+        <h3 style="margin: 10px 0;">${article.title}</h3>
+        <p style="color: #666;">Click to read instructions...</p>
+    </div>
+`).join('');
 }
 
 // 3. Logic for the Search Bar
@@ -56,3 +57,28 @@ clearBtn.addEventListener('click', () => {
 
 // Initial display when the page first loads
 displayArticles(articles);
+function openArticle(id) {
+    const article = articles.find(a => a.id === id);
+    const modal = document.getElementById('articleModal');
+    const body = document.getElementById('modalBody');
+
+    body.innerHTML = `
+        <span class="badge badge-${article.category.toLowerCase().replace(' ', '-')}">${article.category}</span>
+        <h2>${article.title}</h2>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        <p style="line-height: 1.8; color: #444;">${article.content}</p>
+    `;
+    modal.style.display = "block";
+}
+
+// Close the modal when clicking the 'X' or outside the box
+document.querySelector('.close-modal').onclick = () => {
+    document.getElementById('articleModal').style.display = "none";
+}
+
+window.onclick = (event) => {
+    const modal = document.getElementById('articleModal');
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}

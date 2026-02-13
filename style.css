@@ -69,3 +69,35 @@ main {
 .badge-accounts { background-color: #e8f5e9; color: #1b5e20; }   /* Light Green */
 .badge-hardware { background-color: #fff3e0; color: #e65100; }   /* Light Orange */
 .badge-remote-work { background-color: #f3e5f5; color: #4a148c; } /* Light Purple */
+/* The background overlay */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+}
+
+/* The actual white box */
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #aaa;
+}
