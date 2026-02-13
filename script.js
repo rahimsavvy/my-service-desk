@@ -71,14 +71,24 @@ function openArticle(id) {
     modal.style.display = "block";
 }
 
-// Close the modal when clicking the 'X' or outside the box
-document.querySelector('.close-modal').onclick = () => {
-    document.getElementById('articleModal').style.display = "none";
-}
-
-window.onclick = (event) => {
+// 1. Function to close the modal
+function closeArticle() {
     const modal = document.getElementById('articleModal');
-    if (event.target == modal) {
+    if (modal) {
         modal.style.display = "none";
     }
 }
+
+// 2. A "Master Listener" for clicks
+document.addEventListener('click', function(event) {
+    // Check if the user clicked the 'X'
+    if (event.target.classList.contains('close-modal')) {
+        closeArticle();
+    }
+    
+    // Check if the user clicked the dark background (the modal itself)
+    const modal = document.getElementById('articleModal');
+    if (event.target === modal) {
+        closeArticle();
+    }
+});
