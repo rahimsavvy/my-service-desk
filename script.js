@@ -9,69 +9,68 @@ const articles = [
 // 2. Function to show articles on the screen
 function displayArticles(results) {
     const container = document.getElementById('articleContainer');
-    
-    // If no articles found, show a friendly message
+    if (!container) return;
+
     if (results.length === 0) {
         container.innerHTML = `<p style="text-align:center; color:#666;">No articles found. Try a different keyword!</p>`;
         return;
     }
 
-    // Map each article into HTML code
     container.innerHTML = results.map(article => `
-    <div class="article-card" onclick="openArticle(${article.id})" style="cursor: pointer;">
-        <span class="badge badge-${article.category.toLowerCase().replace(' ', '-')}">
-            ${article.category}
-        </span>
-        <h3 style="margin: 10px 0;">${article.title}</h3>
-        <p style="color: #666;">Click to read instructions...</p>
-    </div>
-`).join('');
+        <div class="article-card" onclick="openArticle(${article.id})" style="cursor: pointer;">
+            <span class="badge badge-${article.category.toLowerCase().replace(' ', '-')}">
+                ${article.category}
+            </span>
+            <h3 style="margin: 10px 0;">${article.title}</h3>
+            <p style="color: #666; font-size: 14px;">Click to read instructions...</p>
+        </div>
+    `).join('');
 }
 
 // 3. Logic for the Search Bar
 const searchInput = document.getElementById('searchInput');
 const clearBtn = document.getElementById('clearSearch');
 
-searchInput.addEventListener('input', (e) => {
-    const value = e.target.value.toLowerCase();
-    
-    // Show/Hide the 'X' button
-    clearBtn.style.display = value.length > 0 ? 'block' : 'none';
+if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+        const value = e.target.value.toLowerCase();
+        clearBtn.style.display = value.length > 0 ? 'block' : 'none';
 
-    // Filter articles based on title or content
-    const filtered = articles.filter(article => {
-        return article.title.toLowerCase().includes(value) || 
-               article.content.toLowerCase().includes(value);
+        const filtered = articles.filter(article => {
+            return article.title.toLowerCase().includes(value) || 
+                   article.content.toLowerCase().includes(value);
+        });
+        displayArticles(filtered);
     });
+}
 
-    displayArticles(filtered);
-});
+// 4. Logic for the 'X' inside the Search Bar
+if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        clearBtn.style.display = 'none';
+        displayArticles(articles);
+        searchInput.focus();
+    });
+}
 
-// 4. Logic for the 'X' button
-clearBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    clearBtn.style.display = 'none';
-    displayArticles(articles); // Show everything again
-    searchInput.focus();
-});
-
-// Initial display when the page first loads
-displayArticles(articles);
+// 5. Modal Logic (Open/Close)
 function openArticle(id) {
     const article = articles.find(a => a.id === id);
     const modal = document.getElementById('articleModal');
     const body = document.getElementById('modalBody');
 
-    body.innerHTML = `
-        <span class="badge badge-${article.category.toLowerCase().replace(' ', '-')}">${article.category}</span>
-        <h2>${article.title}</h2>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-        <p style="line-height: 1.8; color: #444;">${article.content}</p>
-    `;
-    modal.style.display = "block";
+    if (article && modal && body) {
+        body.innerHTML = `
+            <span class="badge badge-${article.category.toLowerCase().replace(' ', '-')}">${article.category}</span>
+            <h2>${article.title}</h2>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            <p style="line-height: 1.8; color: #444;">${article.content}</p>
+        `;
+        modal.style.display = "block";
+    }
 }
 
-// 1. Function to close the modal
 function closeArticle() {
     const modal = document.getElementById('articleModal');
     if (modal) {
@@ -79,16 +78,19 @@ function closeArticle() {
     }
 }
 
-// 2. A "Master Listener" for clicks
+// Master Listener for clicks (The Fix)
 document.addEventListener('click', function(event) {
-    // Check if the user clicked the 'X'
+    // If clicked the 'X' in the modal
     if (event.target.classList.contains('close-modal')) {
         closeArticle();
     }
     
-    // Check if the user clicked the dark background (the modal itself)
+    // If clicked the dark background
     const modal = document.getElementById('articleModal');
     if (event.target === modal) {
         closeArticle();
     }
 });
+
+// Initial load
+displayArticles(articles);
