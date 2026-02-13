@@ -19,8 +19,9 @@ function displayArticles(results) {
     // Map each article into HTML code
     container.innerHTML = results.map(article => `
         <div class="article-card">
-            <span style="color: #0056b3; font-size: 12px; font-weight: bold; text-transform: uppercase;">${article.category}</span>
-            <h3 style="margin: 10px 0;">${article.title}</h3>
+<span class="badge badge-${article.category.toLowerCase().replace(' ', '-')}">
+    ${article.category}
+</span>            <h3 style="margin: 10px 0;">${article.title}</h3>
             <p style="color: #666; line-height: 1.5;">${article.content}</p>
         </div>
     `).join('');

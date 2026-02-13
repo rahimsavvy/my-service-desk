@@ -52,4 +52,20 @@ main {
     margin-bottom: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}/* Base style for all badges */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
 }
+
+/* Specific colors based on the category name */
+.badge-network { background-color: #e1f5fe; color: #01579b; }    /* Light Blue */
+.badge-accounts { background-color: #e8f5e9; color: #1b5e20; }   /* Light Green */
+.badge-hardware { background-color: #fff3e0; color: #e65100; }   /* Light Orange */
+.badge-remote-work { background-color: #f3e5f5; color: #4a148c; } /* Light Purple */
