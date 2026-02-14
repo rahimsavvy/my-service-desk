@@ -15,11 +15,11 @@ const articles = [
     { id: 8, title: "Monitor Not Detecting Laptop", category: "Hardware", content: "Check the HDMI/DisplayPort cable. Press 'Win + P' on your keyboard and ensure 'Extend' or 'Duplicate' is selected." },
     { id: 9, title: "Ordering a New Keyboard/Mouse", category: "Hardware", content: "Replacement peripherals can be picked up at the IT walk-in desk on the 3rd floor without a ticket. Just bring your employee ID." },
 
-    // REMOTE WORK CATEGORY
-    { id: 10, title: "Zoom/Teams Audio Issues", category: "Remote Work", content: "Check your 'Input Device' in the app settings. Ensure the correct microphone is selected and that you aren't muted by system-level settings." },
-    { id: 11, title: "Home Office Ergonomics Guide", category: "Remote Work", content: "Keep your monitor at eye level. Use an external keyboard and mouse to avoid wrist strain. Take a 5-minute break every hour." },
-    { id: 12, title: "Accessing Shared Network Drives", category: "Remote Work", content: "You must be connected to the VPN. Open File Explorer and type '\\storage-server\department' into the address bar." }
-];
+    // COMMUNICATIONS CATEGORY
+    { id: 10, title: "Zoom/Teams Audio & Sound Issues", category: "Communications", content: "Go to Settings > Audio. Ensure the correct 'Output' (Speakers) and 'Input' (Microphone) are selected. Use the 'Test' button to verify you can hear the tone." },
+    { id: 11, title: "Slack: Notifications & Channels", category: "Communications", content: "If you aren't receiving alerts, check 'Preferences > Notifications'. Ensure 'Do Not Disturb' mode is off and that Slack has permission to send desktop alerts." },
+    { id: 12, title: "Camera Not Working in Calls", category: "Communications", content: "Check the physical privacy slider on your laptop. Then, go to Windows Settings > Privacy > Camera and ensure 'Allow apps to access your camera' is turned ON." },
+    { id: 15, title: "Gmail Chat & Spaces Setup", category: "Communications", content: "To enable the sidebar chat, go to Gmail Settings > See all settings > Chat and Meet. Select 'Google Chat' and save changes." }];
 
 // 2. Function to show articles on the screen
 function displayArticles(results) {
