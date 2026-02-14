@@ -302,7 +302,8 @@ footer {
   margin-top: 30px;
 }
 
-/* Responsive Desig1400px) {
+/* Responsive Design */
+@media (max-width: 1400px) {
   .category-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -345,7 +346,6 @@ footer {
   }
   
   .category-grid-container {
-    padding: 0 20
-    padding: 0 15px;
+    padding: 0 20px;
   }
 }
