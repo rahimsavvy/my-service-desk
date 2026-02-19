@@ -5,21 +5,15 @@ function App() {
   const [articles] = useState([
     { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest' from your WiFi list. Enter the password 'Welcome2024'." },
     { id: 2, title: "VPN Connection Issues", category: "Network", content: "Ensure you are using the GlobalProtect client. Switch to 'Internal Gateway' if needed." },
-    { id: 4, title: "Reset your Email Password", category: "Accounts", content: "Go to identity.company.com and click 'Forgot Password'." },
+    { id: 4, title: "Reset Password / Unlock Windows", category: "Accounts", content: "Go to identity.company.com and click 'Forgot Password' or call the help desk to unlock your Windows profile." },
     { id: 7, title: "Setting up a New Printer", category: "Printers", content: "Open Settings > Devices > Printers. Click 'Add a printer'." },
-    { id: 10, title: "Zoom/Teams Audio Issues", category: "Communications", content: "Check Settings > Audio. Ensure correct Input/Output devices are selected." },
-    { id: 11, title: "Slack: Notifications", category: "Communications", content: "Check Preferences > Notifications and ensure DND mode is off." },
-    { id: 12, title: "Camera Not Working", category: "Communications", content: "Check the physical privacy slider and Windows Privacy settings." },
-    { id: 13, title: "Multi-Factor Authentication (MFA) Setup", category: "Accounts", content: "Download the Microsoft Authenticator app and scan the QR code in your Security settings." }
+    { id: 13, title: "OKTA Configuration", category: "Accounts", content: "Download the Okta Verify app on your mobile device and scan your unique QR code." },
+    { id: 15, title: "Scanner: Scan to Email", category: "Scanners", content: "Place your document in the feeder and select 'Scan to Email'." },
+    { id: 17, title: "Enrolling in Intune", category: "Mobile Devices", content: "Download the Company Portal app from the App Store or Play Store." }
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedArticle, setSelectedArticle] = useState(null);
-
-  const filteredArticles = articles.filter(art => 
-    art.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    art.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const categories = [
     { name: "Network", icon: "🌐", desc: "WiFi, VPN, and Internet" },
@@ -27,8 +21,15 @@ function App() {
     { name: "Software", icon: "🛠️", desc: "Apps, Installs, and Licensing" },
     { name: "Hardware", icon: "💻", desc: "Laptops, Monitors, and Kits" },
     { name: "Printers", icon: "🖨️", desc: "Setup, Paper Jams, and Scanning" },
-    { name: "Communications", icon: "💬", desc: "Zoom, Slack, Gmail & Audio" }
+    { name: "Communications", icon: "💬", desc: "Zoom, Slack, Gmail & Audio" },
+    { name: "Scanners", icon: "📂", desc: "Document Scanning" },
+    { name: "Mobile Devices", icon: "📱", desc: "Smartphones & Tablets" }
   ];
+
+  const filteredArticles = articles.filter(art => 
+    art.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    art.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="App">
@@ -43,11 +44,43 @@ function App() {
             onChange={(e) => setSearchTerm(e.target.value)} 
             className="main-search"
           />
+          
+          {/* COMMON TASKS FIRST */}
           <div className="quick-links">
              <span>Common Tasks:</span>
              <button onClick={() => setSearchTerm("WiFi")}>🌐 Connect WiFi</button>
              <button onClick={() => setSearchTerm("Password")}>👤 Reset Password</button>
              <button onClick={() => setSearchTerm("VPN")}>🔒 VPN Help</button>
+          </div>
+
+          {/* macOS STYLE DOCK NOW BELOW COMMON TASKS */}
+          <div className="it-dock-container">
+            <div className="it-dock">
+              <div className="dock-item">
+                <span className="dock-icon">🔗</span>
+                <span className="dock-label">Important Links</span>
+              </div>
+              <div className="dock-item">
+                <span className="dock-icon">🛠️</span>
+                <span className="dock-label">Services</span>
+              </div>
+              <div className="dock-item">
+                <span className="dock-icon">🎟️</span>
+                <span className="dock-label">Wanted Tickets</span>
+              </div>
+              <div className="dock-item">
+                <span className="dock-icon">🏠</span>
+                <span className="dock-label">Self Service</span>
+              </div>
+              <div className="dock-item">
+                <span className="dock-icon">👥</span>
+                <span className="dock-label">Our Team</span>
+              </div>
+              <div className="dock-item">
+                <span className="dock-icon">📞</span>
+                <span className="dock-label">Contact Us</span>
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -86,7 +119,6 @@ function App() {
       <footer className="support-footer">
         <div className="footer-content">
           <h2>Still need help?</h2>
-          <p>Our IT Support team is available from 7 AM till 8 PM EST to assist you.</p>
           <div className="footer-buttons">
             <a href="mailto:support@company.com" className="footer-btn">Email Support</a>
             <a href="tel:18776602041" className="footer-btn">Call 1-877-660-2041</a>
@@ -99,12 +131,10 @@ function App() {
         <div className="modal-overlay" onClick={() => setSelectedArticle(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <button className="close-btn" onClick={() => setSelectedArticle(null)}>&times;</button>
-            <div className="modal-inner">
-               <span className="badge-v2 modal-badge">{selectedArticle.category}</span>
-               <h2>{selectedArticle.title}</h2>
-               <div className="modal-divider"></div>
-               <p className="modal-body-text">{selectedArticle.content}</p>
-            </div>
+            <span className="badge-v2">{selectedArticle.category}</span>
+            <h2>{selectedArticle.title}</h2>
+            <div className="modal-divider"></div>
+            <p className="modal-body-text">{selectedArticle.content}</p>
           </div>
         </div>
       )}
