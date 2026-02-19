@@ -2,18 +2,29 @@ import { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [articles] = useState([
-    { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest' from your WiFi list. Enter the password 'Welcome2024'." },
-    { id: 2, title: "VPN Connection Issues", category: "Network", content: "Ensure you are using the GlobalProtect client. Switch to 'Internal Gateway' if needed." },
-    { id: 4, title: "Reset Password / Unlock Windows", category: "Accounts", content: "Go to identity.company.com and click 'Forgot Password' or call the help desk to unlock your Windows profile." },
-    { id: 7, title: "Setting up a New Printer", category: "Printers", content: "Open Settings > Devices > Printers. Click 'Add a printer'." },
-    { id: 13, title: "OKTA Configuration", category: "Accounts", content: "Download the Okta Verify app on your mobile device and scan your unique QR code." },
-    { id: 15, title: "Scanner: Scan to Email", category: "Scanners", content: "Place your document in the feeder and select 'Scan to Email'." },
-    { id: 17, title: "Enrolling in Intune", category: "Mobile Devices", content: "Download the Company Portal app from the App Store or Play Store." }
-  ]);
-
+  const [currentPage, setCurrentPage] = useState('home'); 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedArticle, setSelectedArticle] = useState(null);
+
+  const [articles] = useState([
+    { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest' from your WiFi list. Enter the password 'Welcome2024'." },
+    { id: 4, title: "Reset Password / Unlock Windows", category: "Accounts", content: "Go to identity.company.com and click 'Forgot Password'." },
+    { id: 13, title: "OKTA Configuration", category: "Accounts", content: "Follow the prompts to scan your unique QR code in Okta Verify." },
+    { id: 17, title: "Enrolling in Intune", category: "Mobile Devices", content: "Download the Company Portal app to enroll your device." }
+  ]);
+
+  /* CORRECTED TEAM DATA AS PROVIDED */
+  const teamMembers = [
+    { name: "James Rutland", role: "Captain", gender: "male", isManager: true },
+    { name: "Neal Hart", role: "Sr. Support Analyst", gender: "male" },
+    { name: "Alba De Witt", role: "Sr. Support Analyst", gender: "female" },
+    { name: "Jacob Forbes", role: "Support Analyst", gender: "male" },
+    { name: "Duaa Abdelall", role: "Support Analyst", gender: "female" },
+    { name: "Jonathan Louis", role: "Support Analyst", gender: "male" },
+    { name: "Mayyur Gajjar", role: "Support Analyst", gender: "male" },
+    { name: "Pinal Patel", role: "Support Analyst", gender: "female" },
+    { name: "Rahim Hamza", role: "Support Analyst", gender: "male" }
+  ];
 
   const categories = [
     { name: "Network", icon: "🌐", desc: "WiFi, VPN, and Internet" },
@@ -34,8 +45,7 @@ function App() {
   return (
     <div className="App">
       <header className="hero-section">
-        <h1>IT Knowledge Base</h1>
-        <p>How can we help you today?</p>
+        <h1 onClick={() => setCurrentPage('home')} style={{cursor: 'pointer'}}>IT Knowledge Base</h1>
         <div className="search-wrapper">
           <input 
             type="text" 
@@ -45,76 +55,96 @@ function App() {
             className="main-search"
           />
           
-          {/* COMMON TASKS FIRST */}
           <div className="quick-links">
              <span>Common Tasks:</span>
-             <button onClick={() => setSearchTerm("WiFi")}>🌐 Connect WiFi</button>
-             <button onClick={() => setSearchTerm("Password")}>👤 Reset Password</button>
-             <button onClick={() => setSearchTerm("VPN")}>🔒 VPN Help</button>
+             <button onClick={() => {setSearchTerm("WiFi"); setCurrentPage('home')}}>🌐 Connect WiFi</button>
+             <button onClick={() => {setSearchTerm("Password"); setCurrentPage('home')}}>👤 Reset Password</button>
+             <button onClick={() => {setSearchTerm("VPN"); setCurrentPage('home')}}>🔒 VPN Help</button>
           </div>
 
-          {/* macOS STYLE DOCK NOW BELOW COMMON TASKS */}
           <div className="it-dock-container">
             <div className="it-dock">
-              <div className="dock-item">
-                <span className="dock-icon">🔗</span>
-                <span className="dock-label">Important Links</span>
-              </div>
-              <div className="dock-item">
-                <span className="dock-icon">🛠️</span>
-                <span className="dock-label">Services</span>
-              </div>
-              <div className="dock-item">
-                <span className="dock-icon">🎟️</span>
-                <span className="dock-label">Wanted Tickets</span>
-              </div>
-              <div className="dock-item">
+              <div className="dock-item" onClick={() => setCurrentPage('home')}>
                 <span className="dock-icon">🏠</span>
-                <span className="dock-label">Self Service</span>
+                <span className="dock-label">Home</span>
               </div>
-              <div className="dock-item">
+              <div className="dock-item"><span className="dock-icon">🔗</span><span className="dock-label">Links</span></div>
+              <div className="dock-item"><span className="dock-icon">🛠️</span><span className="dock-label">Services</span></div>
+              <div className="dock-item"><span className="dock-icon">🎟️</span><span className="dock-label">Wanted Tickets</span></div>
+              <div className="dock-item"><span className="dock-icon">🚚</span><span className="dock-label">Dispatch</span></div>
+              <div className="dock-item"><span className="dock-icon">📈</span><span className="dock-label">Linear</span></div>
+              <div className="dock-item"><span className="dock-icon">💼</span><span className="dock-label">Workday</span></div>
+              <div className="dock-item"><span className="dock-icon">⚠️</span><span className="dock-label">Outages</span></div>
+              <div className="dock-item"><span className="dock-icon">🧩</span><span className="dock-label">Puzzle Zone</span></div>
+              <div className="dock-item"><span className="dock-icon">📓</span><span className="dock-label">Scrap Book</span></div>
+              <div className="dock-item" onClick={() => setCurrentPage('team')}>
                 <span className="dock-icon">👥</span>
                 <span className="dock-label">Our Team</span>
               </div>
-              <div className="dock-item">
-                <span className="dock-icon">📞</span>
-                <span className="dock-label">Contact Us</span>
-              </div>
+              <div className="dock-item"><span className="dock-icon">📞</span><span className="dock-label">Contact</span></div>
             </div>
           </div>
         </div>
       </header>
 
-      <section className="container">
-        <h2 className="section-title">Browse by Category</h2>
-        <div className="category-grid">
-          {categories.map(cat => (
-            <div key={cat.name} className="category-card" onClick={() => setSearchTerm(cat.name)}>
-              <div className="category-icon">{cat.icon}</div>
-              <h3>{cat.name}</h3>
-              <p>{cat.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {searchTerm && (
-          <div className="results-section">
-            <div className="results-header">
-              <h2>Results for "{searchTerm}"</h2>
-              <button onClick={() => setSearchTerm("")} className="clear-link">✕ Clear Search</button>
-            </div>
-            <div className="article-list-v2">
-              {filteredArticles.map(article => (
-                <div key={article.id} className="article-row-card" onClick={() => setSelectedArticle(article)}>
-                  <span className="badge-v2">{article.category}</span>
-                  <h3>{article.title}</h3>
-                  <p className="sub-text-v2">Click to read instructions...</p>
-                </div>
-              ))}
-            </div>
+      {currentPage === 'home' ? (
+        <section className="container">
+          <h2 className="section-title">Browse by Category</h2>
+          <div className="category-grid">
+            {categories.map(cat => (
+              <div key={cat.name} className="category-card" onClick={() => setSearchTerm(cat.name)}>
+                <div className="category-icon">{cat.icon}</div>
+                <h3>{cat.name}</h3>
+                <p>{cat.desc}</p>
+              </div>
+            ))}
           </div>
-        )}
-      </section>
+
+          {searchTerm && (
+            <div className="results-section">
+              <div className="results-header">
+                <h2>Results for "{searchTerm}"</h2>
+                <button onClick={() => setSearchTerm("")} className="clear-link">✕ Clear Search</button>
+              </div>
+              <div className="article-list-v2">
+                {filteredArticles.map(article => (
+                  <div key={article.id} className="article-row-card" onClick={() => setSelectedArticle(article)}>
+                    <span className="badge-v2">{article.category}</span>
+                    <h3>{article.title}</h3>
+                    <p className="sub-text-v2">Click to read instructions...</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+      ) : (
+        <section className="container team-section">
+          <h2 className="section-title">Meet Our Team</h2>
+          
+          <div className="manager-row">
+            {teamMembers.filter(m => m.isManager).map(manager => (
+              <div key={manager.name} className="team-card manager-card">
+                <div className="avatar">👨‍💼</div>
+                <h3>{manager.name}</h3>
+                <p className="role">{manager.role}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="team-grid">
+            {teamMembers.filter(m => !m.isManager).map(member => (
+              <div key={member.name} className="team-card">
+                <div className="avatar">{member.gender === 'male' ? '👨‍💻' : '👩‍💻'}</div>
+                <h3>{member.name}</h3>
+                <p className="role">{member.role}</p>
+              </div>
+            ))}
+          </div>
+          
+          <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
+        </section>
+      )}
 
       <footer className="support-footer">
         <div className="footer-content">
