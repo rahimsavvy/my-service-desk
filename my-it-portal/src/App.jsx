@@ -88,13 +88,20 @@ function App() {
                 <span className="dock-label">Home</span>
               </div>
               <div className="dock-item"><span className="dock-icon">🔗</span><span className="dock-label">Links</span></div>
-              <div className="dock-item"><span className="dock-icon">🛠️</span><span className="dock-label">Services</span></div>
+              {/* UPDATED DOCK ITEMS FOR REFRESHMENT AND WHATS NEW */}
+              <div className="dock-item" onClick={() => setCurrentPage('refreshment')}>
+                <span className="dock-icon">☕</span>
+                <span className="dock-label">Refreshment</span>
+              </div>
+              <div className="dock-item" onClick={() => setCurrentPage('whatsnew')}>
+                <span className="dock-icon">🗞️</span>
+                <span className="dock-label">Whats New</span>
+              </div>
               <div className="dock-item"><span className="dock-icon">🎟️</span><span className="dock-label">Wanted Tickets</span></div>
               <div className="dock-item"><span className="dock-icon">🚚</span><span className="dock-label">Dispatch</span></div>
               <div className="dock-item"><span className="dock-icon">📈</span><span className="dock-label">Linear</span></div>
               <div className="dock-item"><span className="dock-icon">💼</span><span className="dock-label">Workday</span></div>
               <div className="dock-item"><span className="dock-icon">⚠️</span><span className="dock-label">Outages</span></div>
-              {/* UPDATED PUZZLE DOCK ITEM */}
               <div className="dock-item" onClick={() => setCurrentPage('puzzle')}>
                 <span className="dock-icon">🧩</span>
                 <span className="dock-label">Puzzle Zone</span>
@@ -172,7 +179,6 @@ function App() {
         </section>
       )}
 
-      {/* SCRAPBOOK PAGE CONTENT */}
       {currentPage === 'scrapbook' && (
         <section className="container scrapbook-section">
           <h2 className="section-title">Team Scrapbook</h2>
@@ -199,7 +205,56 @@ function App() {
         </section>
       )}
 
-      {/* NEW PUZZLE ZONE VIEW */}
+      {/* REFRESHMENT PAGE VIEW */}
+      {currentPage === 'refreshment' && (
+        <section className="container">
+          <h2 className="section-title">☕ Refreshment Corner</h2>
+          <div className="category-grid">
+            <div className="category-card">
+              <div className="category-icon">📚</div>
+              <h3>Skill Up</h3>
+              <p>Access the latest certifications and training modules for the team.</p>
+            </div>
+            <div className="category-card">
+              <div className="category-icon">💡</div>
+              <h3>Best Practices</h3>
+              <p>Improve your workflow with updated documentation and tips.</p>
+            </div>
+            <div className="category-card">
+              <div className="category-icon">🛠️</div>
+              <h3>New Tools</h3>
+              <p>Explore recently approved software and IT hardware kits.</p>
+            </div>
+          </div>
+          <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
+        </section>
+      )}
+
+      {/* WHATS NEW PAGE VIEW */}
+      {currentPage === 'whatsnew' && (
+        <section className="container">
+          <h2 className="section-title">🗞️ What's New</h2>
+          <div className="article-list-v2">
+            <div className="article-row-card">
+              <span className="badge-v2">Newsletter</span>
+              <h3>Monthly IT Hub Update - Feb 2026</h3>
+              <p className="sub-text-v2">Major updates to the knowledge base and upcoming team dinner!</p>
+            </div>
+            <div className="article-row-card">
+              <span className="badge-v2">Alert</span>
+              <h3>System Maintenance Schedule</h3>
+              <p className="sub-text-v2">Scheduled downtime for the internal portal this weekend at 12 AM.</p>
+            </div>
+            <div className="article-row-card">
+              <span className="badge-v2">New Feature</span>
+              <h3>Puzzle Zone Released!</h3>
+              <p className="sub-text-v2">Check out the new terminal decryption game in your dock icons.</p>
+            </div>
+          </div>
+          <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
+        </section>
+      )}
+
       {currentPage === 'puzzle' && (
         <section className="container puzzle-section">
           <h2 className="section-title">🧩 IT Puzzle Zone</h2>
