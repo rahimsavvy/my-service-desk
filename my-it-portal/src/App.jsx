@@ -155,14 +155,12 @@ function App() {
         </section>
       )}
 
-      {/* REFRESHMENT PAGE - UNIFORM TILES */}
+      {/* REFRESHMENT PAGE */}
       {currentPage === 'refreshment' && (
         <section className="container">
           <h2 className="section-title">☕ Refreshment Corner</h2>
-          
           {!showQuiz ? (
             <div className="category-grid">
-              {/* UPDATED WEEKLY QUIZ TILE TO MATCH OTHERS */}
               <div className="category-card" onClick={() => setShowQuiz(true)}>
                 <div className="category-icon">📝</div>
                 <h3>Weekly Quiz</h3>
@@ -338,6 +336,8 @@ function App() {
           <div className="footer-buttons">
             <a href="mailto:support@company.com" className="footer-btn">Email Support</a>
             <a href="tel:18776602041" className="footer-btn">Call 1-877-660-2041</a>
+            {/* NEW FEED YOUR KB BUTTON */}
+            <a href="mailto:kb-feedback@company.com" className="footer-btn">Feed your KB</a>
           </div>
           <p className="copyright">© {new Date().getFullYear()} Company IT Service Desk</p>
         </div>

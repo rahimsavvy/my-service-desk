@@ -62,7 +62,7 @@ body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg);
 .sub-text-v2 { margin: 0; color: #666; font-size: 14px; }
 .badge-v2 { background: #e8f5e9; color: #2e7d32; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-bottom: 10px; display: inline-block; }
 
-/* PUZZLE ZONE STYLING */
+/* PUZZLE ZONE & QUIZ STYLING */
 .puzzle-section { max-width: 800px !important; margin: 0 auto; }
 .puzzle-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); margin-top: 20px; }
 .terminal-header { background: #333; padding: 10px; display: flex; gap: 8px; align-items: center; }
@@ -74,10 +74,27 @@ body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg);
 .highlight { color: #fff; background: #333; padding: 2px 8px; border-radius: 4px; }
 .puzzle-input-area { margin-top: 25px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
 .prompt { color: #00ff00; font-weight: bold; }
-#puzzleInput { background: transparent; border: none; border-bottom: 2px solid #00ff00; color: #fff; padding: 5px; font-family: monospace; font-size: 18px; outline: none; width: 250px; }
 
 /* GENERAL FOOTER & BUTTONS */
 .support-footer { background: var(--dark-footer); color: white; padding: 50px; text-align: center; margin-top: 80px; }
-.footer-btn { background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin: 10px; display: inline-block; }
+
+/* This class styles all three buttons in your footer identically */
+.footer-btn { 
+  background: var(--primary); 
+  color: white; 
+  padding: 12px 24px; 
+  border-radius: 8px; 
+  text-decoration: none; 
+  font-weight: bold; 
+  margin: 10px; 
+  display: inline-block; 
+  transition: 0.3s;
+}
+
+.footer-btn:hover { 
+  opacity: 0.9; 
+  transform: translateY(-2px); 
+}
+
 .back-btn { margin-top: 30px; background: none; border: 1px solid #ccc; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
 .back-btn:hover { background: #eee; }
