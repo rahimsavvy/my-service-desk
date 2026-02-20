@@ -94,7 +94,11 @@ function App() {
               <div className="dock-item"><span className="dock-icon">📈</span><span className="dock-label">Linear</span></div>
               <div className="dock-item"><span className="dock-icon">💼</span><span className="dock-label">Workday</span></div>
               <div className="dock-item"><span className="dock-icon">⚠️</span><span className="dock-label">Outages</span></div>
-              <div className="dock-item"><span className="dock-icon">🧩</span><span className="dock-label">Puzzle Zone</span></div>
+              {/* UPDATED PUZZLE DOCK ITEM */}
+              <div className="dock-item" onClick={() => setCurrentPage('puzzle')}>
+                <span className="dock-icon">🧩</span>
+                <span className="dock-label">Puzzle Zone</span>
+              </div>
               <div className="dock-item" onClick={() => setCurrentPage('scrapbook')}>
                 <span className="dock-icon">📓</span>
                 <span className="dock-label">Scrap Book</span>
@@ -190,6 +194,43 @@ function App() {
                 <p className="scrap-text">{scrap.text}</p>
               </div>
             ))}
+          </div>
+          <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
+        </section>
+      )}
+
+      {/* NEW PUZZLE ZONE VIEW */}
+      {currentPage === 'puzzle' && (
+        <section className="container puzzle-section">
+          <h2 className="section-title">🧩 IT Puzzle Zone</h2>
+          <div className="puzzle-card">
+            <div className="terminal-header">
+              <span className="dot red"></span>
+              <span className="dot yellow"></span>
+              <span className="dot green"></span>
+              <span className="terminal-title">system_recovery.sh</span>
+            </div>
+            <div className="terminal-body">
+              <p className="terminal-text">>> ERROR: Critical IT term encrypted.</p>
+              <p className="terminal-text">>> HEX_STRING: <span className="highlight">73 68 75 74 20 64 6f 77 6e</span></p>
+              <div className="puzzle-input-area">
+                <span className="prompt">$</span>
+                <input 
+                  type="text" 
+                  placeholder="Enter decrypted string..." 
+                  id="puzzleInput" 
+                  autoComplete="off"
+                />
+                <button className="post-btn" onClick={() => {
+                  const val = document.getElementById('puzzleInput').value.toLowerCase().trim();
+                  if(val === "shut down") {
+                    alert("✅ Access Granted. Terminal Restored.");
+                  } else {
+                    alert("❌ Invalid Credentials. Hint: What you do at 5:00 PM.");
+                  }
+                }}>Execute</button>
+              </div>
+            </div>
           </div>
           <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
         </section>
