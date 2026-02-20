@@ -5,6 +5,13 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home'); 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedArticle, setSelectedArticle] = useState(null);
+  
+  /* SCRAPBOOK STATE - STORES YOUR POSTS */
+  const [scraps, setScraps] = useState([
+    { id: 1, author: "Guest User", text: "Welcome to the new IT Scrapbook! Let's keep the team spirit high. 🚀", time: "2 hours ago" },
+    { id: 2, author: "Guest User", text: "Great job on the VPN migration yesterday, everyone!", time: "4 hours ago" }
+  ]);
+  const [newScrap, setNewScrap] = useState("");
 
   const [articles] = useState([
     { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest' from your WiFi list. Enter the password 'Welcome2024'." },
@@ -13,7 +20,6 @@ function App() {
     { id: 17, title: "Enrolling in Intune", category: "Mobile Devices", content: "Download the Company Portal app to enroll your device." }
   ]);
 
-  /* CORRECTED TEAM DATA AS PROVIDED */
   const teamMembers = [
     { name: "James Rutland", role: "Captain", gender: "male", isManager: true },
     { name: "Neal Hart", role: "Sr. Support Analyst", gender: "male" },
@@ -25,6 +31,19 @@ function App() {
     { name: "Pinal Patel", role: "Support Analyst", gender: "female" },
     { name: "Rahim Hamza", role: "Support Analyst", gender: "male" }
   ];
+
+  /* HANDLES POSTING A NEW SCRAP */
+  const handlePostScrap = () => {
+    if (!newScrap.trim()) return;
+    const post = {
+      id: Date.now(),
+      author: "Guest User",
+      text: newScrap,
+      time: "Just now"
+    };
+    setScraps([post, ...scraps]);
+    setNewScrap("");
+  };
 
   const categories = [
     { name: "Network", icon: "🌐", desc: "WiFi, VPN, and Internet" },
@@ -76,7 +95,10 @@ function App() {
               <div className="dock-item"><span className="dock-icon">💼</span><span className="dock-label">Workday</span></div>
               <div className="dock-item"><span className="dock-icon">⚠️</span><span className="dock-label">Outages</span></div>
               <div className="dock-item"><span className="dock-icon">🧩</span><span className="dock-label">Puzzle Zone</span></div>
-              <div className="dock-item"><span className="dock-icon">📓</span><span className="dock-label">Scrap Book</span></div>
+              <div className="dock-item" onClick={() => setCurrentPage('scrapbook')}>
+                <span className="dock-icon">📓</span>
+                <span className="dock-label">Scrap Book</span>
+              </div>
               <div className="dock-item" onClick={() => setCurrentPage('team')}>
                 <span className="dock-icon">👥</span>
                 <span className="dock-label">Our Team</span>
@@ -87,7 +109,8 @@ function App() {
         </div>
       </header>
 
-      {currentPage === 'home' ? (
+      {/* PAGE ROUTING LOGIC */}
+      {currentPage === 'home' && (
         <section className="container">
           <h2 className="section-title">Browse by Category</h2>
           <div className="category-grid">
@@ -118,10 +141,11 @@ function App() {
             </div>
           )}
         </section>
-      ) : (
+      )}
+
+      {currentPage === 'team' && (
         <section className="container team-section">
           <h2 className="section-title">Meet Our Team</h2>
-          
           <div className="manager-row">
             {teamMembers.filter(m => m.isManager).map(manager => (
               <div key={manager.name} className="team-card manager-card">
@@ -131,7 +155,6 @@ function App() {
               </div>
             ))}
           </div>
-
           <div className="team-grid">
             {teamMembers.filter(m => !m.isManager).map(member => (
               <div key={member.name} className="team-card">
@@ -141,7 +164,33 @@ function App() {
               </div>
             ))}
           </div>
-          
+          <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
+        </section>
+      )}
+
+      {/* SCRAPBOOK PAGE CONTENT */}
+      {currentPage === 'scrapbook' && (
+        <section className="container scrapbook-section">
+          <h2 className="section-title">Team Scrapbook</h2>
+          <div className="scrap-input-card">
+            <textarea 
+              placeholder="Post a scrap to the team..." 
+              value={newScrap}
+              onChange={(e) => setNewScrap(e.target.value)}
+            />
+            <button className="post-btn" onClick={handlePostScrap}>Post Scrap</button>
+          </div>
+          <div className="scrap-feed">
+            {scraps.map(scrap => (
+              <div key={scrap.id} className="scrap-card">
+                <div className="scrap-header">
+                  <strong>{scrap.author}</strong>
+                  <span className="scrap-time">{scrap.time}</span>
+                </div>
+                <p className="scrap-text">{scrap.text}</p>
+              </div>
+            ))}
+          </div>
           <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
         </section>
       )}
