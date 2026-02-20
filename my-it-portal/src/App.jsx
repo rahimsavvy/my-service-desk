@@ -6,6 +6,9 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedArticle, setSelectedArticle] = useState(null);
   
+  /* NEW STATE FOR WEEKLY QUIZ */
+  const [showQuiz, setShowQuiz] = useState(false);
+
   /* SCRAPBOOK STATE - STORES YOUR POSTS */
   const [scraps, setScraps] = useState([
     { id: 1, author: "Guest User", text: "Welcome to the new IT Scrapbook! Let's keep the team spirit high. 🚀", time: "2 hours ago" },
@@ -64,7 +67,7 @@ function App() {
   return (
     <div className="App">
       <header className="hero-section">
-        <h1 onClick={() => setCurrentPage('home')} style={{cursor: 'pointer'}}>IT Knowledge Base</h1>
+        <h1 onClick={() => {setCurrentPage('home'); setShowQuiz(false);}} style={{cursor: 'pointer'}}>IT Knowledge Base</h1>
         <div className="search-wrapper">
           <input 
             type="text" 
@@ -83,17 +86,16 @@ function App() {
 
           <div className="it-dock-container">
             <div className="it-dock">
-              <div className="dock-item" onClick={() => setCurrentPage('home')}>
+              <div className="dock-item" onClick={() => {setCurrentPage('home'); setShowQuiz(false);}}>
                 <span className="dock-icon">🏠</span>
                 <span className="dock-label">Home</span>
               </div>
               <div className="dock-item"><span className="dock-icon">🔗</span><span className="dock-label">Links</span></div>
-              {/* UPDATED DOCK ITEMS FOR REFRESHMENT AND WHATS NEW */}
-              <div className="dock-item" onClick={() => setCurrentPage('refreshment')}>
+              <div className="dock-item" onClick={() => {setCurrentPage('refreshment'); setShowQuiz(false);}}>
                 <span className="dock-icon">☕</span>
                 <span className="dock-label">Refreshment</span>
               </div>
-              <div className="dock-item" onClick={() => setCurrentPage('whatsnew')}>
+              <div className="dock-item" onClick={() => {setCurrentPage('whatsnew'); setShowQuiz(false);}}>
                 <span className="dock-icon">🗞️</span>
                 <span className="dock-label">Whats New</span>
               </div>
@@ -102,15 +104,15 @@ function App() {
               <div className="dock-item"><span className="dock-icon">📈</span><span className="dock-label">Linear</span></div>
               <div className="dock-item"><span className="dock-icon">💼</span><span className="dock-label">Workday</span></div>
               <div className="dock-item"><span className="dock-icon">⚠️</span><span className="dock-label">Outages</span></div>
-              <div className="dock-item" onClick={() => setCurrentPage('puzzle')}>
+              <div className="dock-item" onClick={() => {setCurrentPage('puzzle'); setShowQuiz(false);}}>
                 <span className="dock-icon">🧩</span>
                 <span className="dock-label">Puzzle Zone</span>
               </div>
-              <div className="dock-item" onClick={() => setCurrentPage('scrapbook')}>
+              <div className="dock-item" onClick={() => {setCurrentPage('scrapbook'); setShowQuiz(false);}}>
                 <span className="dock-icon">📓</span>
                 <span className="dock-label">Scrap Book</span>
               </div>
-              <div className="dock-item" onClick={() => setCurrentPage('team')}>
+              <div className="dock-item" onClick={() => {setCurrentPage('team'); setShowQuiz(false);}}>
                 <span className="dock-icon">👥</span>
                 <span className="dock-label">Our Team</span>
               </div>
@@ -120,7 +122,7 @@ function App() {
         </div>
       </header>
 
-      {/* PAGE ROUTING LOGIC */}
+      {/* HOME PAGE */}
       {currentPage === 'home' && (
         <section className="container">
           <h2 className="section-title">Browse by Category</h2>
@@ -133,7 +135,6 @@ function App() {
               </div>
             ))}
           </div>
-
           {searchTerm && (
             <div className="results-section">
               <div className="results-header">
@@ -154,6 +155,73 @@ function App() {
         </section>
       )}
 
+      {/* REFRESHMENT PAGE - UNIFORM TILES */}
+      {currentPage === 'refreshment' && (
+        <section className="container">
+          <h2 className="section-title">☕ Refreshment Corner</h2>
+          
+          {!showQuiz ? (
+            <div className="category-grid">
+              {/* UPDATED WEEKLY QUIZ TILE TO MATCH OTHERS */}
+              <div className="category-card" onClick={() => setShowQuiz(true)}>
+                <div className="category-icon">📝</div>
+                <h3>Weekly Quiz</h3>
+                <p>Test your knowledge on this week's system updates!</p>
+              </div>
+              <div className="category-card">
+                <div className="category-icon">📚</div>
+                <h3>Skill Up</h3>
+                <p>Access the latest certifications and training modules for the team.</p>
+              </div>
+              <div className="category-card">
+                <div className="category-icon">🛠️</div>
+                <h3>New Tools</h3>
+                <p>Explore recently approved software and IT hardware kits.</p>
+              </div>
+              <div className="category-card">
+                <div className="category-icon">💡</div>
+                <h3>Best Practices</h3>
+                <p>Improve your workflow with updated documentation and tips.</p>
+              </div>
+            </div>
+          ) : (
+            <div className="puzzle-card">
+              <div className="terminal-header">
+                <span className="dot red"></span>
+                <span className="dot yellow"></span>
+                <span className="dot green"></span>
+                <span className="terminal-title">weekly_assessment.exe</span>
+              </div>
+              <div className="terminal-body">
+                <p className="terminal-text" style={{color: '#00ff00', fontFamily: 'monospace'}}>>> QUESTION: Which port is typically used for secure web traffic (HTTPS)?</p>
+                <div className="puzzle-input-area" style={{marginTop: '20px', display: 'flex', gap: '10px', alignItems: 'center'}}>
+                  <span style={{color: '#00ff00'}}>$</span>
+                  <input 
+                    type="text" 
+                    placeholder="Enter port number..." 
+                    id="quizInput" 
+                    autoComplete="off"
+                    style={{background: 'transparent', border: 'none', borderBottom: '2px solid #00ff00', color: '#fff', outline: 'none', padding: '5px'}}
+                  />
+                  <button className="post-btn" onClick={() => {
+                    const val = document.getElementById('quizInput').value.trim();
+                    if(val === "443") {
+                      alert("✅ Correct! You've mastered secure protocols.");
+                      setShowQuiz(false);
+                    } else {
+                      alert("❌ Incorrect. Hint: It's the standard for SSL.");
+                    }
+                  }}>Submit</button>
+                </div>
+                <button className="clear-link" style={{marginTop: '20px'}} onClick={() => setShowQuiz(false)}>Cancel Quiz</button>
+              </div>
+            </div>
+          )}
+          {!showQuiz && <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>}
+        </section>
+      )}
+
+      {/* TEAM PAGE */}
       {currentPage === 'team' && (
         <section className="container team-section">
           <h2 className="section-title">Meet Our Team</h2>
@@ -179,6 +247,7 @@ function App() {
         </section>
       )}
 
+      {/* SCRAPBOOK PAGE */}
       {currentPage === 'scrapbook' && (
         <section className="container scrapbook-section">
           <h2 className="section-title">Team Scrapbook</h2>
@@ -205,32 +274,7 @@ function App() {
         </section>
       )}
 
-      {/* REFRESHMENT PAGE VIEW */}
-      {currentPage === 'refreshment' && (
-        <section className="container">
-          <h2 className="section-title">☕ Refreshment Corner</h2>
-          <div className="category-grid">
-            <div className="category-card">
-              <div className="category-icon">📚</div>
-              <h3>Skill Up</h3>
-              <p>Access the latest certifications and training modules for the team.</p>
-            </div>
-            <div className="category-card">
-              <div className="category-icon">💡</div>
-              <h3>Best Practices</h3>
-              <p>Improve your workflow with updated documentation and tips.</p>
-            </div>
-            <div className="category-card">
-              <div className="category-icon">🛠️</div>
-              <h3>New Tools</h3>
-              <p>Explore recently approved software and IT hardware kits.</p>
-            </div>
-          </div>
-          <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
-        </section>
-      )}
-
-      {/* WHATS NEW PAGE VIEW */}
+      {/* WHATS NEW PAGE */}
       {currentPage === 'whatsnew' && (
         <section className="container">
           <h2 className="section-title">🗞️ What's New</h2>
@@ -245,16 +289,12 @@ function App() {
               <h3>System Maintenance Schedule</h3>
               <p className="sub-text-v2">Scheduled downtime for the internal portal this weekend at 12 AM.</p>
             </div>
-            <div className="article-row-card">
-              <span className="badge-v2">New Feature</span>
-              <h3>Puzzle Zone Released!</h3>
-              <p className="sub-text-v2">Check out the new terminal decryption game in your dock icons.</p>
-            </div>
           </div>
           <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
         </section>
       )}
 
+      {/* PUZZLE ZONE PAGE */}
       {currentPage === 'puzzle' && (
         <section className="container puzzle-section">
           <h2 className="section-title">🧩 IT Puzzle Zone</h2>
@@ -266,15 +306,16 @@ function App() {
               <span className="terminal-title">system_recovery.sh</span>
             </div>
             <div className="terminal-body">
-              <p className="terminal-text">>> ERROR: Critical IT term encrypted.</p>
-              <p className="terminal-text">>> HEX_STRING: <span className="highlight">73 68 75 74 20 64 6f 77 6e</span></p>
-              <div className="puzzle-input-area">
-                <span className="prompt">$</span>
+              <p className="terminal-text" style={{color: '#00ff00', fontFamily: 'monospace'}}>>> ERROR: Critical IT term encrypted.</p>
+              <p className="terminal-text" style={{color: '#00ff00', fontFamily: 'monospace'}}>>> HEX_STRING: <span style={{color: '#fff', background: '#333', padding: '2px 5px'}}>73 68 75 74 20 64 6f 77 6e</span></p>
+              <div className="puzzle-input-area" style={{marginTop: '20px', display: 'flex', gap: '10px', alignItems: 'center'}}>
+                <span style={{color: '#00ff00'}}>$</span>
                 <input 
                   type="text" 
                   placeholder="Enter decrypted string..." 
                   id="puzzleInput" 
                   autoComplete="off"
+                  style={{background: 'transparent', border: 'none', borderBottom: '2px solid #00ff00', color: '#fff', outline: 'none', padding: '5px'}}
                 />
                 <button className="post-btn" onClick={() => {
                   const val = document.getElementById('puzzleInput').value.toLowerCase().trim();
