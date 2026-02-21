@@ -56,7 +56,9 @@ function App() {
     { name: "Printers", icon: "🖨️", desc: "Setup, Paper Jams, and Scanning" },
     { name: "Communications", icon: "💬", desc: "Zoom, Slack, Gmail & Audio" },
     { name: "Scanners", icon: "📂", desc: "Document Scanning" },
-    { name: "Mobile Devices", icon: "📱", desc: "Smartphones & Tablets" }
+    { name: "Mobile Devices", icon: "📱", desc: "Smartphones & Tablets" },
+    /* NEW CATEGORY ADDED HERE */
+    { name: "Macintosh HD", icon: "🍎", desc: "MacOS & Apple Support" }
   ];
 
   const filteredArticles = articles.filter(art => 
