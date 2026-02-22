@@ -6,8 +6,10 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedArticle, setSelectedArticle] = useState(null);
   
-  /* NEW STATE FOR WEEKLY QUIZ */
+  /* PUZZLE & QUIZ STATES */
   const [showQuiz, setShowQuiz] = useState(false);
+  const [newspaperGuess, setNewspaperGuess] = useState(""); 
+  const [activePuzzle, setActivePuzzle] = useState(null); // Controls which puzzle is open
 
   /* SCRAPBOOK STATE - STORES YOUR POSTS */
   const [scraps, setScraps] = useState([
@@ -57,7 +59,6 @@ function App() {
     { name: "Communications", icon: "💬", desc: "Zoom, Slack, Gmail & Audio" },
     { name: "Scanners", icon: "📂", desc: "Document Scanning" },
     { name: "Mobile Devices", icon: "📱", desc: "Smartphones & Tablets" },
-    /* NEW CATEGORY ADDED HERE */
     { name: "Macintosh HD", icon: "🍎", desc: "MacOS & Apple Support" }
   ];
 
@@ -66,10 +67,17 @@ function App() {
     art.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  /* Helper function to reset interactive views when navigating */
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+    setShowQuiz(false);
+    setActivePuzzle(null);
+  };
+
   return (
     <div className="App">
       <header className="hero-section">
-        <h1 onClick={() => {setCurrentPage('home'); setShowQuiz(false);}} style={{cursor: 'pointer'}}>IT Knowledge Base</h1>
+        <h1 onClick={() => navigateTo('home')} style={{cursor: 'pointer'}}>IT Knowledge Base</h1>
         <div className="search-wrapper">
           <input 
             type="text" 
@@ -81,23 +89,23 @@ function App() {
           
           <div className="quick-links">
              <span>Common Tasks:</span>
-             <button onClick={() => {setSearchTerm("WiFi"); setCurrentPage('home')}}>🌐 Connect WiFi</button>
-             <button onClick={() => {setSearchTerm("Password"); setCurrentPage('home')}}>👤 Reset Password</button>
-             <button onClick={() => {setSearchTerm("VPN"); setCurrentPage('home')}}>🔒 VPN Help</button>
+             <button onClick={() => {setSearchTerm("WiFi"); navigateTo('home');}}>🌐 Connect WiFi</button>
+             <button onClick={() => {setSearchTerm("Password"); navigateTo('home');}}>👤 Reset Password</button>
+             <button onClick={() => {setSearchTerm("VPN"); navigateTo('home');}}>🔒 VPN Help</button>
           </div>
 
           <div className="it-dock-container">
             <div className="it-dock">
-              <div className="dock-item" onClick={() => {setCurrentPage('home'); setShowQuiz(false);}}>
+              <div className="dock-item" onClick={() => navigateTo('home')}>
                 <span className="dock-icon">🏠</span>
                 <span className="dock-label">Home</span>
               </div>
               <div className="dock-item"><span className="dock-icon">🔗</span><span className="dock-label">Links</span></div>
-              <div className="dock-item" onClick={() => {setCurrentPage('refreshment'); setShowQuiz(false);}}>
+              <div className="dock-item" onClick={() => navigateTo('refreshment')}>
                 <span className="dock-icon">☕</span>
                 <span className="dock-label">Refreshment</span>
               </div>
-              <div className="dock-item" onClick={() => {setCurrentPage('whatsnew'); setShowQuiz(false);}}>
+              <div className="dock-item" onClick={() => navigateTo('whatsnew')}>
                 <span className="dock-icon">🗞️</span>
                 <span className="dock-label">Whats New</span>
               </div>
@@ -106,15 +114,15 @@ function App() {
               <div className="dock-item"><span className="dock-icon">📈</span><span className="dock-label">Linear</span></div>
               <div className="dock-item"><span className="dock-icon">💼</span><span className="dock-label">Workday</span></div>
               <div className="dock-item"><span className="dock-icon">⚠️</span><span className="dock-label">Outages</span></div>
-              <div className="dock-item" onClick={() => {setCurrentPage('puzzle'); setShowQuiz(false);}}>
+              <div className="dock-item" onClick={() => navigateTo('puzzle')}>
                 <span className="dock-icon">🧩</span>
                 <span className="dock-label">Puzzle Zone</span>
               </div>
-              <div className="dock-item" onClick={() => {setCurrentPage('scrapbook'); setShowQuiz(false);}}>
+              <div className="dock-item" onClick={() => navigateTo('scrapbook')}>
                 <span className="dock-icon">📓</span>
                 <span className="dock-label">Scrap Book</span>
               </div>
-              <div className="dock-item" onClick={() => {setCurrentPage('team'); setShowQuiz(false);}}>
+              <div className="dock-item" onClick={() => navigateTo('team')}>
                 <span className="dock-icon">👥</span>
                 <span className="dock-label">Our Team</span>
               </div>
@@ -217,7 +225,7 @@ function App() {
               </div>
             </div>
           )}
-          {!showQuiz && <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>}
+          {!showQuiz && <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>}
         </section>
       )}
 
@@ -243,7 +251,7 @@ function App() {
               </div>
             ))}
           </div>
-          <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
+          <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
         </section>
       )}
 
@@ -270,7 +278,7 @@ function App() {
               </div>
             ))}
           </div>
-          <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
+          <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
         </section>
       )}
 
@@ -290,45 +298,111 @@ function App() {
               <p className="sub-text-v2">Scheduled downtime for the internal portal this weekend at 12 AM.</p>
             </div>
           </div>
-          <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
+          <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
         </section>
       )}
 
-      {/* PUZZLE ZONE PAGE */}
+      {/* PUZZLE ZONE PAGE - MENU SYSTEM */}
       {currentPage === 'puzzle' && (
         <section className="container puzzle-section">
           <h2 className="section-title">🧩 IT Puzzle Zone</h2>
-          <div className="puzzle-card">
-            <div className="terminal-header">
-              <span className="dot red"></span>
-              <span className="dot yellow"></span>
-              <span className="dot green"></span>
-              <span className="terminal-title">system_recovery.sh</span>
-            </div>
-            <div className="terminal-body">
-              <p className="terminal-text" style={{color: '#00ff00', fontFamily: 'monospace'}}>>> ERROR: Critical IT term encrypted.</p>
-              <p className="terminal-text" style={{color: '#00ff00', fontFamily: 'monospace'}}>>> HEX_STRING: <span style={{color: '#fff', background: '#333', padding: '2px 5px'}}>73 68 75 74 20 64 6f 77 6e</span></p>
-              <div className="puzzle-input-area" style={{marginTop: '20px', display: 'flex', gap: '10px', alignItems: 'center'}}>
-                <span style={{color: '#00ff00'}}>$</span>
-                <input 
-                  type="text" 
-                  placeholder="Enter decrypted string..." 
-                  id="puzzleInput" 
-                  autoComplete="off"
-                  style={{background: 'transparent', border: 'none', borderBottom: '2px solid #00ff00', color: '#fff', outline: 'none', padding: '5px'}}
-                />
-                <button className="post-btn" onClick={() => {
-                  const val = document.getElementById('puzzleInput').value.toLowerCase().trim();
-                  if(val === "shut down") {
-                    alert("✅ Access Granted. Terminal Restored.");
-                  } else {
-                    alert("❌ Invalid Credentials. Hint: What you do at 5:00 PM.");
-                  }
-                }}>Execute</button>
+          
+          {/* MENU VIEW: Shows if no puzzle is active */}
+          {!activePuzzle ? (
+            <>
+              <div className="category-grid" style={{ marginTop: '20px' }}>
+                <div className="category-card" onClick={() => setActivePuzzle('terminal')}>
+                  <div className="category-icon">🖥️</div>
+                  <h3>Terminal Recovery</h3>
+                  <p>Decrypt the hex string to restore the system.</p>
+                </div>
+                <div className="category-card" onClick={() => setActivePuzzle('cryptic')}>
+                  <div className="category-icon">🗞️</div>
+                  <h3>Daily Cryptic</h3>
+                  <p>Solve the 5-letter IT crossword clue.</p>
+                </div>
               </div>
+              <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
+            </>
+          ) : (
+            /* ACTIVE PUZZLE VIEW */
+            <div>
+              {/* PUZZLE 1: TERMINAL */}
+              {activePuzzle === 'terminal' && (
+                <div className="puzzle-card" style={{ marginTop: '0' }}>
+                  <div className="terminal-header">
+                    <span className="dot red"></span>
+                    <span className="dot yellow"></span>
+                    <span className="dot green"></span>
+                    <span className="terminal-title">system_recovery.sh</span>
+                  </div>
+                  <div className="terminal-body">
+                    <p className="terminal-text" style={{color: '#00ff00', fontFamily: 'monospace'}}>>> ERROR: Critical IT term encrypted.</p>
+                    <p className="terminal-text" style={{color: '#00ff00', fontFamily: 'monospace'}}>>> HEX_STRING: <span style={{color: '#fff', background: '#333', padding: '2px 5px'}}>73 68 75 74 20 64 6f 77 6e</span></p>
+                    <div className="puzzle-input-area" style={{marginTop: '20px', display: 'flex', gap: '10px', alignItems: 'center'}}>
+                      <span style={{color: '#00ff00'}}>$</span>
+                      <input 
+                        type="text" 
+                        placeholder="Enter decrypted string..." 
+                        id="puzzleInput" 
+                        autoComplete="off"
+                        style={{background: 'transparent', border: 'none', borderBottom: '2px solid #00ff00', color: '#fff', outline: 'none', padding: '5px'}}
+                      />
+                      <button className="post-btn" onClick={() => {
+                        const val = document.getElementById('puzzleInput').value.toLowerCase().trim();
+                        if(val === "shut down") {
+                          alert("✅ Access Granted. Terminal Restored.");
+                        } else {
+                          alert("❌ Invalid Credentials. Hint: What you do at 5:00 PM.");
+                        }
+                      }}>Execute</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* PUZZLE 2: NEWSPAPER CRYPTIC */}
+              {activePuzzle === 'cryptic' && (
+                <div className="newspaper-card" style={{ marginTop: '0' }}>
+                  <div className="news-header">
+                    <h2>The Daily IT Cryptic</h2>
+                    <p>Vol. 1 - Sunday Edition</p>
+                  </div>
+                  <div className="news-body">
+                    <p className="clue-text"><strong>Clue:</strong> Clearing this can often fix stubborn website loading issues. (5 Letters)</p>
+                    
+                    <div className="block-row">
+                      {[0, 1, 2, 3, 4].map((index) => (
+                        <div key={index} className="letter-block">
+                          {newspaperGuess[index] || ""}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="news-input-area">
+                      <input 
+                        type="text" 
+                        maxLength="5" 
+                        className="news-input" 
+                        placeholder="Type answer..."
+                        value={newspaperGuess}
+                        onChange={(e) => setNewspaperGuess(e.target.value.toUpperCase().replace(/[^A-Z]/g, ''))}
+                      />
+                      <button className="news-btn" onClick={() => {
+                        if(newspaperGuess === "CACHE") {
+                          alert("📰 Correct! You solved today's cryptic.");
+                        } else {
+                          alert("❌ Not quite! Hint: Sounds like a place to hide money.");
+                        }
+                      }}>Check Answer</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <button className="back-btn" onClick={() => setActivePuzzle(null)}>← Back to Puzzles</button>
             </div>
-          </div>
-          <button className="back-btn" onClick={() => setCurrentPage('home')}>← Back to Knowledge Base</button>
+          )}
         </section>
       )}
 
@@ -338,7 +412,6 @@ function App() {
           <div className="footer-buttons">
             <a href="mailto:support@company.com" className="footer-btn">Email Support</a>
             <a href="tel:18776602041" className="footer-btn">Call 1-877-660-2041</a>
-            {/* NEW FEED YOUR KB BUTTON */}
             <a href="mailto:kb-feedback@company.com" className="footer-btn">Feed your KB</a>
           </div>
           <p className="copyright">© {new Date().getFullYear()} Company IT Service Desk</p>
