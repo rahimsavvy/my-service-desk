@@ -191,3 +191,86 @@ body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg);
 }
 
 .news-btn:hover { background: #333; color: white; }
+
+/* ========================================= */
+/* SLIDING BLOCK PUZZLE STYLES               */
+/* ========================================= */
+
+.sliding-puzzle-card {
+  background: #1a1a2e; /* Deep dark blue/purple */
+  color: #fff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  border: 2px solid #3a3a5e;
+  margin-top: 0px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.sliding-header h2 { 
+  color: #ff5f56; 
+  margin: 0 0 10px 0; 
+  letter-spacing: 1.5px;
+}
+
+.sliding-header p { 
+  color: #aaa; 
+  margin-bottom: 30px; 
+}
+
+.sliding-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 85px); /* 3x3 Grid */
+  grid-template-rows: repeat(3, 85px);
+  gap: 6px;
+  justify-content: center;
+  margin: 0 auto;
+  background: #0f0f1a;
+  padding: 12px;
+  border-radius: 8px;
+  width: fit-content;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+}
+
+.slide-tile {
+  position: relative;
+  background: linear-gradient(135deg, #0056b3, #003d82);
+  border: 2px solid #4da3ff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  user-select: none; /* Prevents text highlighting while rapidly clicking */
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.1), 0 4px 6px rgba(0,0,0,0.4);
+}
+
+.slide-tile:hover {
+  background: linear-gradient(135deg, #0066cc, #00408c);
+  transform: scale(0.96);
+}
+
+.empty-tile {
+  background: transparent !important;
+  border: 2px dashed #333;
+  box-shadow: none;
+  cursor: default;
+  transform: none !important;
+}
+
+.tile-num {
+  font-size: 11px;
+  color: #88c0ff;
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  font-family: monospace;
+}
+
+.tile-char {
+  font-size: 36px;
+  font-weight: 800;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}

@@ -9,9 +9,12 @@ function App() {
   /* PUZZLE & QUIZ STATES */
   const [showQuiz, setShowQuiz] = useState(false);
   const [newspaperGuess, setNewspaperGuess] = useState(""); 
-  const [activePuzzle, setActivePuzzle] = useState(null); // Controls which puzzle is open
+  const [activePuzzle, setActivePuzzle] = useState(null);
 
-  /* SCRAPBOOK STATE - STORES YOUR POSTS */
+  /* NEW: SLIDING TILE PUZZLE STATE (9 is the empty space) */
+  const [slidingTiles, setSlidingTiles] = useState([8, 2, 3, 1, 6, 4, 7, 5, 9]);
+
+  /* SCRAPBOOK STATE */
   const [scraps, setScraps] = useState([
     { id: 1, author: "Guest User", text: "Welcome to the new IT Scrapbook! Let's keep the team spirit high. 🚀", time: "2 hours ago" },
     { id: 2, author: "Guest User", text: "Great job on the VPN migration yesterday, everyone!", time: "4 hours ago" }
@@ -37,7 +40,6 @@ function App() {
     { name: "Rahim Hamza", role: "Support Analyst", gender: "male" }
   ];
 
-  /* HANDLES POSTING A NEW SCRAP */
   const handlePostScrap = () => {
     if (!newScrap.trim()) return;
     const post = {
@@ -67,11 +69,36 @@ function App() {
     art.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  /* Helper function to reset interactive views when navigating */
   const navigateTo = (page) => {
     setCurrentPage(page);
     setShowQuiz(false);
     setActivePuzzle(null);
+  };
+
+  /* NEW: SLIDING PUZZLE LOGIC */
+  const handleTileClick = (index) => {
+    const emptyIndex = slidingTiles.indexOf(9);
+    // Check if clicked tile is adjacent to empty tile
+    const isSameRow = Math.floor(index / 3) === Math.floor(emptyIndex / 3) && Math.abs(index - emptyIndex) === 1;
+    const isSameCol = index % 3 === emptyIndex % 3 && Math.abs(index - emptyIndex) === 3;
+
+    if (isSameRow || isSameCol) {
+      const newTiles = [...slidingTiles];
+      // Swap the clicked tile with the empty tile
+      [newTiles[index], newTiles[emptyIndex]] = [newTiles[emptyIndex], newTiles[index]];
+      setSlidingTiles(newTiles);
+
+      // Check win condition (1 through 9 in order)
+      if (newTiles.join('') === '123456789') {
+        setTimeout(() => alert("✅ SECURITY RESTORED! The FIREWALL is back online."), 150);
+      }
+    }
+  };
+
+  /* Maps the tile number to a letter in FIREWALL */
+  const getTileChar = (num) => {
+    const chars = { 1: 'F', 2: 'I', 3: 'R', 4: 'E', 5: 'W', 6: 'A', 7: 'L', 8: 'L', 9: '' };
+    return chars[num];
   };
 
   return (
@@ -307,7 +334,7 @@ function App() {
         <section className="container puzzle-section">
           <h2 className="section-title">🧩 IT Puzzle Zone</h2>
           
-          {/* MENU VIEW: Shows if no puzzle is active */}
+          {/* MENU VIEW */}
           {!activePuzzle ? (
             <>
               <div className="category-grid" style={{ marginTop: '20px' }}>
@@ -320,6 +347,12 @@ function App() {
                   <div className="category-icon">🗞️</div>
                   <h3>Daily Cryptic</h3>
                   <p>Solve the 5-letter IT crossword clue.</p>
+                </div>
+                {/* NEW TILE: SLIDING PUZZLE */}
+                <div className="category-card" onClick={() => setActivePuzzle('sliding')}>
+                  <div className="category-icon">🔲</div>
+                  <h3>Server Rack</h3>
+                  <p>Slide the blocks to rebuild the FIREWALL.</p>
                 </div>
               </div>
               <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
@@ -400,7 +433,39 @@ function App() {
                 </div>
               )}
 
-              <button className="back-btn" onClick={() => setActivePuzzle(null)}>← Back to Puzzles</button>
+              {/* PUZZLE 3: SLIDING TILE PUZZLE */}
+              {activePuzzle === 'sliding' && (
+                <div className="sliding-puzzle-card">
+                  <div className="sliding-header">
+                    <h2>FIREWALL INTEGRITY: COMPROMISED</h2>
+                    <p>Slide the sectors (1-8) in order to restore the firewall.</p>
+                  </div>
+                  
+                  <div className="sliding-grid">
+                    {slidingTiles.map((tileNum, index) => (
+                      <div 
+                        key={index} 
+                        className={`slide-tile ${tileNum === 9 ? 'empty-tile' : ''}`}
+                        onClick={() => handleTileClick(index)}
+                      >
+                        {/* Only render content if it is not the empty tile (9) */}
+                        {tileNum !== 9 && (
+                          <>
+                            <span className="tile-num">{tileNum}</span>
+                            <span className="tile-char">{getTileChar(tileNum)}</span>
+                          </>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  <button className="post-btn" style={{marginTop: '20px', background: '#444'}} onClick={() => setSlidingTiles([8, 2, 3, 1, 6, 4, 7, 5, 9])}>
+                    Reset Blocks
+                  </button>
+                </div>
+              )}
+
+              <button className="back-btn" style={{marginTop: '40px'}} onClick={() => setActivePuzzle(null)}>← Back to Puzzles</button>
             </div>
           )}
         </section>
