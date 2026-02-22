@@ -8,10 +8,29 @@ function App() {
   
   /* PUZZLE & QUIZ STATES */
   const [showQuiz, setShowQuiz] = useState(false);
-  const [newspaperGuess, setNewspaperGuess] = useState(""); 
   const [activePuzzle, setActivePuzzle] = useState(null);
 
-  /* NEW: SLIDING TILE PUZZLE STATE (9 is the empty space) */
+  /* NEW: DYNAMIC CRYPTIC PUZZLE STATE */
+  const [newspaperGuess, setNewspaperGuess] = useState(""); 
+  const [crypticIndex, setCrypticIndex] = useState(0); 
+
+  /* Array of 10 IT-related puzzles */
+  const crypticPuzzles = [
+    { clue: "Clearing this can often fix stubborn website loading issues.", answer: "CACHE" },
+    { clue: "Someone else's computer where your data actually lives.", answer: "CLOUD" },
+    { clue: "A software update designed to fix a vulnerability or bug.", answer: "PATCH" },
+    { clue: "An open-source operating system represented by a penguin.", answer: "LINUX" },
+    { clue: "A physical or digital key used for two-factor authentication.", answer: "TOKEN" },
+    { clue: "It modulates and demodulates your internet connection.", answer: "MODEM" },
+    { clue: "Malicious code designed to spread from host to host.", answer: "VIRUS" },
+    { clue: "A single tiny dot of color on your monitor.", answer: "PIXEL" },
+    { clue: "A recorded series of keystrokes to automate repetitive tasks.", answer: "MACRO" },
+    { clue: "A request for data or information from a database.", answer: "QUERY" }
+  ];
+  
+  const currentPuzzle = crypticPuzzles[crypticIndex];
+
+  /* SLIDING TILE PUZZLE STATE */
   const [slidingTiles, setSlidingTiles] = useState([8, 2, 3, 1, 6, 4, 7, 5, 9]);
 
   /* SCRAPBOOK STATE */
@@ -75,27 +94,22 @@ function App() {
     setActivePuzzle(null);
   };
 
-  /* NEW: SLIDING PUZZLE LOGIC */
   const handleTileClick = (index) => {
     const emptyIndex = slidingTiles.indexOf(9);
-    // Check if clicked tile is adjacent to empty tile
     const isSameRow = Math.floor(index / 3) === Math.floor(emptyIndex / 3) && Math.abs(index - emptyIndex) === 1;
     const isSameCol = index % 3 === emptyIndex % 3 && Math.abs(index - emptyIndex) === 3;
 
     if (isSameRow || isSameCol) {
       const newTiles = [...slidingTiles];
-      // Swap the clicked tile with the empty tile
       [newTiles[index], newTiles[emptyIndex]] = [newTiles[emptyIndex], newTiles[index]];
       setSlidingTiles(newTiles);
 
-      // Check win condition (1 through 9 in order)
       if (newTiles.join('') === '123456789') {
         setTimeout(() => alert("✅ SECURITY RESTORED! The FIREWALL is back online."), 150);
       }
     }
   };
 
-  /* Maps the tile number to a letter in FIREWALL */
   const getTileChar = (num) => {
     const chars = { 1: 'F', 2: 'I', 3: 'R', 4: 'E', 5: 'W', 6: 'A', 7: 'L', 8: 'L', 9: '' };
     return chars[num];
@@ -329,7 +343,7 @@ function App() {
         </section>
       )}
 
-      {/* PUZZLE ZONE PAGE - MENU SYSTEM */}
+      {/* PUZZLE ZONE PAGE */}
       {currentPage === 'puzzle' && (
         <section className="container puzzle-section">
           <h2 className="section-title">🧩 IT Puzzle Zone</h2>
@@ -346,9 +360,8 @@ function App() {
                 <div className="category-card" onClick={() => setActivePuzzle('cryptic')}>
                   <div className="category-icon">🗞️</div>
                   <h3>Daily Cryptic</h3>
-                  <p>Solve the 5-letter IT crossword clue.</p>
+                  <p>Solve the {crypticPuzzles.length}-level crossword challenge.</p>
                 </div>
-                {/* NEW TILE: SLIDING PUZZLE */}
                 <div className="category-card" onClick={() => setActivePuzzle('sliding')}>
                   <div className="category-icon">🔲</div>
                   <h3>Server Rack</h3>
@@ -394,18 +407,22 @@ function App() {
                 </div>
               )}
 
-              {/* PUZZLE 2: NEWSPAPER CRYPTIC */}
+              {/* PUZZLE 2: DYNAMIC NEWSPAPER CRYPTIC */}
               {activePuzzle === 'cryptic' && (
                 <div className="newspaper-card" style={{ marginTop: '0' }}>
                   <div className="news-header">
                     <h2>The Daily IT Cryptic</h2>
-                    <p>Vol. 1 - Sunday Edition</p>
+                    <p>Vol. 1 - Level {crypticIndex + 1} of {crypticPuzzles.length}</p>
                   </div>
                   <div className="news-body">
-                    <p className="clue-text"><strong>Clue:</strong> Clearing this can often fix stubborn website loading issues. (5 Letters)</p>
+                    <p className="clue-text">
+                      <strong>Clue:</strong> {currentPuzzle.clue} <br/>
+                      <span style={{fontSize: '14px', color: '#666'}}>({currentPuzzle.answer.length} Letters)</span>
+                    </p>
                     
                     <div className="block-row">
-                      {[0, 1, 2, 3, 4].map((index) => (
+                      {/* Dynamically generates the exact number of blocks based on the answer's length */}
+                      {Array.from({ length: currentPuzzle.answer.length }).map((_, index) => (
                         <div key={index} className="letter-block">
                           {newspaperGuess[index] || ""}
                         </div>
@@ -415,17 +432,25 @@ function App() {
                     <div className="news-input-area">
                       <input 
                         type="text" 
-                        maxLength="5" 
+                        maxLength={currentPuzzle.answer.length} 
                         className="news-input" 
                         placeholder="Type answer..."
                         value={newspaperGuess}
                         onChange={(e) => setNewspaperGuess(e.target.value.toUpperCase().replace(/[^A-Z]/g, ''))}
                       />
                       <button className="news-btn" onClick={() => {
-                        if(newspaperGuess === "CACHE") {
-                          alert("📰 Correct! You solved today's cryptic.");
+                        if(newspaperGuess === currentPuzzle.answer) {
+                          if (crypticIndex < crypticPuzzles.length - 1) {
+                            alert("📰 Correct! Moving to the next clue.");
+                            setCrypticIndex(crypticIndex + 1);
+                            setNewspaperGuess("");
+                          } else {
+                            alert("🏆 Amazing! You have solved all 10 IT Cryptics!");
+                            setCrypticIndex(0); // Reset back to start
+                            setNewspaperGuess("");
+                          }
                         } else {
-                          alert("❌ Not quite! Hint: Sounds like a place to hide money.");
+                          alert("❌ Not quite! Double check your spelling.");
                         }
                       }}>Check Answer</button>
                     </div>
@@ -448,7 +473,6 @@ function App() {
                         className={`slide-tile ${tileNum === 9 ? 'empty-tile' : ''}`}
                         onClick={() => handleTileClick(index)}
                       >
-                        {/* Only render content if it is not the empty tile (9) */}
                         {tileNum !== 9 && (
                           <>
                             <span className="tile-num">{tileNum}</span>

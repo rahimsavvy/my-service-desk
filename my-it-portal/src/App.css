@@ -143,6 +143,7 @@ body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg);
   justify-content: center;
   gap: 12px;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .letter-block {
