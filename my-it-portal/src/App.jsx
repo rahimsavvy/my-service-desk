@@ -160,14 +160,17 @@ function App() {
                 <span className="dock-label">Dispatch</span>
               </div>
               <div className="dock-item"><span className="dock-icon">📈</span><span className="dock-label">Linear</span></div>
-              
-              {/* REPLACED WORKDAY WITH EMPLOYEE SELF SERVICE */}
               <div className="dock-item" onClick={() => navigateTo('ess')}>
                 <span className="dock-icon">🪪</span>
                 <span className="dock-label">Self Service</span>
               </div>
               
-              <div className="dock-item"><span className="dock-icon">⚠️</span><span className="dock-label">Outages</span></div>
+              {/* OUTAGES ICON - NOW ACTIVE */}
+              <div className="dock-item" onClick={() => navigateTo('outages')}>
+                <span className="dock-icon">⚠️</span>
+                <span className="dock-label">Outages</span>
+              </div>
+              
               <div className="dock-item" onClick={() => navigateTo('puzzle')}>
                 <span className="dock-icon">🧩</span>
                 <span className="dock-label">Puzzle Zone</span>
@@ -333,7 +336,7 @@ function App() {
         </section>
       )}
 
-      {/* NEW: EMPLOYEE SELF SERVICE PAGE */}
+      {/* EMPLOYEE SELF SERVICE PAGE */}
       {currentPage === 'ess' && (
         <section className="container">
           <h2 className="section-title">🪪 Employee Self Service</h2>
@@ -352,6 +355,36 @@ function App() {
               <div className="category-icon">🔐</div>
               <h3>My Access</h3>
               <p>Review current software permissions and request new access.</p>
+            </div>
+          </div>
+          <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
+        </section>
+      )}
+
+      {/* OUTAGES PAGE - NEW */}
+      {currentPage === 'outages' && (
+        <section className="container">
+          <h2 className="section-title">⚠️ System Status & Outages</h2>
+          <div className="category-grid">
+            {/* REQUESTED TOPIC */}
+            <div className="category-card" onClick={() => alert("Fetching live status dashboard...")}>
+              <div className="category-icon">🔴</div>
+              <h3>Current Affected Services</h3>
+              <p>Real-time dashboard of active incidents and degraded systems.</p>
+            </div>
+            
+            {/* PLACEHOLDER 1 */}
+            <div className="category-card" onClick={() => alert("Opening maintenance calendar...")}>
+              <div className="category-icon">🗓️</div>
+              <h3>Planned Maintenance</h3>
+              <p>Upcoming scheduled downtime and system upgrades.</p>
+            </div>
+
+            {/* PLACEHOLDER 2 */}
+            <div className="category-card" onClick={() => alert("Loading outage history...")}>
+              <div className="category-icon">📜</div>
+              <h3>Past Incidents</h3>
+              <p>Archive of resolved outages and root cause analysis (RCA).</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
