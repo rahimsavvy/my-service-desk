@@ -151,7 +151,7 @@ function App() {
                 <span className="dock-icon">🗞️</span>
                 <span className="dock-label">Whats New</span>
               </div>
-              {/* WANTED TICKETS ICON - NOW ACTIVE */}
+              {/* WANTED TICKETS ICON - ACTIVE */}
               <div className="dock-item" onClick={() => navigateTo('wanted')}>
                 <span className="dock-icon">🎟️</span>
                 <span className="dock-label">Wanted Tickets</span>
@@ -303,7 +303,7 @@ function App() {
         </section>
       )}
 
-      {/* WANTED TICKETS PAGE - NEW */}
+      {/* WANTED TICKETS PAGE */}
       {currentPage === 'wanted' && (
         <section className="container">
           <h2 className="section-title">🎟️ Wanted Tickets</h2>
@@ -322,10 +322,10 @@ function App() {
               <p>Deep dive into complex incidents requiring root cause analysis.</p>
             </div>
 
-            {/* TOPIC 3: PRIORITY */}
-            <div className="category-card" onClick={() => alert("Filtering High Priority Tickets...")}>
+            {/* TOPIC 3: PRIORITY BUCKET (Renamed) */}
+            <div className="category-card" onClick={() => alert("Filtering Priority Bucket...")}>
               <div className="category-icon">🚨</div>
-              <h3>Priority</h3>
+              <h3>Priority Bucket</h3>
               <p>Urgent tickets affecting VIPs or critical business operations.</p>
             </div>
           </div>
