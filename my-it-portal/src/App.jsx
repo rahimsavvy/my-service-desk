@@ -40,12 +40,15 @@ function App() {
   ]);
   const [newScrap, setNewScrap] = useState("");
 
+  /* ARTICLES DATA - Added HPIA Updates */
   const [articles] = useState([
     { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest' from your WiFi list. Enter the password 'Welcome2024'." },
     { id: 4, title: "Reset Password / Unlock Windows", category: "Accounts", content: "Go to identity.company.com and click 'Forgot Password'." },
     { id: 13, title: "OKTA Configuration", category: "Accounts", content: "Follow the prompts to scan your unique QR code in Okta Verify." },
     { id: 17, title: "Enrolling in Intune", category: "Mobile Devices", content: "Download the Company Portal app to enroll your device." },
-    { id: 20, title: "MacOS FileVault Encryption", category: "Macintosh HD", content: "Go to System Settings > Privacy & Security > FileVault to ensure your disk is encrypted." }
+    { id: 20, title: "MacOS FileVault Encryption", category: "Macintosh HD", content: "Go to System Settings > Privacy & Security > FileVault to ensure your disk is encrypted." },
+    /* NEW SOFTWARE ARTICLE */
+    { id: 25, title: "HPIA Updates", category: "Software", content: "Run HP Image Assistant (HPIA) to automatically scan and install the latest drivers and BIOS updates for your device. Ensure you are connected to power." }
   ]);
 
   const teamMembers = [
@@ -164,13 +167,10 @@ function App() {
                 <span className="dock-icon">🪪</span>
                 <span className="dock-label">Self Service</span>
               </div>
-              
-              {/* OUTAGES ICON - NOW ACTIVE */}
               <div className="dock-item" onClick={() => navigateTo('outages')}>
                 <span className="dock-icon">⚠️</span>
                 <span className="dock-label">Outages</span>
               </div>
-              
               <div className="dock-item" onClick={() => navigateTo('puzzle')}>
                 <span className="dock-icon">🧩</span>
                 <span className="dock-label">Puzzle Zone</span>
@@ -361,26 +361,21 @@ function App() {
         </section>
       )}
 
-      {/* OUTAGES PAGE - NEW */}
+      {/* OUTAGES PAGE */}
       {currentPage === 'outages' && (
         <section className="container">
           <h2 className="section-title">⚠️ System Status & Outages</h2>
           <div className="category-grid">
-            {/* REQUESTED TOPIC */}
             <div className="category-card" onClick={() => alert("Fetching live status dashboard...")}>
               <div className="category-icon">🔴</div>
               <h3>Current Affected Services</h3>
               <p>Real-time dashboard of active incidents and degraded systems.</p>
             </div>
-            
-            {/* PLACEHOLDER 1 */}
             <div className="category-card" onClick={() => alert("Opening maintenance calendar...")}>
               <div className="category-icon">🗓️</div>
               <h3>Planned Maintenance</h3>
               <p>Upcoming scheduled downtime and system upgrades.</p>
             </div>
-
-            {/* PLACEHOLDER 2 */}
             <div className="category-card" onClick={() => alert("Loading outage history...")}>
               <div className="category-icon">📜</div>
               <h3>Past Incidents</h3>
