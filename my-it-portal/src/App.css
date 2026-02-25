@@ -275,3 +275,67 @@ body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg);
   color: white;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
+/* ========================================= */
+/* MODAL POPUP STYLES (Fix for Broken Page)  */
+/* ========================================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* Dimmed background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensures it sits on top of everything */
+  backdrop-filter: blur(5px); /* Nice modern blur effect */
+}
+
+.modal-content {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #999;
+  cursor: pointer;
+  transition: 0.2s;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  color: #333;
+  transform: scale(1.1);
+}
+
+.modal-divider {
+  height: 2px;
+  background: #f0f0f0;
+  margin: 20px 0;
+  border-radius: 2px;
+}
+
+.modal-body-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #444;
+}
