@@ -151,7 +151,11 @@ function App() {
                 <span className="dock-icon">🗞️</span>
                 <span className="dock-label">Whats New</span>
               </div>
-              <div className="dock-item"><span className="dock-icon">🎟️</span><span className="dock-label">Wanted Tickets</span></div>
+              {/* WANTED TICKETS ICON - NOW ACTIVE */}
+              <div className="dock-item" onClick={() => navigateTo('wanted')}>
+                <span className="dock-icon">🎟️</span>
+                <span className="dock-label">Wanted Tickets</span>
+              </div>
               <div className="dock-item" onClick={() => navigateTo('dispatch')}>
                 <span className="dock-icon">🚚</span>
                 <span className="dock-label">Dispatch</span>
@@ -279,25 +283,50 @@ function App() {
         <section className="container">
           <h2 className="section-title">🚚 Dispatch Command</h2>
           <div className="category-grid">
-            {/* CARD 1: REPORTS */}
             <div className="category-card" onClick={() => alert("Reports module loading...")}>
               <div className="category-icon">📊</div>
               <h3>Reports</h3>
               <p>View daily dispatch logs and performance metrics.</p>
             </div>
-            
-            {/* CARD 2: SCHEDULE */}
             <div className="category-card" onClick={() => alert("Schedule module loading...")}>
               <div className="category-icon">📅</div>
               <h3>Schedule</h3>
               <p>View shift rotations, on-call assignments, and availability.</p>
             </div>
-
-            {/* CARD 3: LIVE MAP */}
             <div className="category-card" onClick={() => alert("Live Map feature coming soon!")}>
               <div className="category-icon">📍</div>
               <h3>Live Map</h3>
               <p>Real-time location tracking of field support units.</p>
+            </div>
+          </div>
+          <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
+        </section>
+      )}
+
+      {/* WANTED TICKETS PAGE - NEW */}
+      {currentPage === 'wanted' && (
+        <section className="container">
+          <h2 className="section-title">🎟️ Wanted Tickets</h2>
+          <div className="category-grid">
+            {/* TOPIC 1: TOP CALL DRIVERS */}
+            <div className="category-card" onClick={() => alert("Loading Top Call Drivers analytics...")}>
+              <div className="category-icon">🔥</div>
+              <h3>Top Call Drivers</h3>
+              <p>Identify the most frequent issues spiking the help desk volume.</p>
+            </div>
+            
+            {/* TOPIC 2: INVESTIGATION */}
+            <div className="category-card" onClick={() => alert("Opening Investigation Board...")}>
+              <div className="category-icon">🕵️‍♂️</div>
+              <h3>Investigation</h3>
+              <p>Deep dive into complex incidents requiring root cause analysis.</p>
+            </div>
+
+            {/* TOPIC 3: PRIORITY */}
+            <div className="category-card" onClick={() => alert("Filtering High Priority Tickets...")}>
+              <div className="category-icon">🚨</div>
+              <h3>Priority</h3>
+              <p>Urgent tickets affecting VIPs or critical business operations.</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
@@ -382,7 +411,6 @@ function App() {
         <section className="container puzzle-section">
           <h2 className="section-title">🧩 IT Puzzle Zone</h2>
           
-          {/* MENU VIEW */}
           {!activePuzzle ? (
             <>
               <div className="category-grid" style={{ marginTop: '20px' }}>
@@ -405,7 +433,6 @@ function App() {
               <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
             </>
           ) : (
-            /* ACTIVE PUZZLE VIEW */
             <div>
               {/* PUZZLE 1: TERMINAL */}
               {activePuzzle === 'terminal' && (
