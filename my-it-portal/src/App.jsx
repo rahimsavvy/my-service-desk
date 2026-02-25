@@ -151,7 +151,6 @@ function App() {
                 <span className="dock-icon">🗞️</span>
                 <span className="dock-label">Whats New</span>
               </div>
-              {/* WANTED TICKETS ICON - ACTIVE */}
               <div className="dock-item" onClick={() => navigateTo('wanted')}>
                 <span className="dock-icon">🎟️</span>
                 <span className="dock-label">Wanted Tickets</span>
@@ -161,7 +160,13 @@ function App() {
                 <span className="dock-label">Dispatch</span>
               </div>
               <div className="dock-item"><span className="dock-icon">📈</span><span className="dock-label">Linear</span></div>
-              <div className="dock-item"><span className="dock-icon">💼</span><span className="dock-label">Workday</span></div>
+              
+              {/* REPLACED WORKDAY WITH EMPLOYEE SELF SERVICE */}
+              <div className="dock-item" onClick={() => navigateTo('ess')}>
+                <span className="dock-icon">🪪</span>
+                <span className="dock-label">Self Service</span>
+              </div>
+              
               <div className="dock-item"><span className="dock-icon">⚠️</span><span className="dock-label">Outages</span></div>
               <div className="dock-item" onClick={() => navigateTo('puzzle')}>
                 <span className="dock-icon">🧩</span>
@@ -308,25 +313,45 @@ function App() {
         <section className="container">
           <h2 className="section-title">🎟️ Wanted Tickets</h2>
           <div className="category-grid">
-            {/* TOPIC 1: TOP CALL DRIVERS */}
             <div className="category-card" onClick={() => alert("Loading Top Call Drivers analytics...")}>
               <div className="category-icon">🔥</div>
               <h3>Top Call Drivers</h3>
               <p>Identify the most frequent issues spiking the help desk volume.</p>
             </div>
-            
-            {/* TOPIC 2: INVESTIGATION */}
             <div className="category-card" onClick={() => alert("Opening Investigation Board...")}>
               <div className="category-icon">🕵️‍♂️</div>
               <h3>Investigation</h3>
               <p>Deep dive into complex incidents requiring root cause analysis.</p>
             </div>
-
-            {/* TOPIC 3: PRIORITY BUCKET (Renamed) */}
             <div className="category-card" onClick={() => alert("Filtering Priority Bucket...")}>
               <div className="category-icon">🚨</div>
               <h3>Priority Bucket</h3>
               <p>Urgent tickets affecting VIPs or critical business operations.</p>
+            </div>
+          </div>
+          <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
+        </section>
+      )}
+
+      {/* NEW: EMPLOYEE SELF SERVICE PAGE */}
+      {currentPage === 'ess' && (
+        <section className="container">
+          <h2 className="section-title">🪪 Employee Self Service</h2>
+          <div className="category-grid">
+            <div className="category-card" onClick={() => alert("Redirecting to HR Portal...")}>
+              <div className="category-icon">👥</div>
+              <h3>HR Portal</h3>
+              <p>Access pay stubs, benefits, and time-off requests.</p>
+            </div>
+            <div className="category-card" onClick={() => alert("Opening My Assets...")}>
+              <div className="category-icon">💻</div>
+              <h3>My Assets</h3>
+              <p>View assigned laptops, monitors, and peripherals.</p>
+            </div>
+            <div className="category-card" onClick={() => alert("Loading Access Rights...")}>
+              <div className="category-icon">🔐</div>
+              <h3>My Access</h3>
+              <p>Review current software permissions and request new access.</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
