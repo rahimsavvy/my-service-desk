@@ -10,7 +10,7 @@ function App() {
   const [showQuiz, setShowQuiz] = useState(false);
   const [activePuzzle, setActivePuzzle] = useState(null);
 
-  /* NEW: DYNAMIC CRYPTIC PUZZLE STATE */
+  /* DYNAMIC CRYPTIC PUZZLE STATE */
   const [newspaperGuess, setNewspaperGuess] = useState(""); 
   const [crypticIndex, setCrypticIndex] = useState(0); 
 
@@ -44,7 +44,8 @@ function App() {
     { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest' from your WiFi list. Enter the password 'Welcome2024'." },
     { id: 4, title: "Reset Password / Unlock Windows", category: "Accounts", content: "Go to identity.company.com and click 'Forgot Password'." },
     { id: 13, title: "OKTA Configuration", category: "Accounts", content: "Follow the prompts to scan your unique QR code in Okta Verify." },
-    { id: 17, title: "Enrolling in Intune", category: "Mobile Devices", content: "Download the Company Portal app to enroll your device." }
+    { id: 17, title: "Enrolling in Intune", category: "Mobile Devices", content: "Download the Company Portal app to enroll your device." },
+    { id: 20, title: "MacOS FileVault Encryption", category: "Macintosh HD", content: "Go to System Settings > Privacy & Security > FileVault to ensure your disk is encrypted." }
   ]);
 
   const teamMembers = [
@@ -151,7 +152,10 @@ function App() {
                 <span className="dock-label">Whats New</span>
               </div>
               <div className="dock-item"><span className="dock-icon">🎟️</span><span className="dock-label">Wanted Tickets</span></div>
-              <div className="dock-item"><span className="dock-icon">🚚</span><span className="dock-label">Dispatch</span></div>
+              <div className="dock-item" onClick={() => navigateTo('dispatch')}>
+                <span className="dock-icon">🚚</span>
+                <span className="dock-label">Dispatch</span>
+              </div>
               <div className="dock-item"><span className="dock-icon">📈</span><span className="dock-label">Linear</span></div>
               <div className="dock-item"><span className="dock-icon">💼</span><span className="dock-label">Workday</span></div>
               <div className="dock-item"><span className="dock-icon">⚠️</span><span className="dock-label">Outages</span></div>
@@ -267,6 +271,36 @@ function App() {
             </div>
           )}
           {!showQuiz && <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>}
+        </section>
+      )}
+
+      {/* DISPATCH PAGE */}
+      {currentPage === 'dispatch' && (
+        <section className="container">
+          <h2 className="section-title">🚚 Dispatch Command</h2>
+          <div className="category-grid">
+            {/* CARD 1: REPORTS */}
+            <div className="category-card" onClick={() => alert("Reports module loading...")}>
+              <div className="category-icon">📊</div>
+              <h3>Reports</h3>
+              <p>View daily dispatch logs and performance metrics.</p>
+            </div>
+            
+            {/* CARD 2: SCHEDULE */}
+            <div className="category-card" onClick={() => alert("Schedule module loading...")}>
+              <div className="category-icon">📅</div>
+              <h3>Schedule</h3>
+              <p>View shift rotations, on-call assignments, and availability.</p>
+            </div>
+
+            {/* CARD 3: LIVE MAP */}
+            <div className="category-card" onClick={() => alert("Live Map feature coming soon!")}>
+              <div className="category-icon">📍</div>
+              <h3>Live Map</h3>
+              <p>Real-time location tracking of field support units.</p>
+            </div>
+          </div>
+          <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
         </section>
       )}
 
@@ -421,7 +455,6 @@ function App() {
                     </p>
                     
                     <div className="block-row">
-                      {/* Dynamically generates the exact number of blocks based on the answer's length */}
                       {Array.from({ length: currentPuzzle.answer.length }).map((_, index) => (
                         <div key={index} className="letter-block">
                           {newspaperGuess[index] || ""}
@@ -446,7 +479,7 @@ function App() {
                             setNewspaperGuess("");
                           } else {
                             alert("🏆 Amazing! You have solved all 10 IT Cryptics!");
-                            setCrypticIndex(0); // Reset back to start
+                            setCrypticIndex(0); 
                             setNewspaperGuess("");
                           }
                         } else {
