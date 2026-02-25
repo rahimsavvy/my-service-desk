@@ -40,13 +40,23 @@ function App() {
   ]);
   const [newScrap, setNewScrap] = useState("");
 
+  /* ARTICLES DATA - Updated with Communications Topics */
   const [articles] = useState([
     { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest' from your WiFi list. Enter the password 'Welcome2024'." },
     { id: 4, title: "Reset Password / Unlock Windows", category: "Accounts", content: "Go to identity.company.com and click 'Forgot Password'." },
     { id: 13, title: "OKTA Configuration", category: "Accounts", content: "Follow the prompts to scan your unique QR code in Okta Verify." },
     { id: 17, title: "Enrolling in Intune", category: "Mobile Devices", content: "Download the Company Portal app to enroll your device." },
     { id: 20, title: "MacOS FileVault Encryption", category: "Macintosh HD", content: "Go to System Settings > Privacy & Security > FileVault to ensure your disk is encrypted." },
-    { id: 25, title: "HPIA Updates", category: "Software", content: "Run HP Image Assistant (HPIA) to automatically scan and install the latest drivers and BIOS updates for your device. Ensure you are connected to power." }
+    { id: 25, title: "HPIA Updates", category: "Software", content: "Run HP Image Assistant (HPIA) to automatically scan and install the latest drivers and BIOS updates for your device. Ensure you are connected to power." },
+    
+    /* NEW COMMUNICATIONS ARTICLES */
+    { id: 30, title: "Zoom Workspace Configuration", category: "Communications", content: "Guide to setting up Zoom Rooms, pairing controllers, and troubleshooting audio/video sync issues." },
+    { id: 31, title: "Zoom Phone Common Issues", category: "Communications", content: "Solutions for call quality drops, voicemail access errors, and headset pairing problems." },
+    { id: 32, title: "Slack Configuration", category: "Communications", content: "How to set up channels, customize sidebar themes, and integrate third-party apps like Jira or Google Drive." },
+    { id: 33, title: "Slack Notification Errors", category: "Communications", content: "Fixes for delayed alerts, missing banner notifications, and checking your 'Do Not Disturb' schedule." },
+    { id: 34, title: "Five9 Basic Troubleshooting", category: "Communications", content: "Resolve softphone station login errors, browser extension connectivity, and audio latency issues." },
+    { id: 35, title: "PolyCam Troubleshooting", category: "Communications", content: "Driver updates and lens framing calibration for Poly Studio and EagleEye cameras." },
+    { id: 36, title: "Windows Hello Configuration", category: "Communications", content: "Setup facial recognition login using your laptop's IR camera or external certified webcam." }
   ]);
 
   const teamMembers = [
@@ -143,13 +153,10 @@ function App() {
                 <span className="dock-icon">🏠</span>
                 <span className="dock-label">Home</span>
               </div>
-              
-              {/* LINKS ICON - NOW ACTIVE */}
               <div className="dock-item" onClick={() => navigateTo('links')}>
                 <span className="dock-icon">🔗</span>
                 <span className="dock-label">Links</span>
               </div>
-              
               <div className="dock-item" onClick={() => navigateTo('refreshment')}>
                 <span className="dock-icon">☕</span>
                 <span className="dock-label">Refreshment</span>
@@ -290,7 +297,7 @@ function App() {
         </section>
       )}
 
-      {/* LINKS PAGE - NEW */}
+      {/* LINKS PAGE */}
       {currentPage === 'links' && (
         <section className="container">
           <h2 className="section-title">🔗 Quick Access Links</h2>
