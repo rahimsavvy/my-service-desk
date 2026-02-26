@@ -14,6 +14,9 @@ function App() {
   const [newspaperGuess, setNewspaperGuess] = useState(""); 
   const [crypticIndex, setCrypticIndex] = useState(0); 
 
+  /* NEW: SYSTEM STATUS STATE ONLY */
+  const [systemStatus, setSystemStatus] = useState("operational"); 
+
   /* Array of 10 IT-related puzzles */
   const crypticPuzzles = [
     { clue: "Clearing this can often fix stubborn website loading issues.", answer: "CACHE" },
@@ -40,7 +43,6 @@ function App() {
   ]);
   const [newScrap, setNewScrap] = useState("");
 
-  /* ARTICLES DATA - Updated with Communications Topics */
   const [articles] = useState([
     { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest' from your WiFi list. Enter the password 'Welcome2024'." },
     { id: 4, title: "Reset Password / Unlock Windows", category: "Accounts", content: "Go to identity.company.com and click 'Forgot Password'." },
@@ -48,8 +50,6 @@ function App() {
     { id: 17, title: "Enrolling in Intune", category: "Mobile Devices", content: "Download the Company Portal app to enroll your device." },
     { id: 20, title: "MacOS FileVault Encryption", category: "Macintosh HD", content: "Go to System Settings > Privacy & Security > FileVault to ensure your disk is encrypted." },
     { id: 25, title: "HPIA Updates", category: "Software", content: "Run HP Image Assistant (HPIA) to automatically scan and install the latest drivers and BIOS updates for your device. Ensure you are connected to power." },
-    
-    /* NEW COMMUNICATIONS ARTICLES */
     { id: 30, title: "Zoom Workspace Configuration", category: "Communications", content: "Guide to setting up Zoom Rooms, pairing controllers, and troubleshooting audio/video sync issues." },
     { id: 31, title: "Zoom Phone Common Issues", category: "Communications", content: "Solutions for call quality drops, voicemail access errors, and headset pairing problems." },
     { id: 32, title: "Slack Configuration", category: "Communications", content: "How to set up channels, customize sidebar themes, and integrate third-party apps like Jira or Google Drive." },
@@ -130,6 +130,12 @@ function App() {
   return (
     <div className="App">
       <header className="hero-section">
+        {/* ADDED: LIVE STATUS INDICATOR */}
+        <div className="status-indicator" onClick={() => navigateTo('outages')}>
+          <span className={`status-dot ${systemStatus}`}></span>
+          <span className="status-text">{systemStatus === 'operational' ? 'System Operational' : 'Active Outage'}</span>
+        </div>
+
         <h1 onClick={() => navigateTo('home')} style={{cursor: 'pointer'}}>IT Knowledge Base</h1>
         <div className="search-wrapper">
           <input 
