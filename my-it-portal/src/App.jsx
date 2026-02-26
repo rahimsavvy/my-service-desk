@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
@@ -10,14 +10,9 @@ function App() {
   const [showQuiz, setShowQuiz] = useState(false);
   const [activePuzzle, setActivePuzzle] = useState(null);
 
-  /* DYNAMIC CRYPTIC PUZZLE STATE */
+  /* 1. CRYPTIC PUZZLE STATE */
   const [newspaperGuess, setNewspaperGuess] = useState(""); 
   const [crypticIndex, setCrypticIndex] = useState(0); 
-
-  /* NEW: SYSTEM STATUS STATE ONLY */
-  const [systemStatus, setSystemStatus] = useState("operational"); 
-
-  /* Array of 10 IT-related puzzles */
   const crypticPuzzles = [
     { clue: "Clearing this can often fix stubborn website loading issues.", answer: "CACHE" },
     { clue: "Someone else's computer where your data actually lives.", answer: "CLOUD" },
@@ -30,11 +25,26 @@ function App() {
     { clue: "A recorded series of keystrokes to automate repetitive tasks.", answer: "MACRO" },
     { clue: "A request for data or information from a database.", answer: "QUERY" }
   ];
-  
   const currentPuzzle = crypticPuzzles[crypticIndex];
 
-  /* SLIDING TILE PUZZLE STATE */
+  /* 2. SLIDING PUZZLE STATE */
   const [slidingTiles, setSlidingTiles] = useState([8, 2, 3, 1, 6, 4, 7, 5, 9]);
+
+  /* 3. NEW: CACHE FLUSH (MEMORY) STATE */
+  const [memoryCards, setMemoryCards] = useState([]);
+  const [flippedIndices, setFlippedIndices] = useState([]);
+  const [matchedPairs, setMatchedPairs] = useState([]);
+  const [memoryLock, setMemoryLock] = useState(false);
+
+  /* 4. NEW: BIOS SEQUENCE (SIMON) STATE */
+  const [sequence, setSequence] = useState([]);
+  const [userStep, setUserStep] = useState(0);
+  const [isPlayingSeq, setIsPlayingSeq] = useState(false);
+  const [flashColor, setFlashColor] = useState(null);
+  const [biosMessage, setBiosMessage] = useState("Press Start to Boot");
+
+  /* SYSTEM STATUS STATE */
+  const [systemStatus, setSystemStatus] = useState("operational"); 
 
   /* SCRAPBOOK STATE */
   const [scraps, setScraps] = useState([
@@ -71,6 +81,124 @@ function App() {
     { name: "Rahim Hamza", role: "Support Analyst", gender: "male" }
   ];
 
+  /* --- PUZZLE LOGIC: SLIDING TILES --- */
+  const handleTileClick = (index) => {
+    const emptyIndex = slidingTiles.indexOf(9);
+    const isSameRow = Math.floor(index / 3) === Math.floor(emptyIndex / 3) && Math.abs(index - emptyIndex) === 1;
+    const isSameCol = index % 3 === emptyIndex % 3 && Math.abs(index - emptyIndex) === 3;
+
+    if (isSameRow || isSameCol) {
+      const newTiles = [...slidingTiles];
+      [newTiles[index], newTiles[emptyIndex]] = [newTiles[emptyIndex], newTiles[index]];
+      setSlidingTiles(newTiles);
+      if (newTiles.join('') === '123456789') {
+        setTimeout(() => alert("✅ SECURITY RESTORED! The FIREWALL is back online."), 150);
+      }
+    }
+  };
+  const getTileChar = (num) => {
+    const chars = { 1: 'F', 2: 'I', 3: 'R', 4: 'E', 5: 'W', 6: 'A', 7: 'L', 8: 'L', 9: '' };
+    return chars[num];
+  };
+
+  /* --- PUZZLE LOGIC: CACHE FLUSH (MEMORY) --- */
+  const initMemoryGame = () => {
+    const icons = ['💾', '🔌', '🔋', '📡', '💿', '🖥️'];
+    const deck = [...icons, ...icons]
+      .sort(() => Math.random() - 0.5)
+      .map((icon, index) => ({ id: index, icon, flipped: false, matched: false }));
+    setMemoryCards(deck);
+    setFlippedIndices([]);
+    setMatchedPairs([]);
+    setMemoryLock(false);
+  };
+
+  const handleMemoryClick = (index) => {
+    if (memoryLock || memoryCards[index].flipped || memoryCards[index].matched) return;
+    
+    const newCards = [...memoryCards];
+    newCards[index].flipped = true;
+    setMemoryCards(newCards);
+    
+    const newFlipped = [...flippedIndices, index];
+    setFlippedIndices(newFlipped);
+
+    if (newFlipped.length === 2) {
+      setMemoryLock(true);
+      const [first, second] = newFlipped;
+      if (memoryCards[first].icon === memoryCards[second].icon) {
+        setTimeout(() => {
+          const matchedState = [...memoryCards];
+          matchedState[first].matched = true;
+          matchedState[second].matched = true;
+          setMemoryCards(matchedState);
+          setMatchedPairs([...matchedPairs, memoryCards[first].icon]);
+          setFlippedIndices([]);
+          setMemoryLock(false);
+          if (matchedPairs.length + 1 === 6) alert("✅ CACHE CLEARED! Memory optimized.");
+        }, 500);
+      } else {
+        setTimeout(() => {
+          const resetState = [...memoryCards];
+          resetState[first].flipped = false;
+          resetState[second].flipped = false;
+          setMemoryCards(resetState);
+          setFlippedIndices([]);
+          setMemoryLock(false);
+        }, 1000);
+      }
+    }
+  };
+
+  /* --- PUZZLE LOGIC: BIOS SEQUENCE (SIMON) --- */
+  const colors = ['red', 'green', 'blue', 'yellow'];
+  
+  const playFlash = (color) => {
+    setFlashColor(color);
+    setTimeout(() => setFlashColor(null), 300);
+  };
+
+  const playBiosSequence = async (seq) => {
+    setIsPlayingSeq(true);
+    setBiosMessage("Boot Sequence Loading...");
+    for (let i = 0; i < seq.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, 600));
+      playFlash(seq[i]);
+    }
+    setIsPlayingSeq(false);
+    setBiosMessage("Repeat Sequence");
+  };
+
+  const startBiosGame = () => {
+    const newSeq = [colors[Math.floor(Math.random() * 4)]];
+    setSequence(newSeq);
+    setUserStep(0);
+    playBiosSequence(newSeq);
+  };
+
+  const handleBiosClick = (color) => {
+    if (isPlayingSeq) return;
+    playFlash(color);
+
+    if (color === sequence[userStep]) {
+      if (userStep === sequence.length - 1) {
+        setBiosMessage("✅ Sequence Verified. Loading next module...");
+        setTimeout(() => {
+          const newSeq = [...sequence, colors[Math.floor(Math.random() * 4)]];
+          setSequence(newSeq);
+          setUserStep(0);
+          playBiosSequence(newSeq);
+        }, 1000);
+      } else {
+        setUserStep(userStep + 1);
+      }
+    } else {
+      setBiosMessage("❌ BOOT FAILURE! System Halted.");
+      setSequence([]);
+    }
+  };
+
+  /* --- GENERAL APP LOGIC --- */
   const handlePostScrap = () => {
     if (!newScrap.trim()) return;
     const post = {
@@ -106,31 +234,10 @@ function App() {
     setActivePuzzle(null);
   };
 
-  const handleTileClick = (index) => {
-    const emptyIndex = slidingTiles.indexOf(9);
-    const isSameRow = Math.floor(index / 3) === Math.floor(emptyIndex / 3) && Math.abs(index - emptyIndex) === 1;
-    const isSameCol = index % 3 === emptyIndex % 3 && Math.abs(index - emptyIndex) === 3;
-
-    if (isSameRow || isSameCol) {
-      const newTiles = [...slidingTiles];
-      [newTiles[index], newTiles[emptyIndex]] = [newTiles[emptyIndex], newTiles[index]];
-      setSlidingTiles(newTiles);
-
-      if (newTiles.join('') === '123456789') {
-        setTimeout(() => alert("✅ SECURITY RESTORED! The FIREWALL is back online."), 150);
-      }
-    }
-  };
-
-  const getTileChar = (num) => {
-    const chars = { 1: 'F', 2: 'I', 3: 'R', 4: 'E', 5: 'W', 6: 'A', 7: 'L', 8: 'L', 9: '' };
-    return chars[num];
-  };
-
   return (
     <div className="App">
       <header className="hero-section">
-        {/* ADDED: LIVE STATUS INDICATOR */}
+        {/* LIVE STATUS INDICATOR */}
         <div className="status-indicator" onClick={() => navigateTo('outages')}>
           <span className={`status-dot ${systemStatus}`}></span>
           <span className="status-text">{systemStatus === 'operational' ? 'System Operational' : 'Active Outage'}</span>
@@ -303,46 +410,41 @@ function App() {
         </section>
       )}
 
-      {/* LINKS PAGE */}
+      {/* LINKS PAGE - RESTORED & CLEANED (No Headers) */}
       {currentPage === 'links' && (
         <section className="container">
           <h2 className="section-title">🔗 Quick Access Links</h2>
           
-          <h3 style={{marginTop: '30px', color: '#555'}}>Admin Consoles</h3>
           <div className="category-grid">
             <div className="category-card" onClick={() => window.open('https://portal.azure.com', '_blank')}>
               <div className="category-icon">☁️</div>
               <h3>Azure Portal</h3>
-              <p>Manage users, groups, and cloud resources.</p>
+              <p>Manage users & cloud.</p>
             </div>
             <div className="category-card" onClick={() => window.open('https://admin.google.com', '_blank')}>
               <div className="category-icon">🔧</div>
               <h3>Google Admin</h3>
-              <p>Workspace management for email and drive.</p>
+              <p>Workspace management.</p>
             </div>
             <div className="category-card" onClick={() => window.open('https://intune.microsoft.com', '_blank')}>
               <div className="category-icon">📱</div>
               <h3>Intune Manager</h3>
-              <p>MDM control center for mobile and laptop devices.</p>
+              <p>MDM control center.</p>
             </div>
-          </div>
-
-          <h3 style={{marginTop: '30px', color: '#555'}}>Ticketing & Tools</h3>
-          <div className="category-grid">
             <div className="category-card" onClick={() => alert("Redirecting to ServiceNow...")}>
               <div className="category-icon">🎫</div>
               <h3>ServiceNow</h3>
-              <p>Primary ticketing system for incidents and requests.</p>
+              <p>Incident management.</p>
             </div>
             <div className="category-card" onClick={() => alert("Redirecting to Jira...")}>
               <div className="category-icon">🐞</div>
               <h3>Jira</h3>
-              <p>Bug tracking and development project boards.</p>
+              <p>Bug tracking & dev.</p>
             </div>
             <div className="category-card" onClick={() => alert("Opening Password Tool...")}>
               <div className="category-icon">🔑</div>
               <h3>LAPS UI</h3>
-              <p>Local Admin Password Solution lookup tool.</p>
+              <p>Local Admin Passwords.</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
@@ -357,17 +459,17 @@ function App() {
             <div className="category-card" onClick={() => alert("Reports module loading...")}>
               <div className="category-icon">📊</div>
               <h3>Reports</h3>
-              <p>View daily dispatch logs and performance metrics.</p>
+              <p>View daily dispatch logs.</p>
             </div>
             <div className="category-card" onClick={() => alert("Schedule module loading...")}>
               <div className="category-icon">📅</div>
               <h3>Schedule</h3>
-              <p>View shift rotations, on-call assignments, and availability.</p>
+              <p>View shift rotations.</p>
             </div>
             <div className="category-card" onClick={() => alert("Live Map feature coming soon!")}>
               <div className="category-icon">📍</div>
               <h3>Live Map</h3>
-              <p>Real-time location tracking of field support units.</p>
+              <p>Real-time location tracking.</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
@@ -382,17 +484,17 @@ function App() {
             <div className="category-card" onClick={() => alert("Loading Top Call Drivers analytics...")}>
               <div className="category-icon">🔥</div>
               <h3>Top Call Drivers</h3>
-              <p>Identify the most frequent issues spiking the help desk volume.</p>
+              <p>Identify frequent issues.</p>
             </div>
             <div className="category-card" onClick={() => alert("Opening Investigation Board...")}>
               <div className="category-icon">🕵️‍♂️</div>
               <h3>Investigation</h3>
-              <p>Deep dive into complex incidents requiring root cause analysis.</p>
+              <p>Deep dive into RCA.</p>
             </div>
             <div className="category-card" onClick={() => alert("Filtering Priority Bucket...")}>
               <div className="category-icon">🚨</div>
               <h3>Priority Bucket</h3>
-              <p>Urgent tickets affecting VIPs or critical business operations.</p>
+              <p>Urgent tickets and VIPs.</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
@@ -407,17 +509,17 @@ function App() {
             <div className="category-card" onClick={() => alert("Redirecting to HR Portal...")}>
               <div className="category-icon">👥</div>
               <h3>HR Portal</h3>
-              <p>Access pay stubs, benefits, and time-off requests.</p>
+              <p>Access pay and benefits.</p>
             </div>
             <div className="category-card" onClick={() => alert("Opening My Assets...")}>
               <div className="category-icon">💻</div>
               <h3>My Assets</h3>
-              <p>View assigned laptops, monitors, and peripherals.</p>
+              <p>View assigned devices.</p>
             </div>
             <div className="category-card" onClick={() => alert("Loading Access Rights...")}>
               <div className="category-icon">🔐</div>
               <h3>My Access</h3>
-              <p>Review current software permissions and request new access.</p>
+              <p>Review permissions.</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
@@ -432,17 +534,17 @@ function App() {
             <div className="category-card" onClick={() => alert("Fetching live status dashboard...")}>
               <div className="category-icon">🔴</div>
               <h3>Current Affected Services</h3>
-              <p>Real-time dashboard of active incidents and degraded systems.</p>
+              <p>Real-time status dashboard.</p>
             </div>
             <div className="category-card" onClick={() => alert("Opening maintenance calendar...")}>
               <div className="category-icon">🗓️</div>
               <h3>Planned Maintenance</h3>
-              <p>Upcoming scheduled downtime and system upgrades.</p>
+              <p>Upcoming scheduled downtime.</p>
             </div>
             <div className="category-card" onClick={() => alert("Loading outage history...")}>
               <div className="category-icon">📜</div>
               <h3>Past Incidents</h3>
-              <p>Archive of resolved outages and root cause analysis (RCA).</p>
+              <p>Archive of resolved outages.</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
@@ -533,144 +635,78 @@ function App() {
                 <div className="category-card" onClick={() => setActivePuzzle('terminal')}>
                   <div className="category-icon">🖥️</div>
                   <h3>Terminal Recovery</h3>
-                  <p>Decrypt the hex string to restore the system.</p>
+                  <p>Decrypt the hex string.</p>
                 </div>
                 <div className="category-card" onClick={() => setActivePuzzle('cryptic')}>
                   <div className="category-icon">🗞️</div>
                   <h3>Daily Cryptic</h3>
-                  <p>Solve the {crypticPuzzles.length}-level crossword challenge.</p>
+                  <p>Solve the IT crossword.</p>
                 </div>
                 <div className="category-card" onClick={() => setActivePuzzle('sliding')}>
                   <div className="category-icon">🔲</div>
                   <h3>Server Rack</h3>
-                  <p>Slide the blocks to rebuild the FIREWALL.</p>
+                  <p>Restore the Firewall.</p>
+                </div>
+                <div className="category-card" onClick={() => { setActivePuzzle('memory'); initMemoryGame(); }}>
+                  <div className="category-icon">🧠</div>
+                  <h3>Cache Flush</h3>
+                  <p>Clear memory blocks.</p>
+                </div>
+                <div className="category-card" onClick={() => setActivePuzzle('bios')}>
+                  <div className="category-icon">🚦</div>
+                  <h3>BIOS Sequence</h3>
+                  <p>Memorize the boot pattern.</p>
                 </div>
               </div>
               <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
             </>
           ) : (
             <div>
-              {/* PUZZLE 1: TERMINAL */}
+              {/* TERMINAL */}
               {activePuzzle === 'terminal' && (
-                <div className="puzzle-card" style={{ marginTop: '0' }}>
-                  <div className="terminal-header">
-                    <span className="dot red"></span>
-                    <span className="dot yellow"></span>
-                    <span className="dot green"></span>
-                    <span className="terminal-title">system_recovery.sh</span>
-                  </div>
-                  <div className="terminal-body">
-                    <p className="terminal-text" style={{color: '#00ff00', fontFamily: 'monospace'}}>>> ERROR: Critical IT term encrypted.</p>
-                    <p className="terminal-text" style={{color: '#00ff00', fontFamily: 'monospace'}}>>> HEX_STRING: <span style={{color: '#fff', background: '#333', padding: '2px 5px'}}>73 68 75 74 20 64 6f 77 6e</span></p>
-                    <div className="puzzle-input-area" style={{marginTop: '20px', display: 'flex', gap: '10px', alignItems: 'center'}}>
-                      <span style={{color: '#00ff00'}}>$</span>
-                      <input 
-                        type="text" 
-                        placeholder="Enter decrypted string..." 
-                        id="puzzleInput" 
-                        autoComplete="off"
-                        style={{background: 'transparent', border: 'none', borderBottom: '2px solid #00ff00', color: '#fff', outline: 'none', padding: '5px'}}
-                      />
-                      <button className="post-btn" onClick={() => {
-                        const val = document.getElementById('puzzleInput').value.toLowerCase().trim();
-                        if(val === "shut down") {
-                          alert("✅ Access Granted. Terminal Restored.");
-                        } else {
-                          alert("❌ Invalid Credentials. Hint: What you do at 5:00 PM.");
-                        }
-                      }}>Execute</button>
-                    </div>
-                  </div>
-                </div>
+                <div className="puzzle-card"><div className="terminal-body"><p className="terminal-text">>> HEX_STRING: 73 68 75 74 20 64 6f 77 6e</p><input id="puzzleInput" type="text" placeholder="Decrypt..." style={{background:'transparent', color:'white', border:'none', borderBottom:'1px solid lime'}} /><button className="post-btn" onClick={()=>{if(document.getElementById('puzzleInput').value.trim().toLowerCase()==='shut down') alert('Access Granted')}}>Execute</button></div></div>
               )}
-
-              {/* PUZZLE 2: DYNAMIC NEWSPAPER CRYPTIC */}
+              {/* CRYPTIC */}
               {activePuzzle === 'cryptic' && (
-                <div className="newspaper-card" style={{ marginTop: '0' }}>
-                  <div className="news-header">
-                    <h2>The Daily IT Cryptic</h2>
-                    <p>Vol. 1 - Level {crypticIndex + 1} of {crypticPuzzles.length}</p>
-                  </div>
-                  <div className="news-body">
-                    <p className="clue-text">
-                      <strong>Clue:</strong> {currentPuzzle.clue} <br/>
-                      <span style={{fontSize: '14px', color: '#666'}}>({currentPuzzle.answer.length} Letters)</span>
-                    </p>
-                    
-                    <div className="block-row">
-                      {Array.from({ length: currentPuzzle.answer.length }).map((_, index) => (
-                        <div key={index} className="letter-block">
-                          {newspaperGuess[index] || ""}
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="news-input-area">
-                      <input 
-                        type="text" 
-                        maxLength={currentPuzzle.answer.length} 
-                        className="news-input" 
-                        placeholder="Type answer..."
-                        value={newspaperGuess}
-                        onChange={(e) => setNewspaperGuess(e.target.value.toUpperCase().replace(/[^A-Z]/g, ''))}
-                      />
-                      <button className="news-btn" onClick={() => {
-                        if(newspaperGuess === currentPuzzle.answer) {
-                          if (crypticIndex < crypticPuzzles.length - 1) {
-                            alert("📰 Correct! Moving to the next clue.");
-                            setCrypticIndex(crypticIndex + 1);
-                            setNewspaperGuess("");
-                          } else {
-                            alert("🏆 Amazing! You have solved all 10 IT Cryptics!");
-                            setCrypticIndex(0); 
-                            setNewspaperGuess("");
-                          }
-                        } else {
-                          alert("❌ Not quite! Double check your spelling.");
-                        }
-                      }}>Check Answer</button>
-                    </div>
-                  </div>
-                </div>
+                <div className="newspaper-card"><div className="news-header"><h2>Daily Cryptic</h2></div><p>{currentPuzzle.clue} ({currentPuzzle.answer.length} letters)</p><div className="news-input-area"><input className="news-input" value={newspaperGuess} onChange={e=>setNewspaperGuess(e.target.value.toUpperCase())} /><button className="news-btn" onClick={()=>{if(newspaperGuess===currentPuzzle.answer) alert("Correct!")}}>Check</button></div></div>
               )}
-
-              {/* PUZZLE 3: SLIDING TILE PUZZLE */}
+              {/* SLIDING */}
               {activePuzzle === 'sliding' && (
-                <div className="sliding-puzzle-card">
-                  <div className="sliding-header">
-                    <h2>FIREWALL INTEGRITY: COMPROMISED</h2>
-                    <p>Slide the sectors (1-8) in order to restore the firewall.</p>
-                  </div>
-                  
-                  <div className="sliding-grid">
-                    {slidingTiles.map((tileNum, index) => (
-                      <div 
-                        key={index} 
-                        className={`slide-tile ${tileNum === 9 ? 'empty-tile' : ''}`}
-                        onClick={() => handleTileClick(index)}
-                      >
-                        {tileNum !== 9 && (
-                          <>
-                            <span className="tile-num">{tileNum}</span>
-                            <span className="tile-char">{getTileChar(tileNum)}</span>
-                          </>
-                        )}
+                <div className="sliding-puzzle-card"><div className="sliding-grid">{slidingTiles.map((t,i)=><div key={i} className={`slide-tile ${t===9?'empty-tile':''}`} onClick={()=>handleTileClick(i)}>{t!==9 && getTileChar(t)}</div>)}</div></div>
+              )}
+              {/* MEMORY */}
+              {activePuzzle === 'memory' && (
+                <div className="memory-wrapper" style={{textAlign: 'center', marginTop: '20px'}}>
+                  <div className="memory-grid">
+                    {memoryCards.map((card, index) => (
+                      <div key={index} className={`memory-card ${card.flipped || card.matched ? 'flipped' : ''}`} onClick={() => handleMemoryClick(index)}>
+                        <div className="memory-front">❓</div>
+                        <div className="memory-back">{card.icon}</div>
                       </div>
                     ))}
                   </div>
-
-                  <button className="post-btn" style={{marginTop: '20px', background: '#444'}} onClick={() => setSlidingTiles([8, 2, 3, 1, 6, 4, 7, 5, 9])}>
-                    Reset Blocks
-                  </button>
+                  <button className="post-btn" style={{marginTop: '20px'}} onClick={initMemoryGame}>Reset Cache</button>
                 </div>
               )}
-
+              {/* BIOS */}
+              {activePuzzle === 'bios' && (
+                <div className="bios-wrapper" style={{textAlign: 'center', marginTop: '30px', background: '#222', padding: '40px', borderRadius: '12px', border: '2px solid #444'}}>
+                  <h2 style={{color: '#0f0', fontFamily: 'monospace', marginBottom: '30px'}}>{biosMessage}</h2>
+                  <div className="bios-grid" style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', maxWidth: '300px', margin: '0 auto'}}>
+                    {colors.map(color => (
+                      <div key={color} className={`bios-btn ${color} ${flashColor === color ? 'flash' : ''}`} onClick={() => handleBiosClick(color)} style={{height: '100px', borderRadius: '8px', cursor: 'pointer', opacity: flashColor === color ? 1 : 0.4, border: '2px solid white'}}></div>
+                    ))}
+                  </div>
+                  {!sequence.length && <button className="post-btn" style={{marginTop: '30px'}} onClick={startBiosGame}>Start Boot</button>}
+                </div>
+              )}
               <button className="back-btn" style={{marginTop: '40px'}} onClick={() => setActivePuzzle(null)}>← Back to Puzzles</button>
             </div>
           )}
         </section>
       )}
 
+      {/* FOOTER */}
       <footer className="support-footer">
         <div className="footer-content">
           <h2>Still need help?</h2>
@@ -683,6 +719,7 @@ function App() {
         </div>
       </footer>
 
+      {/* MODAL POPUP */}
       {selectedArticle && (
         <div className="modal-overlay" onClick={() => setSelectedArticle(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>

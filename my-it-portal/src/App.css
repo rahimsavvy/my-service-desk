@@ -367,3 +367,55 @@ body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg);
   50% { opacity: 0.5; transform: scale(1.2); }
   100% { opacity: 1; transform: scale(1); }
 }
+/* ... KEEP ALL YOUR EXISTING CSS ... */
+
+/* ========================================= */
+/* NEW PUZZLE: CACHE FLUSH (MEMORY)          */
+/* ========================================= */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.memory-card {
+  aspect-ratio: 1;
+  background-color: #333;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  transition: transform 0.3s;
+  border: 2px solid #555;
+  color: white;
+}
+
+.memory-card.flipped {
+  background-color: white;
+  border-color: var(--primary);
+  transform: rotateY(180deg);
+}
+
+.memory-front { display: block; }
+.memory-back { display: none; }
+
+.memory-card.flipped .memory-front { display: none; }
+.memory-card.flipped .memory-back { display: block; }
+
+/* ========================================= */
+/* NEW PUZZLE: BIOS SEQUENCE (SIMON)         */
+/* ========================================= */
+.bios-btn.red { background-color: #ff5f56; }
+.bios-btn.green { background-color: #27c93f; }
+.bios-btn.blue { background-color: #0056b3; }
+.bios-btn.yellow { background-color: #ffbd2e; }
+
+.bios-btn.flash {
+  opacity: 1 !important;
+  box-shadow: 0 0 20px white;
+  transform: scale(1.05);
+}
