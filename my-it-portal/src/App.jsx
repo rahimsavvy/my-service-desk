@@ -53,6 +53,14 @@ function App() {
   ]);
   const [newScrap, setNewScrap] = useState("");
 
+  /* ROADMAP PROJECTS DATA */
+  const [projects] = useState([
+    { id: "IT-402", title: "Windows 11 Fleet Migration", status: "In Progress", progress: 65, priority: "High" },
+    { id: "IT-405", title: "Okta SSO Integration for Zendesk", status: "In Review", progress: 90, priority: "Medium" },
+    { id: "IT-410", title: "Core Network Switch Upgrade", status: "Planned", progress: 0, priority: "High" },
+    { id: "IT-399", title: "Legacy On-Prem Server Decommission", status: "Completed", progress: 100, priority: "Low" }
+  ]);
+
   const [articles] = useState([
     { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest' from your WiFi list. Enter the password 'Welcome2024'." },
     { id: 4, title: "Reset Password / Unlock Windows", category: "Accounts", content: "Go to identity.company.com and click 'Forgot Password'." },
@@ -286,7 +294,10 @@ function App() {
                 <span className="dock-icon">🚚</span>
                 <span className="dock-label">Dispatch</span>
               </div>
-              <div className="dock-item"><span className="dock-icon">📈</span><span className="dock-label">Linear</span></div>
+              <div className="dock-item" onClick={() => navigateTo('linear')}>
+                <span className="dock-icon">📈</span>
+                <span className="dock-label">Linear</span>
+              </div>
               <div className="dock-item" onClick={() => navigateTo('ess')}>
                 <span className="dock-icon">🪪</span>
                 <span className="dock-label">Self Service</span>
@@ -410,7 +421,7 @@ function App() {
         </section>
       )}
 
-      {/* LINKS PAGE - RESTORED & CLEANED (No Headers) */}
+      {/* LINKS PAGE */}
       {currentPage === 'links' && (
         <section className="container">
           <h2 className="section-title">🔗 Quick Access Links</h2>
@@ -419,7 +430,7 @@ function App() {
             <div className="category-card" onClick={() => window.open('https://portal.azure.com', '_blank')}>
               <div className="category-icon">☁️</div>
               <h3>Azure Portal</h3>
-              <p>Manage users & cloud.</p>
+              <p>Manage users & cloud resources.</p>
             </div>
             <div className="category-card" onClick={() => window.open('https://admin.google.com', '_blank')}>
               <div className="category-icon">🔧</div>
@@ -434,17 +445,17 @@ function App() {
             <div className="category-card" onClick={() => alert("Redirecting to ServiceNow...")}>
               <div className="category-icon">🎫</div>
               <h3>ServiceNow</h3>
-              <p>Incident management.</p>
+              <p>Incident management system.</p>
             </div>
             <div className="category-card" onClick={() => alert("Redirecting to Jira...")}>
               <div className="category-icon">🐞</div>
               <h3>Jira</h3>
-              <p>Bug tracking & dev.</p>
+              <p>Bug tracking & dev boards.</p>
             </div>
             <div className="category-card" onClick={() => alert("Opening Password Tool...")}>
               <div className="category-icon">🔑</div>
               <h3>LAPS UI</h3>
-              <p>Local Admin Passwords.</p>
+              <p>Local Admin Passwords lookup.</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
@@ -459,17 +470,17 @@ function App() {
             <div className="category-card" onClick={() => alert("Reports module loading...")}>
               <div className="category-icon">📊</div>
               <h3>Reports</h3>
-              <p>View daily dispatch logs.</p>
+              <p>View daily dispatch logs and performance metrics.</p>
             </div>
             <div className="category-card" onClick={() => alert("Schedule module loading...")}>
               <div className="category-icon">📅</div>
               <h3>Schedule</h3>
-              <p>View shift rotations.</p>
+              <p>View shift rotations, on-call assignments, and availability.</p>
             </div>
             <div className="category-card" onClick={() => alert("Live Map feature coming soon!")}>
               <div className="category-icon">📍</div>
               <h3>Live Map</h3>
-              <p>Real-time location tracking.</p>
+              <p>Real-time location tracking of field support units.</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
@@ -484,18 +495,48 @@ function App() {
             <div className="category-card" onClick={() => alert("Loading Top Call Drivers analytics...")}>
               <div className="category-icon">🔥</div>
               <h3>Top Call Drivers</h3>
-              <p>Identify frequent issues.</p>
+              <p>Identify the most frequent issues spiking the help desk volume.</p>
             </div>
             <div className="category-card" onClick={() => alert("Opening Investigation Board...")}>
               <div className="category-icon">🕵️‍♂️</div>
               <h3>Investigation</h3>
-              <p>Deep dive into RCA.</p>
+              <p>Deep dive into complex incidents requiring root cause analysis.</p>
             </div>
             <div className="category-card" onClick={() => alert("Filtering Priority Bucket...")}>
               <div className="category-icon">🚨</div>
               <h3>Priority Bucket</h3>
-              <p>Urgent tickets and VIPs.</p>
+              <p>Urgent tickets affecting VIPs or critical business operations.</p>
             </div>
+          </div>
+          <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
+        </section>
+      )}
+
+      {/* LINEAR PAGE */}
+      {currentPage === 'linear' && (
+        <section className="container" style={{maxWidth: '800px'}}>
+          <h2 className="section-title">📈 IT Project Roadmap</h2>
+          <div className="roadmap-list">
+            {projects.map(proj => (
+              <div key={proj.id} className="project-card">
+                <div className="project-header">
+                  <div>
+                    <span className="project-id">{proj.id}</span>
+                    <h3 style={{margin: '5px 0 0 0', color: '#333'}}>{proj.title}</h3>
+                  </div>
+                  <span className={`status-badge status-${proj.status.replace(/\s+/g, '')}`}>{proj.status}</span>
+                </div>
+                <div className="progress-container" style={{marginTop: '15px'}}>
+                  <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#666', marginBottom: '5px'}}>
+                    <span>Progress</span>
+                    <span>{proj.progress}%</span>
+                  </div>
+                  <div className="progress-bg">
+                    <div className="progress-fill" style={{width: `${proj.progress}%`}}></div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
         </section>
@@ -509,17 +550,17 @@ function App() {
             <div className="category-card" onClick={() => alert("Redirecting to HR Portal...")}>
               <div className="category-icon">👥</div>
               <h3>HR Portal</h3>
-              <p>Access pay and benefits.</p>
+              <p>Access pay stubs, benefits, and time-off requests.</p>
             </div>
             <div className="category-card" onClick={() => alert("Opening My Assets...")}>
               <div className="category-icon">💻</div>
               <h3>My Assets</h3>
-              <p>View assigned devices.</p>
+              <p>View assigned laptops, monitors, and peripherals.</p>
             </div>
             <div className="category-card" onClick={() => alert("Loading Access Rights...")}>
               <div className="category-icon">🔐</div>
               <h3>My Access</h3>
-              <p>Review permissions.</p>
+              <p>Review current software permissions and request new access.</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
@@ -534,17 +575,17 @@ function App() {
             <div className="category-card" onClick={() => alert("Fetching live status dashboard...")}>
               <div className="category-icon">🔴</div>
               <h3>Current Affected Services</h3>
-              <p>Real-time status dashboard.</p>
+              <p>Real-time dashboard of active incidents and degraded systems.</p>
             </div>
             <div className="category-card" onClick={() => alert("Opening maintenance calendar...")}>
               <div className="category-icon">🗓️</div>
               <h3>Planned Maintenance</h3>
-              <p>Upcoming scheduled downtime.</p>
+              <p>Upcoming scheduled downtime and system upgrades.</p>
             </div>
             <div className="category-card" onClick={() => alert("Loading outage history...")}>
               <div className="category-icon">📜</div>
               <h3>Past Incidents</h3>
-              <p>Archive of resolved outages.</p>
+              <p>Archive of resolved outages and root cause analysis (RCA).</p>
             </div>
           </div>
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
