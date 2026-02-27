@@ -318,7 +318,6 @@ function App() {
                 <span className="dock-icon">👥</span>
                 <span className="dock-label">Our Team</span>
               </div>
-              <div className="dock-item"><span className="dock-icon">📞</span><span className="dock-label">Contact</span></div>
             </div>
           </div>
         </div>

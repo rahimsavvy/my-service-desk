@@ -8,7 +8,7 @@
 body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg); color: #333; }
 
 /* HERO & DOCK */
-.hero-section { background: linear-gradient(135deg, #0056b3 0%, #003d82 100%); color: white; padding: 60px 20px; text-align: center; position: relative; } /* ADDED position: relative here */
+.hero-section { background: linear-gradient(135deg, #0056b3 0%, #003d82 100%); color: white; padding: 60px 20px; text-align: center; position: relative; }
 .search-wrapper { margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 .main-search { width: 100%; max-width: 550px; padding: 16px 28px; border-radius: 50px; border: none; font-size: 18px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); outline: none; }
 
@@ -102,7 +102,6 @@ body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg);
 /* ========================================= */
 /* NEWSPAPER CRYPTIC PUZZLE STYLES           */
 /* ========================================= */
-
 .newspaper-card {
   background: #fdfdfd;
   color: #111;
@@ -113,380 +112,83 @@ body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg);
   box-shadow: 8px 8px 0px #111; /* Classic retro newspaper drop shadow */
   text-align: center;
 }
-
-.news-header {
-  border-bottom: 2px solid #111;
-  padding-bottom: 15px;
-  margin-bottom: 25px;
-}
-
-.news-header h2 {
-  font-size: 28px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin: 0 0 5px 0;
-}
-
-.news-header p {
-  margin: 0;
-  font-style: italic;
-  color: #555;
-}
-
-.clue-text {
-  font-size: 18px;
-  margin-bottom: 25px;
-}
-
-.block-row {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
-}
-
-.letter-block {
-  width: 50px;
-  height: 50px;
-  border: 2px solid #111;
-  font-size: 28px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-  background: #fff;
-  box-shadow: 2px 2px 0px #aaa;
-}
-
-.news-input-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-.news-input {
-  width: 100%;
-  max-width: 200px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  text-align: center;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  font-family: inherit;
-}
-
-.news-btn {
-  background: #111;
-  color: #fff;
-  border: none;
-  padding: 10px 25px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  font-family: inherit;
-  transition: 0.2s;
-}
-
+.news-header { border-bottom: 2px solid #111; padding-bottom: 15px; margin-bottom: 25px; }
+.news-header h2 { font-size: 28px; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 5px 0; }
+.news-header p { margin: 0; font-style: italic; color: #555; }
+.clue-text { font-size: 18px; margin-bottom: 25px; }
+.block-row { display: flex; justify-content: center; gap: 12px; margin-bottom: 30px; flex-wrap: wrap; }
+.letter-block { width: 50px; height: 50px; border: 2px solid #111; font-size: 28px; font-weight: bold; display: flex; align-items: center; justify-content: center; text-transform: uppercase; background: #fff; box-shadow: 2px 2px 0px #aaa; }
+.news-input-area { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.news-input { width: 100%; max-width: 200px; padding: 10px; font-size: 16px; border: 1px solid #ccc; text-align: center; letter-spacing: 5px; text-transform: uppercase; font-family: inherit; }
+.news-btn { background: #111; color: #fff; border: none; padding: 10px 25px; font-size: 16px; font-weight: bold; cursor: pointer; font-family: inherit; transition: 0.2s; }
 .news-btn:hover { background: #333; color: white; }
 
 /* ========================================= */
 /* SLIDING BLOCK PUZZLE STYLES               */
 /* ========================================= */
+.sliding-puzzle-card { background: #1a1a2e; color: #fff; padding: 40px 30px; border-radius: 12px; border: 2px solid #3a3a5e; margin-top: 0px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.sliding-header h2 { color: #ff5f56; margin: 0 0 10px 0; letter-spacing: 1.5px; }
+.sliding-header p { color: #aaa; margin-bottom: 30px; }
+.sliding-grid { display: grid; grid-template-columns: repeat(3, 85px); grid-template-rows: repeat(3, 85px); gap: 6px; justify-content: center; margin: 0 auto; background: #0f0f1a; padding: 12px; border-radius: 8px; width: fit-content; box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+.slide-tile { position: relative; background: linear-gradient(135deg, #0056b3, #003d82); border: 2px solid #4da3ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s ease-in-out; user-select: none; box-shadow: inset 0 0 10px rgba(255,255,255,0.1), 0 4px 6px rgba(0,0,0,0.4); }
+.slide-tile:hover { background: linear-gradient(135deg, #0066cc, #00408c); transform: scale(0.96); }
+.empty-tile { background: transparent !important; border: 2px dashed #333; box-shadow: none; cursor: default; transform: none !important; }
+.tile-num { font-size: 11px; color: #88c0ff; position: absolute; top: 4px; left: 6px; font-family: monospace; }
+.tile-char { font-size: 36px; font-weight: 800; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
 
-.sliding-puzzle-card {
-  background: #1a1a2e; /* Deep dark blue/purple */
-  color: #fff;
-  padding: 40px 30px;
-  border-radius: 12px;
-  border: 2px solid #3a3a5e;
-  margin-top: 0px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.sliding-header h2 { 
-  color: #ff5f56; 
-  margin: 0 0 10px 0; 
-  letter-spacing: 1.5px;
-}
-
-.sliding-header p { 
-  color: #aaa; 
-  margin-bottom: 30px; 
-}
-
-.sliding-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 85px); /* 3x3 Grid */
-  grid-template-rows: repeat(3, 85px);
-  gap: 6px;
-  justify-content: center;
-  margin: 0 auto;
-  background: #0f0f1a;
-  padding: 12px;
-  border-radius: 8px;
-  width: fit-content;
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
-}
-
-.slide-tile {
-  position: relative;
-  background: linear-gradient(135deg, #0056b3, #003d82);
-  border: 2px solid #4da3ff;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-  user-select: none; /* Prevents text highlighting while rapidly clicking */
-  box-shadow: inset 0 0 10px rgba(255,255,255,0.1), 0 4px 6px rgba(0,0,0,0.4);
-}
-
-.slide-tile:hover {
-  background: linear-gradient(135deg, #0066cc, #00408c);
-  transform: scale(0.96);
-}
-
-.empty-tile {
-  background: transparent !important;
-  border: 2px dashed #333;
-  box-shadow: none;
-  cursor: default;
-  transform: none !important;
-}
-
-.tile-num {
-  font-size: 11px;
-  color: #88c0ff;
-  position: absolute;
-  top: 4px;
-  left: 6px;
-  font-family: monospace;
-}
-
-.tile-char {
-  font-size: 36px;
-  font-weight: 800;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
 /* ========================================= */
-/* MODAL POPUP STYLES (Fix for Broken Page)  */
+/* MODAL POPUP STYLES                        */
 /* ========================================= */
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6); /* Dimmed background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Ensures it sits on top of everything */
-  backdrop-filter: blur(5px); /* Nice modern blur effect */
-}
-
-.modal-content {
-  background: white;
-  padding: 40px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 600px;
-  position: relative;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-  animation: slideUp 0.3s ease-out;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.close-btn {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  background: none;
-  border: none;
-  font-size: 32px;
-  color: #999;
-  cursor: pointer;
-  transition: 0.2s;
-  line-height: 1;
-}
-
-.close-btn:hover {
-  color: #333;
-  transform: scale(1.1);
-}
-
-.modal-divider {
-  height: 2px;
-  background: #f0f0f0;
-  margin: 20px 0;
-  border-radius: 2px;
-}
-
-.modal-body-text {
-  font-size: 16px;
-  line-height: 1.6;
-  color: #444;
-}
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
+.modal-content { background: white; padding: 40px; border-radius: 16px; width: 90%; max-width: 600px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: slideUp 0.3s ease-out; }
+@keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 32px; color: #999; cursor: pointer; transition: 0.2s; line-height: 1; }
+.close-btn:hover { color: #333; transform: scale(1.1); }
+.modal-divider { height: 2px; background: #f0f0f0; margin: 20px 0; border-radius: 2px; }
+.modal-body-text { font-size: 16px; line-height: 1.6; color: #444; }
 
 /* ========================================= */
 /* ADDED: LIVE STATUS INDICATOR              */
 /* ========================================= */
-.status-indicator {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255,255,255,0.1);
-  padding: 6px 12px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
+.status-indicator { position: absolute; top: 20px; right: 20px; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
 .status-indicator:hover { background: rgba(255,255,255,0.2); }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 .status-dot.operational { background-color: #27c93f; box-shadow: 0 0 8px #27c93f; animation: pulse 2s infinite; }
 .status-dot.outage { background-color: #ff5f56; box-shadow: 0 0 8px #ff5f56; animation: pulse 1s infinite; }
 .status-text { font-size: 12px; font-weight: 600; }
 
-@keyframes pulse {
-  0% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.2); }
-  100% { opacity: 1; transform: scale(1); }
-}
-/* ... KEEP ALL YOUR EXISTING CSS ... */
+/* ========================================= */
+/* ADDED: LINEAR (ROADMAP) STYLES            */
+/* ========================================= */
+.roadmap-list { display: flex; flex-direction: column; gap: 15px; }
+.project-card { background: white; padding: 25px; border-radius: 12px; border: 1px solid #eee; border-left: 5px solid var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.03); text-align: left; transition: transform 0.2s; }
+.project-card:hover { transform: translateX(5px); box-shadow: 0 6px 15px rgba(0,0,0,0.06); }
+.project-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.project-id { font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #888; font-weight: bold; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; }
+.status-badge { font-size: 11px; font-weight: bold; padding: 5px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.status-Planned { background: #f0f0f0; color: #555; }
+.status-InProgress { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+.status-InReview { background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
+.status-Completed { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+.progress-bg { width: 100%; height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #0056b3, #4da3ff); border-radius: 4px; transition: width 1s ease-in-out; }
 
 /* ========================================= */
-/* NEW PUZZLE: CACHE FLUSH (MEMORY)          */
+/* ADDED: CACHE FLUSH (MEMORY) STYLES        */
 /* ========================================= */
-.memory-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.memory-card {
-  aspect-ratio: 1;
-  background-color: #333;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  transition: transform 0.3s;
-  border: 2px solid #555;
-  color: white;
-}
-
-.memory-card.flipped {
-  background-color: white;
-  border-color: var(--primary);
-  transform: rotateY(180deg);
-}
-
+.memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; max-width: 500px; margin: 0 auto; }
+.memory-card { aspect-ratio: 1; background-color: #333; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 2rem; transition: transform 0.3s; border: 2px solid #555; color: white; }
+.memory-card.flipped { background-color: white; border-color: var(--primary); transform: rotateY(180deg); }
 .memory-front { display: block; }
 .memory-back { display: none; }
-
 .memory-card.flipped .memory-front { display: none; }
 .memory-card.flipped .memory-back { display: block; }
 
 /* ========================================= */
-/* NEW PUZZLE: BIOS SEQUENCE (SIMON)         */
+/* ADDED: BIOS SEQUENCE (SIMON) STYLES       */
 /* ========================================= */
 .bios-btn.red { background-color: #ff5f56; }
 .bios-btn.green { background-color: #27c93f; }
 .bios-btn.blue { background-color: #0056b3; }
 .bios-btn.yellow { background-color: #ffbd2e; }
-
-.bios-btn.flash {
-  opacity: 1 !important;
-  box-shadow: 0 0 20px white;
-  transform: scale(1.05);
-}
-/* ========================================= */
-/* NEW: LINEAR (ROADMAP) STYLES              */
-/* ========================================= */
-
-.roadmap-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.project-card {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  border: 1px solid #eee;
-  border-left: 5px solid var(--primary);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-  text-align: left;
-  transition: transform 0.2s;
-}
-
-.project-card:hover {
-  transform: translateX(5px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.06);
-}
-
-.project-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.project-id {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 13px;
-  color: #888;
-  font-weight: bold;
-  background: #f4f4f4;
-  padding: 3px 8px;
-  border-radius: 4px;
-}
-
-.status-badge {
-  font-size: 11px;
-  font-weight: bold;
-  padding: 5px 12px;
-  border-radius: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.status-Planned { background: #f0f0f0; color: #555; }
-.status-InProgress { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
-.status-InReview { background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
-.status-Completed { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-
-.progress-bg {
-  width: 100%;
-  height: 8px;
-  background: #f0f0f0;
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #0056b3, #4da3ff);
-  border-radius: 4px;
-  transition: width 1s ease-in-out;
-}
+.bios-btn.flash { opacity: 1 !important; box-shadow: 0 0 20px white; transform: scale(1.05); }
