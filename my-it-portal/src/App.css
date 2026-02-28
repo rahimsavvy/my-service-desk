@@ -332,6 +332,7 @@ input, select, textarea, button {
   align-items: center;
   gap: 15px;
   flex-wrap: wrap; /* Keeps it looking good on mobile phones */
+
   margin-bottom: 35px;
 }
 
@@ -355,4 +356,17 @@ input, select, textarea, button {
   color: #888;
   font-size: 14px;
   margin: 0;
+}
+/* ========================================= */
+/* HEADER SIZE ADJUSTMENT                    */
+/* ========================================= */
+.hero-section {
+  padding: 40px 20px; /* Reduces the giant spacing at the top and bottom */
+}
+
+.hero-section h1 {
+  font-size: 32px; /* Shrinks the text down */
+  margin-top: 0;
+  margin-bottom: 15px;
+  letter-spacing: 1px; /* Adds a clean, modern spacing to the letters */
 }
