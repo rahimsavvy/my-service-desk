@@ -147,6 +147,45 @@ function App() {
   };
 
   /* NEW: Restore Defaults Function */
+  /* DATABASE EXPORT/IMPORT LOGIC */
+  const handleExportDB = () => {
+    // 1. Convert the articles array to a JSON string
+    const dataStr = JSON.stringify(articles, null, 2);
+    // 2. Create a virtual file (Blob)
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    // 3. Create a hidden download link and click it
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `IT_KB_Backup_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleImportDB = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const importedArticles = JSON.parse(e.target.result);
+        if (Array.isArray(importedArticles)) {
+          setArticles(importedArticles);
+          alert("✅ Database Imported Successfully!");
+        } else {
+          alert("❌ Error: Invalid backup file format.");
+        }
+      } catch (error) {
+        alert("❌ Error reading backup file.");
+      }
+    };
+    reader.readAsText(file);
+    
+    // Reset the input so you can upload the same file again if needed
+    event.target.value = null; 
+  };
   const handleRestoreDefaults = () => {
     if (window.confirm("This will erase any new articles you created and restore the original comprehensive IT list. Do you want to proceed?")) {
       setArticles(defaultArticles);
@@ -428,11 +467,28 @@ function App() {
       {/* ADMIN CONTROL PANEL PAGE */}
       {currentPage === 'admin' && (
         <section className="container admin-container">
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px', borderBottom: '1px solid #e5e5ea', paddingBottom: '20px'}}>
-            <h2 style={{margin: 0, fontSize: '32px', fontWeight: 800, background: 'linear-gradient(135deg, #1d1d1f, #555555)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}><Settings size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/> KB Control Panel</h2>
-            <button className="clear-link" onClick={handleRestoreDefaults} style={{color: '#d32f2f', borderColor: '#ffcdd2', background: '#ffebee'}}>⚠️ Restore Defaults</button>
-          </div>
-
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px', borderBottom: '1px solid #e5e5ea', paddingBottom: '20px', flexWrap: 'wrap', gap: '15px'}}>
+  <h2 style={{margin: 0, fontSize: '32px', fontWeight: 800, background: 'linear-gradient(135deg, #1d1d1f, #555555)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
+    <Settings size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/> KB Control Panel
+  </h2>
+  
+  <div style={{display: 'flex', gap: '10px'}}>
+    {/* Hidden file input for importing */}
+    <input type="file" id="import-db" style={{display: 'none'}} accept=".json" onChange={handleImportDB} />
+    
+    <button className="clear-link" onClick={() => document.getElementById('import-db').click()} style={{color: '#0056b3', borderColor: '#cce5ff', background: '#e6f2ff'}}>
+      📤 Import 
+    </button>
+    
+    <button className="clear-link" onClick={handleExportDB} style={{color: '#2e7d32', borderColor: '#c8e6c9', background: '#e8f5e9'}}>
+      📥 Export
+    </button>
+    
+    <button className="clear-link" onClick={handleRestoreDefaults} style={{color: '#d32f2f', borderColor: '#ffcdd2', background: '#ffebee'}}>
+      ⚠️ Restore Defaults
+    </button>
+  </div>
+</div>
           <div className="admin-grid">
             <div className="admin-form-card">
               <h3>{editingId ? "Edit Article" : "Create New Article"}</h3>
