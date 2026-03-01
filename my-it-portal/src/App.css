@@ -30,7 +30,7 @@ input, select, textarea, button {
 .hero-section { 
   background: linear-gradient(135deg, #0056b3 0%, #003d82 100%); 
   color: white; 
-  padding: 70px 20px; 
+  padding: 40px 20px; /* Reduces the giant spacing */
   text-align: center; 
   position: relative; 
   box-shadow: 0 10px 30px rgba(0, 86, 179, 0.15);
@@ -38,10 +38,11 @@ input, select, textarea, button {
 
 .hero-section h1 {
   font-weight: 800;
-  letter-spacing: -1px;
-  font-size: 42px;
+  letter-spacing: 1px;
+  font-size: 32px; /* Shrinks the text down */
   text-shadow: 0 4px 15px rgba(0,0,0,0.2);
   margin-top: 0;
+  margin-bottom: 15px;
 }
 
 .search-wrapper { margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
@@ -145,7 +146,7 @@ input, select, textarea, button {
 
 .category-card:hover .category-icon { transform: scale(1.1); }
 
-/* Contextual Gradients (Automatically colors every card differently!) */
+/* Contextual Gradients */
 .category-card:nth-child(1n) .category-icon { background: linear-gradient(135deg, #007AFF, #00C6FF); box-shadow: 0 10px 20px rgba(0, 122, 255, 0.3); }
 .category-card:nth-child(2n) .category-icon { background: linear-gradient(135deg, #5856D6, #C644FC); box-shadow: 0 10px 20px rgba(88, 86, 214, 0.3); }
 .category-card:nth-child(3n) .category-icon { background: linear-gradient(135deg, #FF9500, #FFCC00); box-shadow: 0 10px 20px rgba(255, 149, 0, 0.3); }
@@ -307,122 +308,10 @@ input, select, textarea, button {
 .back-btn { margin-top: 40px; background: white; border: 1px solid #e5e5ea; padding: 12px 24px; border-radius: 30px; cursor: pointer; font-weight: 600; color: #1d1d1f; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
 .back-btn:hover { background: #f2f2f7; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.05); }
 
-.support-footer { background: var(--dark-footer); color: white; padding: 60px 20px; text-align: center; margin-top: 80px; }
-/* ========================================= */
-/* FOOTER FIX                                */
-/* ========================================= */
-.support-footer { 
-  background: var(--dark-footer, #1d1d1f); 
-  color: white; 
-  padding: 60px 20px; 
-  text-align: center; 
-  margin-top: 80px; 
-}
-
-.footer-content h2 {
-  margin-top: 0;
-  margin-bottom: 25px;
-  font-size: 26px;
-}
-
-/* This forces the buttons to sit side-by-side */
-.footer-buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap; /* Keeps it looking good on mobile phones */
-
-  margin-bottom: 35px;
-}
-
-.footer-btn { 
-  background: var(--primary, #0056b3); 
-  color: white; 
-  padding: 12px 28px; 
-  border-radius: 8px; 
-  text-decoration: none; 
-  font-weight: bold; 
-  transition: all 0.3s ease; 
-}
-
-.footer-btn:hover { 
-  opacity: 0.9; 
-  transform: translateY(-3px); 
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-}
-
-.copyright {
-  color: #888;
-  font-size: 14px;
-  margin: 0;
-}
-/* ========================================= */
-/* HEADER SIZE ADJUSTMENT                    */
-/* ========================================= */
-.hero-section {
-  padding: 40px 20px; /* Reduces the giant spacing at the top and bottom */
-}
-
-.hero-section h1 {
-  font-size: 32px; /* Shrinks the text down */
-  margin-top: 0;
-  margin-bottom: 15px;
-  letter-spacing: 1px; /* Adds a clean, modern spacing to the letters */
-}
-/* ========================================= */
-/* MOBILE RESPONSIVENESS (SMARTPHONES)       */
-/* ========================================= */
-@media (max-width: 768px) {
-  /* Shrink the giant blue header slightly for small screens */
-  .hero-section {
-    padding: 30px 15px;
-  }
-  
-  .hero-section h1 {
-    font-size: 26px;
-  }
-
-  /* Make the search bar fit nicely */
-  .main-search {
-    width: 90%;
-    font-size: 16px;
-    padding: 12px 20px;
-  }
-
-  /* Allow the quick links buttons to stack instead of overflowing */
-  .quick-links {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  /* Allow the IT Dock items to wrap onto a second line if needed */
-  .it-dock {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 10px;
-    gap: 10px;
-  }
-
-  .dock-item {
-    width: 55px; /* Slightly smaller icons for mobile */
-  }
-
-  /* Stack the footer buttons vertically so they are easy to tap */
-  .footer-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .footer-btn {
-    width: 80%;
-    margin: 0 auto;
-  }
-}
-
+.support-footer { background: var(--dark-footer, #1d1d1f); color: white; padding: 60px 20px; text-align: center; margin-top: 80px; }
+.footer-content h2 { margin-top: 0; margin-bottom: 25px; font-size: 26px; }
+.footer-buttons { display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 35px; }
+.copyright { color: #888; font-size: 14px; margin: 0; }
 
 /* ========================================= */
 /* PRO MOBILE RESPONSIVENESS (SMARTPHONES)   */
@@ -434,47 +323,53 @@ input, select, textarea, button {
   .status-text { font-size: 11px; }
   .hero-section h1 { font-size: 26px; margin-top: 20px; }
 
+  /* Hide the "Common Tasks" text on mobile to save space */
+  .hide-on-mobile { display: none; }
+
   /* Search & Quick Links */
   .main-search { width: 90%; font-size: 16px; padding: 12px 20px; }
   .quick-links { flex-wrap: wrap; justify-content: center; gap: 8px; font-size: 13px; }
+  .quick-links button { padding: 6px 12px; font-size: 12px; }
 
- /* Swipeable App Dock - The Native App Feel! */
+  /* Swipeable App Dock - The Native App Feel! */
   .it-dock-container { 
     max-width: 100vw; 
     overflow-x: auto; 
     -webkit-overflow-scrolling: touch;
     margin: 15px -15px 0;
     padding-bottom: 10px;
-    justify-content: flex-start; /* FIX: Stops the left side from getting cut off */
+    justify-content: flex-start;
   }
   .it-dock { 
     flex-wrap: nowrap;
     width: max-content; 
-    margin: 0; /* FIX: Removes the auto-centering */
+    margin: 0; 
     padding: 10px 20px; 
     gap: 15px;
-  }  .it-dock::-webkit-scrollbar { display: none; }
+  }
+  .it-dock::-webkit-scrollbar { display: none; }
   .dock-item { width: 55px; }
 
   /* 3-in-a-row App Dashboard Layout */
   .category-grid { 
-    grid-template-columns: repeat(3, 1fr); /* This forces exactly 3 columns */
-    gap: 10px; /* Slightly tighter gap so they fit neatly */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 10px; 
   }
   .category-card { 
-    padding: 15px 5px; /* Less padding so text has room to breathe */
+    padding: 15px 5px; 
   }
   .category-card h3 {
-    font-size: 12px; /* Shrinks the text so it doesn't spill over */
+    font-size: 12px; 
     margin: 5px 0 0 0;
   }
   .category-icon {
-    font-size: 24px; /* Shrinks the icon slightly */
+    font-size: 24px; 
     margin-bottom: 5px;
   }
   
   .article-row-card { padding: 15px; }
   .modal-content { width: 90%; padding: 25px 15px; }  
+  
   /* Footer Stack */
   .footer-buttons { display: flex; flex-direction: column; gap: 10px; }
   .footer-btn { width: 100%; box-sizing: border-box; margin: 0; }

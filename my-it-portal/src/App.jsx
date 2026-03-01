@@ -374,7 +374,7 @@ function App() {
 />
           
           <div className="quick-links">
-             <span>Common Tasks:</span>
+             <span className="hide-on-mobile">Common Tasks:</span>
              <button onClick={() => {setSearchTerm("WiFi"); navigateTo('home');}}><Globe size={14} style={{marginRight: '5px', verticalAlign: 'middle'}}/>Connect WiFi</button>
              <button onClick={() => {setSearchTerm("Password"); navigateTo('home');}}><User size={14} style={{marginRight: '5px', verticalAlign: 'middle'}}/>Reset Password</button>
              <button onClick={() => {setSearchTerm("VPN"); navigateTo('home');}}><Lock size={14} style={{marginRight: '5px', verticalAlign: 'middle'}}/>VPN Help</button>
