@@ -456,12 +456,25 @@ input, select, textarea, button {
   }  .it-dock::-webkit-scrollbar { display: none; }
   .dock-item { width: 55px; }
 
-  /* Bigger Touch Targets */
-  .category-grid { grid-template-columns: 1fr; gap: 15px; }
-  .category-card { padding: 20px; }
-  .article-row-card { padding: 15px; }
-  .modal-content { width: 90%; padding: 25px 15px; }
+  /* 3-in-a-row App Dashboard Layout */
+  .category-grid { 
+    grid-template-columns: repeat(3, 1fr); /* This forces exactly 3 columns */
+    gap: 10px; /* Slightly tighter gap so they fit neatly */
+  }
+  .category-card { 
+    padding: 15px 5px; /* Less padding so text has room to breathe */
+  }
+  .category-card h3 {
+    font-size: 12px; /* Shrinks the text so it doesn't spill over */
+    margin: 5px 0 0 0;
+  }
+  .category-icon {
+    font-size: 24px; /* Shrinks the icon slightly */
+    margin-bottom: 5px;
+  }
   
+  .article-row-card { padding: 15px; }
+  .modal-content { width: 90%; padding: 25px 15px; }  
   /* Footer Stack */
   .footer-buttons { display: flex; flex-direction: column; gap: 10px; }
   .footer-btn { width: 100%; box-sizing: border-box; margin: 0; }
