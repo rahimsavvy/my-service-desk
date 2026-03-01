@@ -357,12 +357,21 @@ function App() {
         <h1 onClick={() => navigateTo('home')} style={{cursor: 'pointer'}}>IT Knowledge Base</h1>
         <div className="search-wrapper">
           <input 
-            type="text" 
-            placeholder="Search for help..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} 
-            className="main-search"
-          />
+  type="text" 
+  placeholder="Search for help..." 
+  value={searchTerm}
+  onChange={(e) => {
+    const val = e.target.value;
+    // THE IT NINJA BACKDOOR
+    if (val.toLowerCase() === "/admin") {
+      setSearchTerm(""); // Clears the search bar automatically
+      navigateTo('admin'); // Teleports you to the Control Panel
+    } else {
+      setSearchTerm(val); // Works like normal for regular searches
+    }
+  }} 
+  className="main-search"
+/>
           
           <div className="quick-links">
              <span>Common Tasks:</span>
@@ -421,10 +430,7 @@ function App() {
                 <Users className="dock-icon" size={24} />
                 <span className="dock-label">Our Team</span>
               </div>
-              <div className="dock-item" onClick={() => navigateTo('admin')}>
-                <Settings className="dock-icon" size={24} />
-                <span className="dock-label">Admin</span>
-              </div>
+             
             </div>
           </div>
         </div>
