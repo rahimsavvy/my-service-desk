@@ -351,6 +351,7 @@ input, select, textarea, button {
   .dock-item { width: 55px; }
 
   /* 3-in-a-row App Dashboard Layout */
+  /* 3-in-a-row App Dashboard Layout */
   .category-grid { 
     grid-template-columns: repeat(3, 1fr); 
     gap: 10px; 
@@ -361,6 +362,10 @@ input, select, textarea, button {
   .category-card h3 {
     font-size: 12px; 
     margin: 5px 0 0 0;
+  }
+  /* Hide the descriptive subtext on mobile to keep cards clean! */
+  .category-card p {
+    display: none;
   }
   .category-icon {
     font-size: 24px; 
