@@ -686,14 +686,14 @@ function App() {
         </section>
       )}
 
-      {/* TEAM PAGE */}
+     {/* TEAM PAGE */}
       {currentPage === 'team' && (
         <section className="container team-section">
-          <h2 className="section-title"><Users size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/>Meet Our Team</h2>
+          <h2 className="section-title">Meet Our Team</h2>
           <div className="manager-row">
             {teamMembers.filter(m => m.isManager).map(manager => (
               <div key={manager.name} className="team-card manager-card">
-                <div className="avatar"><Briefcase size={48} color="var(--primary)" /></div>
+                <div className="avatar">👨‍💼</div>
                 <h3>{manager.name}</h3>
                 <p className="role">{manager.role}</p>
               </div>
@@ -702,7 +702,7 @@ function App() {
           <div className="team-grid">
             {teamMembers.filter(m => !m.isManager).map(member => (
               <div key={member.name} className="team-card">
-                <div className="avatar"><User size={48} color="#666" /></div>
+                <div className="avatar">{member.gender === 'male' ? '👨‍💻' : '👩‍💻'}</div>
                 <h3>{member.name}</h3>
                 <p className="role">{member.role}</p>
               </div>
@@ -711,7 +711,6 @@ function App() {
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
         </section>
       )}
-
       {/* SCRAPBOOK PAGE */}
       {currentPage === 'scrapbook' && (
         <section className="container scrapbook-section">
