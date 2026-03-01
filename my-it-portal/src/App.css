@@ -234,13 +234,33 @@ input, select, textarea, button {
 /* ========================================= */
 /* SCRAPBOOK PAGE                            */
 /* ========================================= */
-.scrapbook-section { max-width: 700px !important; margin: 0 auto; }
+.scrapbook-section { 
+  max-width: 700px !important; 
+  margin: 50px auto; /* This adds a perfect 50px gap at the top to push it away from the blue border! */
+}
+
+/* Let's also make sure the title itself is centered perfectly */
+.scrapbook-section .section-title {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
 .scrap-input-card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 30px; display: flex; flex-direction: column; gap: 15px; border: 1px solid rgba(0,0,0,0.02); }
 .scrap-input-card textarea { width: 100%; height: 80px; padding: 15px; border-radius: 12px; border: 1px solid #e5e5ea; font-family: inherit; resize: none; font-size: 15px; box-sizing: border-box; background: #fcfcfd; outline: none; transition: 0.3s; }
 .scrap-input-card textarea:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1); }
 .scrap-feed { display: flex; flex-direction: column; gap: 20px; }
 .scrap-card { background: white; padding: 25px; border-radius: 16px; border-left: 4px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.02); text-align: left; }
-.scrap-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #86868b; }
+.scrap-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  margin-bottom: 12px; /* Adds more breathing room below the header */
+  padding-bottom: 8px; /* Adds space inside the header itself */
+  border-bottom: 1px solid #e5e5ea; /* Adds a subtle separator line */
+  font-size: 14px; 
+  color: #86868b; 
+  font-weight: 500;
+}
 .scrap-text { margin: 0; line-height: 1.6; }
 
 /* ========================================= */
@@ -262,7 +282,17 @@ input, select, textarea, button {
 /* ========================================= */
 /* PUZZLES (REFINED FOR CLOUD THEME)         */
 /* ========================================= */
-.puzzle-section { max-width: 800px !important; margin: 0 auto; }
+.puzzle-section { 
+  max-width: 800px !important; 
+  margin: 50px auto; /* Pushes it exactly 50px away from the blue header */
+}
+
+/* Centers the "IT Puzzle Zone" title perfectly */
+.puzzle-section .section-title {
+  justify-content: center; 
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
 .puzzle-card { background: #1d1d1f; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15); margin-top: 20px; }
 .terminal-header { background: #2c2c2e; padding: 12px; display: flex; gap: 8px; align-items: center; }
 .dot { width: 12px; height: 12px; border-radius: 50%; }
@@ -281,7 +311,13 @@ input, select, textarea, button {
 .news-btn:hover { background: var(--primary); transform: translateY(-2px); }
 
 .sliding-puzzle-card { background: #1d1d1f; padding: 40px 30px; border-radius: 24px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
-.sliding-grid { display: grid; grid-template-columns: repeat(3, 85px); gap: 6px; justify-content: center; background: #000; padding: 15px; border-radius: 16px; width: fit-content; margin: 0 auto; }
+/* Aligns the "IT Puzzle Zone" title to the left corner */
+.puzzle-section .section-title {
+  justify-content: flex-start; /* This pushes the text to the left */
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
 .slide-tile { background: linear-gradient(135deg, #2c2c2e, #1c1c1e); border: 1px solid #3a3a3c; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-weight: 800; font-size: 32px; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 .slide-tile:hover { background: #3a3a3c; transform: scale(0.95); }
 .empty-tile { background: transparent !important; border: 2px dashed #333; box-shadow: none; cursor: default; transform: none !important; }
