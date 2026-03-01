@@ -689,7 +689,9 @@ function App() {
      {/* TEAM PAGE */}
       {currentPage === 'team' && (
         <section className="container team-section">
-          <h2 className="section-title">Meet Our Team</h2>
+       <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '40px' }}>
+  <h2 style={{ fontSize: '32px', margin: 0, color: '#333' }}>Meet Our Team</h2>
+</div>
           <div className="manager-row">
             {teamMembers.filter(m => m.isManager).map(manager => (
               <div key={manager.name} className="team-card manager-card">
