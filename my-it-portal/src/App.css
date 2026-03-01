@@ -370,3 +370,55 @@ input, select, textarea, button {
   margin-bottom: 15px;
   letter-spacing: 1px; /* Adds a clean, modern spacing to the letters */
 }
+/* ========================================= */
+/* MOBILE RESPONSIVENESS (SMARTPHONES)       */
+/* ========================================= */
+@media (max-width: 768px) {
+  /* Shrink the giant blue header slightly for small screens */
+  .hero-section {
+    padding: 30px 15px;
+  }
+  
+  .hero-section h1 {
+    font-size: 26px;
+  }
+
+  /* Make the search bar fit nicely */
+  .main-search {
+    width: 90%;
+    font-size: 16px;
+    padding: 12px 20px;
+  }
+
+  /* Allow the quick links buttons to stack instead of overflowing */
+  .quick-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  /* Allow the IT Dock items to wrap onto a second line if needed */
+  .it-dock {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .dock-item {
+    width: 55px; /* Slightly smaller icons for mobile */
+  }
+
+  /* Stack the footer buttons vertically so they are easy to tap */
+  .footer-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .footer-btn {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
