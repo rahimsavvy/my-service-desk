@@ -1,27 +1,29 @@
 import { useState, useEffect } from 'react';
-import { 
-  Home, Link as LinkIcon, Coffee, Newspaper, Ticket, Truck, TrendingUp, 
-  IdCard, AlertTriangle, Puzzle, Book, Users, Settings, Globe, User, 
-  Lock, Wrench, Laptop, Printer, MessageSquare, Folder, Smartphone, 
-  Monitor, ClipboardList, BookOpen, Lightbulb, Cloud, Bug, Key, 
-  BarChart, Calendar, MapPin, Flame, Search, AlertOctagon, AlertCircle, 
-  FileText, Briefcase, Terminal, Square, Brain, Cpu 
+import {
+  Home, Link as LinkIcon, Coffee, Newspaper, Ticket, Truck, TrendingUp,
+  IdCard, AlertTriangle, Puzzle, Book, Users, Settings, Globe, User,
+  Lock, Wrench, Laptop, Printer, MessageSquare, Folder, Smartphone,
+  Monitor, ClipboardList, BookOpen, Lightbulb, Cloud, Bug, Key,
+  BarChart, Calendar, MapPin, Flame, Search, AlertOctagon, AlertCircle,
+  FileText, Briefcase, Terminal, Square, Brain, Cpu, ThumbsUp, Trash2
 } from 'lucide-react';
 import './App.css';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home'); 
+  const [currentPage, setCurrentPage] = useState('home');
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedArticle, setSelectedArticle] = useState(null);
-  const [showContactModal, setShowContactModal] = useState(false);
-  
+
+  /* TICKET MODAL STATE */
+  const [showTicketModal, setShowTicketModal] = useState(false);
+
   /* PUZZLE & QUIZ STATES */
   const [showQuiz, setShowQuiz] = useState(false);
   const [activePuzzle, setActivePuzzle] = useState(null);
 
   /* 1. CRYPTIC PUZZLE STATE */
-  const [newspaperGuess, setNewspaperGuess] = useState(""); 
-  const [crypticIndex, setCrypticIndex] = useState(0); 
+  const [newspaperGuess, setNewspaperGuess] = useState("");
+  const [crypticIndex, setCrypticIndex] = useState(0);
   const crypticPuzzles = [
     { clue: "Clearing this can often fix stubborn website loading issues.", answer: "CACHE" },
     { clue: "Someone else's computer where your data actually lives.", answer: "CLOUD" },
@@ -49,14 +51,31 @@ function App() {
   const [biosMessage, setBiosMessage] = useState("Press Start to Boot");
 
   /* SYSTEM STATUS STATE */
-  const [systemStatus, setSystemStatus] = useState("operational"); 
+  const [systemStatus, setSystemStatus] = useState("operational");
 
   /* SCRAPBOOK STATE */
   const [scraps, setScraps] = useState([
-    { id: 1, author: "Guest User", text: "Welcome to the new IT Scrapbook! Let's keep the team spirit high. 🚀", time: "2 hours ago" },
-    { id: 2, author: "Guest User", text: "Great job on the VPN migration yesterday, everyone!", time: "4 hours ago" }
+    { id: 1, author: "Guest User", text: "Welcome to the new IT Scrapbook! Let's keep the team spirit high. 🚀", time: "2 hours ago", upvotes: 5 },
+    { id: 2, author: "Guest User", text: "Great job on the VPN migration yesterday, everyone!", time: "4 hours ago", upvotes: 2 }
   ]);
   const [newScrap, setNewScrap] = useState("");
+
+  const handleUpvoteScrap = (id) => {
+    setScraps(scraps.map(scrap => scrap.id === id ? { ...scrap, upvotes: (scrap.upvotes || 0) + 1 } : scrap));
+  };
+
+  const handleDeleteScrap = (id) => {
+    if (window.confirm("Are you sure you want to delete this scrap?")) {
+      setScraps(scraps.filter(scrap => scrap.id !== id));
+    }
+  };
+
+  /* TICKETING ACTION */
+  const handleTicketSubmit = (e) => {
+    e.preventDefault();
+    alert("Ticket submitted successfully! IT has been notified.");
+    setShowTicketModal(false);
+  };
 
   /* ROADMAP PROJECTS DATA */
   const [projects] = useState([
@@ -67,7 +86,7 @@ function App() {
   ]);
 
   /* ========================================= */
-  /* DYNAMIC ARTICLES (RESTORED ALL CONTENT)   */
+  /* DYNAMIC ARTICLES                          */
   /* ========================================= */
   const defaultArticles = [
     { id: 1, title: "How to connect to Office WiFi", category: "Network", content: "Select 'Company_Guest' from your WiFi list. Enter the password 'Welcome2024'." },
@@ -124,7 +143,7 @@ function App() {
       setArticles([newArticle, ...articles]);
       alert("New Article Created!");
     }
-    
+
     setEditingId(null);
     setAdminForm({ title: "", category: "Network", content: "" });
   };
@@ -132,7 +151,7 @@ function App() {
   const handleAdminEdit = (article) => {
     setEditingId(article.id);
     setAdminForm({ title: article.title, category: article.category, content: article.content });
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
   };
 
   const handleAdminDelete = (id) => {
@@ -146,15 +165,11 @@ function App() {
     setAdminForm({ title: "", category: "Network", content: "" });
   };
 
-  /* NEW: Restore Defaults Function */
   /* DATABASE EXPORT/IMPORT LOGIC */
   const handleExportDB = () => {
-    // 1. Convert the articles array to a JSON string
     const dataStr = JSON.stringify(articles, null, 2);
-    // 2. Create a virtual file (Blob)
     const blob = new Blob([dataStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    // 3. Create a hidden download link and click it
     const link = document.createElement('a');
     link.href = url;
     link.download = `IT_KB_Backup_${new Date().toISOString().split('T')[0]}.json`;
@@ -182,10 +197,9 @@ function App() {
       }
     };
     reader.readAsText(file);
-    
-    // Reset the input so you can upload the same file again if needed
-    event.target.value = null; 
+    event.target.value = null;
   };
+
   const handleRestoreDefaults = () => {
     if (window.confirm("This will erase any new articles you created and restore the original comprehensive IT list. Do you want to proceed?")) {
       setArticles(defaultArticles);
@@ -238,11 +252,11 @@ function App() {
 
   const handleMemoryClick = (index) => {
     if (memoryLock || memoryCards[index].flipped || memoryCards[index].matched) return;
-    
+
     const newCards = [...memoryCards];
     newCards[index].flipped = true;
     setMemoryCards(newCards);
-    
+
     const newFlipped = [...flippedIndices, index];
     setFlippedIndices(newFlipped);
 
@@ -317,7 +331,7 @@ function App() {
 
   const handlePostScrap = () => {
     if (!newScrap.trim()) return;
-    const post = { id: Date.now(), author: "Guest User", text: newScrap, time: "Just now" };
+    const post = { id: Date.now(), author: "Guest User", text: newScrap, time: "Just now", upvotes: 0 };
     setScraps([post, ...scraps]);
     setNewScrap("");
   };
@@ -335,7 +349,7 @@ function App() {
     { name: "Macintosh HD", icon: <Monitor size={32} />, desc: "MacOS & Apple Support" }
   ];
 
-  const filteredArticles = articles.filter(art => 
+  const filteredArticles = articles.filter(art =>
     art.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     art.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -354,30 +368,30 @@ function App() {
           <span className="status-text">{systemStatus === 'operational' ? 'System Operational' : 'Active Outage'}</span>
         </div>
 
-        <h1 onClick={() => navigateTo('home')} style={{cursor: 'pointer'}}>IT Knowledge Base</h1>
+        <h1 onClick={() => navigateTo('home')} style={{ cursor: 'pointer' }}>IT Knowledge Base</h1>
         <div className="search-wrapper">
-          <input 
-  type="text" 
-  placeholder="Search for help..." 
-  value={searchTerm}
-  onChange={(e) => {
-    const val = e.target.value;
-    // THE IT NINJA BACKDOOR
-    if (val.toLowerCase() === "/admin") {
-      setSearchTerm(""); // Clears the search bar automatically
-      navigateTo('admin'); // Teleports you to the Control Panel
-    } else {
-      setSearchTerm(val); // Works like normal for regular searches
-    }
-  }} 
-  className="main-search"
-/>
-          
+          <input
+            type="text"
+            placeholder="Search for help..."
+            value={searchTerm}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val.toLowerCase() === "/admin") {
+                setSearchTerm("");
+                navigateTo('admin');
+              } else {
+                setSearchTerm(val);
+              }
+            }}
+            className="main-search"
+          />
+
           <div className="quick-links">
-             <span className="hide-on-mobile">Common Tasks:</span>
-             <button onClick={() => {setSearchTerm("WiFi"); navigateTo('home');}}><Globe size={14} style={{marginRight: '5px', verticalAlign: 'middle'}}/>Connect WiFi</button>
-             <button onClick={() => {setSearchTerm("Password"); navigateTo('home');}}><User size={14} style={{marginRight: '5px', verticalAlign: 'middle'}}/>Reset Password</button>
-             <button onClick={() => {setSearchTerm("VPN"); navigateTo('home');}}><Lock size={14} style={{marginRight: '5px', verticalAlign: 'middle'}}/>VPN Help</button>
+            <span className="hide-on-mobile">Common Tasks:</span>
+            <button onClick={() => setShowTicketModal(true)}>🎫 Submit a Ticket</button>
+            <button onClick={() => { setSearchTerm("WiFi"); navigateTo('home'); }}><Globe size={14} style={{ marginRight: '5px', verticalAlign: 'middle' }} />Connect WiFi</button>
+            <button onClick={() => { setSearchTerm("Password"); navigateTo('home'); }}><User size={14} style={{ marginRight: '5px', verticalAlign: 'middle' }} />Reset Password</button>
+            <button onClick={() => { setSearchTerm("VPN"); navigateTo('home'); }}><Lock size={14} style={{ marginRight: '5px', verticalAlign: 'middle' }} />VPN Help</button>
           </div>
 
           <div className="it-dock-container">
@@ -430,7 +444,7 @@ function App() {
                 <Users className="dock-icon" size={24} />
                 <span className="dock-label">Our Team</span>
               </div>
-             
+
             </div>
           </div>
         </div>
@@ -456,7 +470,7 @@ function App() {
                 <button onClick={() => setSearchTerm("")} className="clear-link">✕ Clear Search</button>
               </div>
               <div className="article-list-v2">
-                {filteredArticles.length === 0 ? <p style={{color: '#666'}}>No articles found. Try another search.</p> : null}
+                {filteredArticles.length === 0 ? <p style={{ color: '#666' }}>No articles found. Try another search.</p> : null}
                 {filteredArticles.map(article => (
                   <div key={article.id} className="article-row-card" onClick={() => setSelectedArticle(article)}>
                     <span className="badge-v2">{article.category}</span>
@@ -473,39 +487,35 @@ function App() {
       {/* ADMIN CONTROL PANEL PAGE */}
       {currentPage === 'admin' && (
         <section className="container admin-container">
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px', borderBottom: '1px solid #e5e5ea', paddingBottom: '20px', flexWrap: 'wrap', gap: '15px'}}>
-  <h2 style={{margin: 0, fontSize: '32px', fontWeight: 800, background: 'linear-gradient(135deg, #1d1d1f, #555555)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
-    <Settings size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/> KB Control Panel
-  </h2>
-  
-  <div style={{display: 'flex', gap: '10px'}}>
-    {/* Hidden file input for importing */}
-    <input type="file" id="import-db" style={{display: 'none'}} accept=".json" onChange={handleImportDB} />
-    
-    <button className="clear-link" onClick={() => document.getElementById('import-db').click()} style={{color: '#0056b3', borderColor: '#cce5ff', background: '#e6f2ff'}}>
-      📤 Import 
-    </button>
-    
-    <button className="clear-link" onClick={handleExportDB} style={{color: '#2e7d32', borderColor: '#c8e6c9', background: '#e8f5e9'}}>
-      📥 Export
-    </button>
-    
-    <button className="clear-link" onClick={handleRestoreDefaults} style={{color: '#d32f2f', borderColor: '#ffcdd2', background: '#ffebee'}}>
-      ⚠️ Restore Defaults
-    </button>
-  </div>
-</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px', borderBottom: '1px solid #e5e5ea', paddingBottom: '20px', flexWrap: 'wrap', gap: '15px' }}>
+            <h2 style={{ margin: 0, fontSize: '32px', fontWeight: 800, background: 'linear-gradient(135deg, #1d1d1f, #555555)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              <Settings size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} /> KB Control Panel
+            </h2>
+
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <input type="file" id="import-db" style={{ display: 'none' }} accept=".json" onChange={handleImportDB} />
+              <button className="clear-link" onClick={() => document.getElementById('import-db').click()} style={{ color: '#0056b3', borderColor: '#cce5ff', background: '#e6f2ff' }}>
+                📤 Import
+              </button>
+              <button className="clear-link" onClick={handleExportDB} style={{ color: '#2e7d32', borderColor: '#c8e6c9', background: '#e8f5e9' }}>
+                📥 Export
+              </button>
+              <button className="clear-link" onClick={handleRestoreDefaults} style={{ color: '#d32f2f', borderColor: '#ffcdd2', background: '#ffebee' }}>
+                ⚠️ Restore Defaults
+              </button>
+            </div>
+          </div>
           <div className="admin-grid">
             <div className="admin-form-card">
               <h3>{editingId ? "Edit Article" : "Create New Article"}</h3>
               <label>Article Title</label>
-              <input type="text" value={adminForm.title} onChange={e => setAdminForm({...adminForm, title: e.target.value})} placeholder="e.g. How to install Photoshop"/>
+              <input type="text" value={adminForm.title} onChange={e => setAdminForm({ ...adminForm, title: e.target.value })} placeholder="e.g. How to install Photoshop" />
               <label>Category</label>
-              <select value={adminForm.category} onChange={e => setAdminForm({...adminForm, category: e.target.value})}>
+              <select value={adminForm.category} onChange={e => setAdminForm({ ...adminForm, category: e.target.value })}>
                 {categories.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
               </select>
               <label>Content / Instructions</label>
-              <textarea value={adminForm.content} onChange={e => setAdminForm({...adminForm, content: e.target.value})} placeholder="Write the step-by-step instructions here..." rows="6"/>
+              <textarea value={adminForm.content} onChange={e => setAdminForm({ ...adminForm, content: e.target.value })} placeholder="Write the step-by-step instructions here..." rows="6" />
               <div className="admin-form-actions">
                 {editingId && <button className="clear-link" onClick={handleAdminCancel}>Cancel Edit</button>}
                 <button className="post-btn" onClick={handleAdminSave}>{editingId ? "Update Article" : "Publish Article"}</button>
@@ -537,7 +547,7 @@ function App() {
       {/* REFRESHMENT PAGE */}
       {currentPage === 'refreshment' && (
         <section className="container">
-          <h2 className="section-title"><Coffee size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/>Refreshment Corner</h2>
+          <h2 className="section-title"><Coffee size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />Refreshment Corner</h2>
           {!showQuiz ? (
             <div className="category-grid">
               <div className="category-card" onClick={() => setShowQuiz(true)}>
@@ -570,17 +580,17 @@ function App() {
                 <span className="terminal-title">weekly_assessment.exe</span>
               </div>
               <div className="terminal-body">
-                <p className="terminal-text" style={{color: '#00ff00', fontFamily: 'monospace'}}>>> QUESTION: Which port is typically used for secure web traffic (HTTPS)?</p>
-                <div className="puzzle-input-area" style={{marginTop: '20px', display: 'flex', gap: '10px', alignItems: 'center'}}>
-                  <span style={{color: '#00ff00'}}>$</span>
-                  <input type="text" placeholder="Enter port number..." id="quizInput" autoComplete="off" style={{background: 'transparent', border: 'none', borderBottom: '2px solid #00ff00', color: '#fff', outline: 'none', padding: '5px'}}/>
+                <p className="terminal-text" style={{ color: '#00ff00', fontFamily: 'monospace' }}>&gt;&gt; QUESTION: Which port is typically used for secure web traffic (HTTPS)?</p>
+                <div className="puzzle-input-area" style={{ marginTop: '20px', display: 'flex', gap: '10px', alignItems: 'center' }}>
+                  <span style={{ color: '#00ff00' }}>$</span>
+                  <input type="text" placeholder="Enter port number..." id="quizInput" autoComplete="off" style={{ background: 'transparent', border: 'none', borderBottom: '2px solid #00ff00', color: '#fff', outline: 'none', padding: '5px' }} />
                   <button className="post-btn" onClick={() => {
                     const val = document.getElementById('quizInput').value.trim();
-                    if(val === "443") { alert("✅ Correct! You've mastered secure protocols."); setShowQuiz(false); } 
+                    if (val === "443") { alert("✅ Correct! You've mastered secure protocols."); setShowQuiz(false); }
                     else { alert("❌ Incorrect. Hint: It's the standard for SSL."); }
                   }}>Submit</button>
                 </div>
-                <button className="clear-link" style={{marginTop: '20px'}} onClick={() => setShowQuiz(false)}>Cancel Quiz</button>
+                <button className="clear-link" style={{ marginTop: '20px' }} onClick={() => setShowQuiz(false)}>Cancel Quiz</button>
               </div>
             </div>
           )}
@@ -591,7 +601,7 @@ function App() {
       {/* LINKS PAGE */}
       {currentPage === 'links' && (
         <section className="container">
-          <h2 className="section-title"><LinkIcon size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/>Quick Access Links</h2>
+          <h2 className="section-title"><LinkIcon size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />Quick Access Links</h2>
           <div className="category-grid">
             <div className="category-card" onClick={() => window.open('https://portal.azure.com', '_blank')}><div className="category-icon"><Cloud size={32} /></div><h3>Azure Portal</h3><p>Manage users & cloud resources.</p></div>
             <div className="category-card" onClick={() => window.open('https://admin.google.com', '_blank')}><div className="category-icon"><Wrench size={32} /></div><h3>Google Admin</h3><p>Workspace management.</p></div>
@@ -607,7 +617,7 @@ function App() {
       {/* DISPATCH PAGE */}
       {currentPage === 'dispatch' && (
         <section className="container">
-          <h2 className="section-title"><Truck size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/>Dispatch Command</h2>
+          <h2 className="section-title"><Truck size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />Dispatch Command</h2>
           <div className="category-grid">
             <div className="category-card" onClick={() => alert("Reports module loading...")}><div className="category-icon"><BarChart size={32} /></div><h3>Reports</h3><p>View daily dispatch logs and performance metrics.</p></div>
             <div className="category-card" onClick={() => alert("Schedule module loading...")}><div className="category-icon"><Calendar size={32} /></div><h3>Schedule</h3><p>View shift rotations, on-call assignments, and availability.</p></div>
@@ -620,7 +630,7 @@ function App() {
       {/* WANTED TICKETS PAGE */}
       {currentPage === 'wanted' && (
         <section className="container">
-          <h2 className="section-title"><Ticket size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/>Wanted Tickets</h2>
+          <h2 className="section-title"><Ticket size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />Wanted Tickets</h2>
           <div className="category-grid">
             <div className="category-card" onClick={() => alert("Loading Top Call Drivers analytics...")}><div className="category-icon"><Flame size={32} /></div><h3>Top Call Drivers</h3><p>Identify the most frequent issues spiking the help desk volume.</p></div>
             <div className="category-card" onClick={() => alert("Opening Investigation Board...")}><div className="category-icon"><Search size={32} /></div><h3>Investigation</h3><p>Deep dive into complex incidents requiring root cause analysis.</p></div>
@@ -632,25 +642,25 @@ function App() {
 
       {/* LINEAR PAGE */}
       {currentPage === 'linear' && (
-        <section className="container" style={{maxWidth: '800px'}}>
-          <h2 className="section-title"><TrendingUp size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/>IT Project Roadmap</h2>
+        <section className="container" style={{ maxWidth: '800px' }}>
+          <h2 className="section-title"><TrendingUp size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />IT Project Roadmap</h2>
           <div className="roadmap-list">
             {projects.map(proj => (
               <div key={proj.id} className="project-card">
                 <div className="project-header">
                   <div>
                     <span className="project-id">{proj.id}</span>
-                    <h3 style={{margin: '5px 0 0 0', color: '#333'}}>{proj.title}</h3>
+                    <h3 style={{ margin: '5px 0 0 0', color: '#333' }}>{proj.title}</h3>
                   </div>
                   <span className={`status-badge status-${proj.status.replace(/\s+/g, '')}`}>{proj.status}</span>
                 </div>
-                <div className="progress-container" style={{marginTop: '15px'}}>
-                  <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#666', marginBottom: '5px'}}>
+                <div className="progress-container" style={{ marginTop: '15px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#666', marginBottom: '5px' }}>
                     <span>Progress</span>
                     <span>{proj.progress}%</span>
                   </div>
                   <div className="progress-bg">
-                    <div className="progress-fill" style={{width: `${proj.progress}%`}}></div>
+                    <div className="progress-fill" style={{ width: `${proj.progress}%` }}></div>
                   </div>
                 </div>
               </div>
@@ -663,7 +673,7 @@ function App() {
       {/* EMPLOYEE SELF SERVICE PAGE */}
       {currentPage === 'ess' && (
         <section className="container">
-          <h2 className="section-title"><IdCard size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/>Employee Self Service</h2>
+          <h2 className="section-title"><IdCard size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />Employee Self Service</h2>
           <div className="category-grid">
             <div className="category-card" onClick={() => alert("Redirecting to HR Portal...")}><div className="category-icon"><Users size={32} /></div><h3>HR Portal</h3><p>Access pay stubs, benefits, and time-off requests.</p></div>
             <div className="category-card" onClick={() => alert("Opening My Assets...")}><div className="category-icon"><Laptop size={32} /></div><h3>My Assets</h3><p>View assigned laptops, monitors, and peripherals.</p></div>
@@ -676,7 +686,7 @@ function App() {
       {/* OUTAGES PAGE */}
       {currentPage === 'outages' && (
         <section className="container">
-          <h2 className="section-title"><AlertTriangle size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/>System Status & Outages</h2>
+          <h2 className="section-title"><AlertTriangle size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />System Status & Outages</h2>
           <div className="category-grid">
             <div className="category-card" onClick={() => alert("Fetching live status dashboard...")}><div className="category-icon"><AlertCircle size={32} /></div><h3>Current Affected Services</h3><p>Real-time dashboard of active incidents and degraded systems.</p></div>
             <div className="category-card" onClick={() => alert("Opening maintenance calendar...")}><div className="category-icon"><Calendar size={32} /></div><h3>Planned Maintenance</h3><p>Upcoming scheduled downtime and system upgrades.</p></div>
@@ -686,12 +696,13 @@ function App() {
         </section>
       )}
 
-     {/* TEAM PAGE */}
+      {/* TEAM PAGE */}
       {currentPage === 'team' && (
         <section className="container team-section">
-       <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '40px' }}>
-  <h2 style={{ fontSize: '32px', margin: 0, color: '#333' }}>Meet Our Team</h2>
-</div>
+          <h2 className="section-title">
+            <Users size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />
+            Meet Our Team
+          </h2>
           <div className="manager-row">
             {teamMembers.filter(m => m.isManager).map(manager => (
               <div key={manager.name} className="team-card manager-card">
@@ -713,19 +724,33 @@ function App() {
           <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
         </section>
       )}
+
       {/* SCRAPBOOK PAGE */}
       {currentPage === 'scrapbook' && (
         <section className="container scrapbook-section">
-          <h2 className="section-title"><Book size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/>Team Scrapbook</h2>
+          <h2 className="section-title"><Book size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />Team Scrapbook</h2>
           <div className="scrap-input-card">
-            <textarea placeholder="Post a scrap to the team..." value={newScrap} onChange={(e) => setNewScrap(e.target.value)}/>
+            <textarea placeholder="Post a scrap to the team..." value={newScrap} onChange={(e) => setNewScrap(e.target.value)} />
             <button className="post-btn" onClick={handlePostScrap}>Post Scrap</button>
           </div>
           <div className="scrap-feed">
             {scraps.map(scrap => (
               <div key={scrap.id} className="scrap-card">
-                <div className="scrap-header"><strong>{scrap.author}</strong><span className="scrap-time">{scrap.time}</span></div>
+                <div className="scrap-header">
+                  <strong>{scrap.author}</strong>
+                  <span className="scrap-time">{scrap.time}</span>
+                </div>
                 <p className="scrap-text">{scrap.text}</p>
+                <div className="scrap-actions">
+                  <button className="btn-upvote" onClick={() => handleUpvoteScrap(scrap.id)}>
+                    <ThumbsUp size={14} style={{ marginRight: '5px', verticalAlign: 'middle' }} />
+                    {scrap.upvotes || 0}
+                  </button>
+                  <button className="btn-delete-scrap" onClick={() => handleDeleteScrap(scrap.id)}>
+                    <Trash2 size={14} style={{ marginRight: '5px', verticalAlign: 'middle' }} />
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -736,7 +761,7 @@ function App() {
       {/* WHATS NEW PAGE */}
       {currentPage === 'whatsnew' && (
         <section className="container">
-          <h2 className="section-title"><Newspaper size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/>What's New</h2>
+          <h2 className="section-title"><Newspaper size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />What's New</h2>
           <div className="article-list-v2">
             <div className="article-row-card"><span className="badge-v2">Newsletter</span><h3>Monthly IT Hub Update - Feb 2026</h3><p className="sub-text-v2">Major updates to the knowledge base and upcoming team dinner!</p></div>
             <div className="article-row-card"><span className="badge-v2">Alert</span><h3>System Maintenance Schedule</h3><p className="sub-text-v2">Scheduled downtime for the internal portal this weekend at 12 AM.</p></div>
@@ -748,7 +773,7 @@ function App() {
       {/* PUZZLE ZONE PAGE */}
       {currentPage === 'puzzle' && (
         <section className="container puzzle-section">
-          <h2 className="section-title"><Puzzle size={28} style={{verticalAlign: 'bottom', marginRight: '10px'}}/>IT Puzzle Zone</h2>
+          <h2 className="section-title"><Puzzle size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />IT Puzzle Zone</h2>
           {!activePuzzle ? (
             <>
               <div className="category-grid" style={{ marginTop: '20px' }}>
@@ -764,25 +789,25 @@ function App() {
             <div>
               {/* TERMINAL */}
               {activePuzzle === 'terminal' && (
-                <div className="puzzle-card"><div className="terminal-body"><p className="terminal-text">>> HEX_STRING: 73 68 75 74 20 64 6f 77 6e</p><input id="puzzleInput" type="text" placeholder="Decrypt..." style={{background:'transparent', color:'white', border:'none', borderBottom:'1px solid lime'}} /><button className="post-btn" onClick={()=>{if(document.getElementById('puzzleInput').value.trim().toLowerCase()==='shut down') alert('Access Granted')}}>Execute</button></div></div>
+                <div className="puzzle-card"><div className="terminal-body"><p className="terminal-text">&gt;&gt; HEX_STRING: 73 68 75 74 20 64 6f 77 6e</p><input id="puzzleInput" type="text" placeholder="Decrypt..." style={{ background: 'transparent', color: 'white', border: 'none', borderBottom: '1px solid lime' }} /><button className="post-btn" onClick={() => { if (document.getElementById('puzzleInput').value.trim().toLowerCase() === 'shut down') alert('Access Granted') }}>Execute</button></div></div>
               )}
               {/* CRYPTIC */}
               {activePuzzle === 'cryptic' && (
-                <div className="newspaper-card"><div className="news-header"><h2>Daily Cryptic</h2></div><p>{currentPuzzle.clue} ({currentPuzzle.answer.length} letters)</p><div className="news-input-area"><input className="news-input" value={newspaperGuess} onChange={e=>setNewspaperGuess(e.target.value.toUpperCase())} /><button className="news-btn" onClick={()=>{if(newspaperGuess===currentPuzzle.answer) alert("Correct!")}}>Check</button></div></div>
+                <div className="newspaper-card"><div className="news-header"><h2>Daily Cryptic</h2></div><p>{currentPuzzle.clue} ({currentPuzzle.answer.length} letters)</p><div className="news-input-area"><input className="news-input" value={newspaperGuess} onChange={e => setNewspaperGuess(e.target.value.toUpperCase())} /><button className="news-btn" onClick={() => { if (newspaperGuess === currentPuzzle.answer) alert("Correct!") }}>Check</button></div></div>
               )}
               {/* SLIDING */}
               {activePuzzle === 'sliding' && (
-                <div className="sliding-puzzle-card"><div className="sliding-grid">{slidingTiles.map((t,i)=><div key={i} className={`slide-tile ${t===9?'empty-tile':''}`} onClick={()=>handleTileClick(i)}>{t!==9 && getTileChar(t)}</div>)}</div></div>
+                <div className="sliding-puzzle-card"><div className="sliding-grid">{slidingTiles.map((t, i) => <div key={i} className={`slide-tile ${t === 9 ? 'empty-tile' : ''}`} onClick={() => handleTileClick(i)}>{t !== 9 && getTileChar(t)}</div>)}</div></div>
               )}
               {/* MEMORY */}
               {activePuzzle === 'memory' && (
-                <div className="memory-wrapper" style={{textAlign: 'center', marginTop: '20px'}}><div className="memory-grid">{memoryCards.map((card, index) => (<div key={index} className={`memory-card ${card.flipped || card.matched ? 'flipped' : ''}`} onClick={() => handleMemoryClick(index)}><div className="memory-front">❓</div><div className="memory-back">{card.icon}</div></div>))}</div><button className="post-btn" style={{marginTop: '20px'}} onClick={initMemoryGame}>Reset Cache</button></div>
+                <div className="memory-wrapper" style={{ textAlign: 'center', marginTop: '20px' }}><div className="memory-grid">{memoryCards.map((card, index) => (<div key={index} className={`memory-card ${card.flipped || card.matched ? 'flipped' : ''}`} onClick={() => handleMemoryClick(index)}><div className="memory-front">❓</div><div className="memory-back">{card.icon}</div></div>))}</div><button className="post-btn" style={{ marginTop: '20px' }} onClick={initMemoryGame}>Reset Cache</button></div>
               )}
               {/* BIOS */}
               {activePuzzle === 'bios' && (
-                <div className="bios-wrapper" style={{textAlign: 'center', marginTop: '30px', background: '#222', padding: '40px', borderRadius: '12px', border: '2px solid #444'}}><h2 style={{color: '#0f0', fontFamily: 'monospace', marginBottom: '30px'}}>{biosMessage}</h2><div className="bios-grid" style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', maxWidth: '300px', margin: '0 auto'}}>{colors.map(color => (<div key={color} className={`bios-btn ${color} ${flashColor === color ? 'flash' : ''}`} onClick={() => handleBiosClick(color)} style={{height: '100px', borderRadius: '8px', cursor: 'pointer', opacity: flashColor === color ? 1 : 0.4, border: '2px solid white'}}></div>))}</div>{!sequence.length && <button className="post-btn" style={{marginTop: '30px'}} onClick={startBiosGame}>Start Boot</button>}</div>
+                <div className="bios-wrapper" style={{ textAlign: 'center', marginTop: '30px', background: '#222', padding: '40px', borderRadius: '12px', border: '2px solid #444' }}><h2 style={{ color: '#0f0', fontFamily: 'monospace', marginBottom: '30px' }}>{biosMessage}</h2><div className="bios-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', maxWidth: '300px', margin: '0 auto' }}>{colors.map(color => (<div key={color} className={`bios-btn ${color} ${flashColor === color ? 'flash' : ''}`} onClick={() => handleBiosClick(color)} style={{ height: '100px', borderRadius: '8px', cursor: 'pointer', opacity: flashColor === color ? 1 : 0.4, border: '2px solid white' }}></div>))}</div>{!sequence.length && <button className="post-btn" style={{ marginTop: '30px' }} onClick={startBiosGame}>Start Boot</button>}</div>
               )}
-              <button className="back-btn" style={{marginTop: '40px'}} onClick={() => setActivePuzzle(null)}>← Back to Puzzles</button>
+              <button className="back-btn" style={{ marginTop: '40px' }} onClick={() => setActivePuzzle(null)}>← Back to Puzzles</button>
             </div>
           )}
         </section>
@@ -793,6 +818,7 @@ function App() {
         <div className="footer-content">
           <h2>Still need help?</h2>
           <div className="footer-buttons">
+            <button onClick={() => setShowTicketModal(true)} className="footer-btn" style={{ border: 'none', background: 'white', color: '#1d1d1f' }}>Submit Ticket</button>
             <a href="mailto:support@company.com" className="footer-btn">Email Support</a>
             <a href="tel:18776602041" className="footer-btn">Call 1-877-660-2041</a>
             <a href="mailto:kb-feedback@company.com" className="footer-btn">Feed your KB</a>
@@ -810,6 +836,54 @@ function App() {
             <h2>{selectedArticle.title}</h2>
             <div className="modal-divider"></div>
             <p className="modal-body-text">{selectedArticle.content}</p>
+          </div>
+        </div>
+      )}
+
+      {/* THE ONLY TICKET SUBMISSION MODAL */}
+      {showTicketModal && (
+        <div className="modal-overlay" onClick={() => setShowTicketModal(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowTicketModal(false)}>&times;</button>
+            <h2>Submit Support Ticket</h2>
+            <div className="modal-divider"></div>
+
+            <form onSubmit={handleTicketSubmit} className="ticket-form">
+              <div>
+                <label>Issue Title</label>
+                <input type="text" placeholder="E.g., Monitor won't turn on" required />
+              </div>
+
+              <div style={{ display: 'flex', gap: '15px' }}>
+                <div style={{ flex: 1 }}>
+                  <label>Category</label>
+                  <select required>
+                    <option value="">Select an option</option>
+                    <option value="network">Network/Wi-Fi</option>
+                    <option value="account">Account Access</option>
+                    <option value="hardware">Hardware Issue</option>
+                    <option value="software">Software Request</option>
+                  </select>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label>Priority</label>
+                  <select required>
+                    <option value="low">Low - Routine Request</option>
+                    <option value="medium">Medium - Hindering Work</option>
+                    <option value="high">High - Work Stoppage</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label>Description</label>
+                <textarea rows="4" placeholder="Please describe the issue in detail..." required></textarea>
+              </div>
+
+              <button type="submit" className="post-btn" style={{ width: '100%', marginTop: '10px' }}>
+                Submit Ticket
+              </button>
+            </form>
           </div>
         </div>
       )}
