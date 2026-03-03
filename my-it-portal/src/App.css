@@ -1400,6 +1400,13 @@ button {
     padding: 6px 10px;
   }
 
+  .diagnostic-indicator {
+    top: 15px;
+    left: 15px;
+    padding: 8px;
+    /* Circular pill for mobile */
+  }
+
   .status-text {
     font-size: 11px;
   }
