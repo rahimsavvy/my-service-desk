@@ -5,7 +5,7 @@ import {
   Lock, Wrench, Laptop, Printer, MessageSquare, Folder, Smartphone,
   Monitor, ClipboardList, BookOpen, Lightbulb, Cloud, Bug, Key,
   BarChart, Calendar, MapPin, Flame, Search, AlertOctagon, AlertCircle,
-  FileText, Briefcase, Terminal, Square, Brain, Cpu, ThumbsUp, Trash2
+  FileText, Briefcase, Terminal, Square, Brain, Cpu, ThumbsUp, Trash2, Activity
 } from 'lucide-react';
 import './App.css';
 
@@ -58,6 +58,37 @@ function App() {
 
   /* SYSTEM STATUS STATE */
   const [systemStatus, setSystemStatus] = useState("operational");
+
+  /* NETWORK DIAGNOSTIC STATE */
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanLogs, setScanLogs] = useState([]);
+  const [scanProgress, setScanProgress] = useState(0);
+
+  const runDiagnostics = async () => {
+    setIsScanning(true);
+    setScanLogs(["Initializing network adapter..."]);
+    setScanProgress(10);
+    await new Promise(r => setTimeout(r, 800));
+
+    setScanLogs(prev => [...prev, "Pinging default gateway (192.168.1.1)... OK (2ms)"]);
+    setScanProgress(35);
+    await new Promise(r => setTimeout(r, 1000));
+
+    setScanLogs(prev => [...prev, "Resolving DNS (8.8.8.8)... OK (14ms)"]);
+    setScanProgress(60);
+    await new Promise(r => setTimeout(r, 1200));
+
+    setScanLogs(prev => [...prev, "Testing outbound traffic on Port 443... OK"]);
+    setScanProgress(85);
+    await new Promise(r => setTimeout(r, 900));
+
+    setScanLogs(prev => [...prev, "Analyzing packet loss... 0% loss detected."]);
+    setScanProgress(100);
+    await new Promise(r => setTimeout(r, 500));
+
+    setScanLogs(prev => [...prev, "✅ DIAGNOSTIC COMPLETE: Network connection is optimal."]);
+    setIsScanning(false);
+  };
 
   /* SCRAPBOOK STATE */
   const [scraps, setScraps] = useState([
@@ -405,6 +436,10 @@ function App() {
               <div className="dock-item" onClick={() => navigateTo('home')}>
                 <Home className="dock-icon" size={24} />
                 <span className="dock-label">Home</span>
+              </div>
+              <div className="dock-item" onClick={() => navigateTo('diagnostic')}>
+                <Activity className="dock-icon" size={24} />
+                <span className="dock-label">Network</span>
               </div>
               <div className="dock-item" onClick={() => navigateTo('links')}>
                 <LinkIcon className="dock-icon" size={24} />
@@ -871,6 +906,47 @@ function App() {
           )}
         </section>
       )}
+
+      {/* DIAGNOSTIC PAGE */}
+      {currentPage === 'diagnostic' && (
+        <section className="container puzzle-section">
+          <h2 className="section-title">
+            <Activity size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />
+            Network Diagnostics
+          </h2>
+          <div className="puzzle-card">
+            <div className="terminal-header">
+              <span className="dot red"></span>
+              <span className="dot yellow"></span>
+              <span className="dot green"></span>
+              <span className="terminal-title">sys_diag.exe</span>
+            </div>
+            <div className="terminal-body" style={{ minHeight: '350px', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ flex: 1, overflowY: 'auto', marginBottom: '20px', textAlign: 'left' }}>
+                <p className="terminal-text" style={{ color: '#86868b' }}>&gt;&gt; Ready to analyze local network conditions...</p>
+                {scanLogs.map((log, index) => (
+                  <p key={index} className="terminal-text" style={{ color: log.includes('✅') ? '#34c759' : '#00ff00', marginTop: '10px' }}>
+                    &gt;&gt; {log}
+                  </p>
+                ))}
+                {isScanning && <p className="terminal-text" style={{ color: '#00ff00', marginTop: '10px', animation: 'pulse 1s infinite' }}>_</p>}
+              </div>
+
+              <div className="progress-bg" style={{ marginBottom: '25px', background: '#333' }}>
+                <div className="progress-fill" style={{ width: `${scanProgress}%`, background: scanProgress === 100 ? '#34c759' : 'linear-gradient(90deg, #007AFF, #00C6FF)' }}></div>
+              </div>
+
+              <button className="post-btn" onClick={runDiagnostics} disabled={isScanning} style={{ opacity: isScanning ? 0.5 : 1 }}>
+                {isScanning ? 'Scanning...' : scanProgress === 100 ? 'Run Diagnostics Again' : 'Start Diagnostic Scan'}
+              </button>
+            </div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
+          </div>
+        </section>
+      )}
+
 
       {/* FOOTER */}
       <footer className="support-footer">
