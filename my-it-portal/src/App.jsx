@@ -50,6 +50,12 @@ function App() {
   const [flashColor, setFlashColor] = useState(null);
   const [biosMessage, setBiosMessage] = useState("Press Start to Boot");
 
+  /* 5. PORT MAPPER STATE */
+  const [portGuesses, setPortGuesses] = useState({ ftp: "", ssh: "", dns: "", http: "" });
+
+  /* 6. PACKET SNIFFER STATE */
+  const [packetGuess, setPacketGuess] = useState("");
+
   /* SYSTEM STATUS STATE */
   const [systemStatus, setSystemStatus] = useState("operational");
 
@@ -782,6 +788,16 @@ function App() {
                 <div className="category-card" onClick={() => setActivePuzzle('sliding')}><div className="category-icon"><Square size={32} /></div><h3>Server Rack</h3><p>Restore the Firewall.</p></div>
                 <div className="category-card" onClick={() => { setActivePuzzle('memory'); initMemoryGame(); }}><div className="category-icon"><Brain size={32} /></div><h3>Cache Flush</h3><p>Clear memory blocks.</p></div>
                 <div className="category-card" onClick={() => setActivePuzzle('bios')}><div className="category-icon"><Cpu size={32} /></div><h3>BIOS Sequence</h3><p>Memorize the boot pattern.</p></div>
+                <div className="category-card" onClick={() => setActivePuzzle('ports')}>
+                  <div className="category-icon"><Globe size={32} /></div>
+                  <h3>Port Mapper</h3>
+                  <p>Assign default ports.</p>
+                </div>
+                <div className="category-card" onClick={() => setActivePuzzle('packet')}>
+                  <div className="category-icon"><Lock size={32} /></div>
+                  <h3>Packet Sniffer</h3>
+                  <p>Decode the payload.</p>
+                </div>
               </div>
               <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
             </>
@@ -807,6 +823,49 @@ function App() {
               {activePuzzle === 'bios' && (
                 <div className="bios-wrapper" style={{ textAlign: 'center', marginTop: '30px', background: '#222', padding: '40px', borderRadius: '12px', border: '2px solid #444' }}><h2 style={{ color: '#0f0', fontFamily: 'monospace', marginBottom: '30px' }}>{biosMessage}</h2><div className="bios-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', maxWidth: '300px', margin: '0 auto' }}>{colors.map(color => (<div key={color} className={`bios-btn ${color} ${flashColor === color ? 'flash' : ''}`} onClick={() => handleBiosClick(color)} style={{ height: '100px', borderRadius: '8px', cursor: 'pointer', opacity: flashColor === color ? 1 : 0.4, border: '2px solid white' }}></div>))}</div>{!sequence.length && <button className="post-btn" style={{ marginTop: '30px' }} onClick={startBiosGame}>Start Boot</button>}</div>
               )}
+
+              {/* PORT MAPPER */}
+              {activePuzzle === 'ports' && (
+                <div className="newspaper-card">
+                  <div className="news-header"><h2>Port Configuration</h2></div>
+                  <p style={{ marginBottom: '25px', color: '#666' }}>Assign the correct default ports to restore connectivity.</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '250px', margin: '0 auto', textAlign: 'left', fontWeight: 'bold' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>FTP:</span><input type="number" style={{ width: '80px', padding: '8px', borderRadius: '8px', border: '2px solid #e5e5ea', textAlign: 'center' }} value={portGuesses.ftp} onChange={e => setPortGuesses({ ...portGuesses, ftp: e.target.value })} /></div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>SSH:</span><input type="number" style={{ width: '80px', padding: '8px', borderRadius: '8px', border: '2px solid #e5e5ea', textAlign: 'center' }} value={portGuesses.ssh} onChange={e => setPortGuesses({ ...portGuesses, ssh: e.target.value })} /></div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>DNS:</span><input type="number" style={{ width: '80px', padding: '8px', borderRadius: '8px', border: '2px solid #e5e5ea', textAlign: 'center' }} value={portGuesses.dns} onChange={e => setPortGuesses({ ...portGuesses, dns: e.target.value })} /></div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>HTTP:</span><input type="number" style={{ width: '80px', padding: '8px', borderRadius: '8px', border: '2px solid #e5e5ea', textAlign: 'center' }} value={portGuesses.http} onChange={e => setPortGuesses({ ...portGuesses, http: e.target.value })} /></div>
+                  </div>
+                  <button className="post-btn" style={{ marginTop: '30px' }} onClick={() => {
+                    if (portGuesses.ftp === '21' && portGuesses.ssh === '22' && portGuesses.dns === '53' && portGuesses.http === '80') alert('✅ Ports aligned! Network restored.');
+                    else alert('❌ Connection refused. Check your standard ports.');
+                  }}>Test Connection</button>
+                </div>
+              )}
+
+              {/* PACKET SNIFFER */}
+              {activePuzzle === 'packet' && (
+                <div className="puzzle-card">
+                  <div className="terminal-header">
+                    <span className="dot red"></span><span className="dot yellow"></span><span className="dot green"></span>
+                    <span className="terminal-title">wireshark_capture.pcap</span>
+                  </div>
+                  <div className="terminal-body">
+                    <p className="terminal-text" style={{ color: '#ffcc00' }}>&gt;&gt; WARNING: ENCRYPTED PAYLOAD INTERCEPTED</p>
+                    <p className="terminal-text" style={{ marginTop: '15px' }}>&gt;&gt; ENCODING: Base64</p>
+                    <p className="terminal-text" style={{ marginBottom: '30px' }}>&gt;&gt; STRING: U2VjdXJlUEBzc3cwcmQ=</p>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ color: '#00ff00' }}>$</span>
+                      <input type="text" placeholder="Enter decoded string..." value={packetGuess} onChange={e => setPacketGuess(e.target.value)} style={{ background: 'transparent', color: 'white', border: 'none', borderBottom: '2px solid lime', outline: 'none', padding: '5px', width: '100%', fontSize: '16px' }} />
+                    </div>
+                    <button className="post-btn" style={{ marginTop: '30px' }} onClick={() => {
+                      if (packetGuess === 'SecureP@ssw0rd') alert('✅ Payload decoded successfully! Threat neutralized.');
+                      else alert('❌ Decryption failed. Try converting the Base64 string again.');
+                    }}>Decrypt Payload</button>
+                  </div>
+                </div>
+              )}
+
               <button className="back-btn" style={{ marginTop: '40px' }} onClick={() => setActivePuzzle(null)}>← Back to Puzzles</button>
             </div>
           )}
@@ -818,7 +877,6 @@ function App() {
         <div className="footer-content">
           <h2>Still need help?</h2>
           <div className="footer-buttons">
-            <button onClick={() => setShowTicketModal(true)} className="footer-btn" style={{ border: 'none', background: 'white', color: '#1d1d1f' }}>Submit Ticket</button>
             <a href="mailto:support@company.com" className="footer-btn">Email Support</a>
             <a href="tel:18776602041" className="footer-btn">Call 1-877-660-2041</a>
             <a href="mailto:kb-feedback@company.com" className="footer-btn">Feed your KB</a>
