@@ -400,6 +400,10 @@ function App() {
   return (
     <div className="App">
       <header className="hero-section">
+        <div className="diagnostic-indicator" onClick={() => navigateTo('diagnostic')}>
+          <Activity size={14} className="diagnostic-icon" />
+          <span className="status-text hide-on-mobile">Run Diagnostics</span>
+        </div>
         <div className="status-indicator" onClick={() => navigateTo('outages')}>
           <span className={`status-dot ${systemStatus}`}></span>
           <span className="status-text">{systemStatus === 'operational' ? 'System Operational' : 'Active Outage'}</span>
@@ -436,10 +440,6 @@ function App() {
               <div className="dock-item" onClick={() => navigateTo('home')}>
                 <Home className="dock-icon" size={24} />
                 <span className="dock-label">Home</span>
-              </div>
-              <div className="dock-item" onClick={() => navigateTo('diagnostic')}>
-                <Activity className="dock-icon" size={24} />
-                <span className="dock-label">Network</span>
               </div>
               <div className="dock-item" onClick={() => navigateTo('links')}>
                 <LinkIcon className="dock-icon" size={24} />
