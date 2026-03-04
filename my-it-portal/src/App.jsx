@@ -108,7 +108,7 @@ function App() {
 
   const [psInput, setPsInput] = useState("");
   const [psHistory, setPsHistory] = useState([
-    { type: 'system', text: "Windows PowerShell\nCopyright (C) Microsoft Corporation. All rights reserved.\n\nLoading IT Script Database... Done.\nType 'help' to see available keywords." }
+    { type: 'system', text: "Windows PowerShell\nCopyright (C) Microsoft Corporation. All rights reserved.\n\nLoading IT Script Database... Done.\nType 'help' for keywords, or 'list' to see all commands." }
   ]);
 
   const handlePsSubmit = (e) => {
@@ -119,12 +119,20 @@ function App() {
       const newHistory = [...psHistory, { type: 'input', text: `PS C:\\Users\\Admin> ${psInput}` }];
 
       if (query === 'clear' || query === 'cls') {
-        setPsHistory([{ type: 'system', text: "Windows PowerShell\nCopyright (C) Microsoft Corporation. All rights reserved.\n\nType 'help' to see available keywords." }]);
+        setPsHistory([{ type: 'system', text: "Windows PowerShell\nCopyright (C) Microsoft Corporation. All rights reserved.\n\nType 'help' for keywords, or 'list' to see all commands." }]);
         setPsInput("");
         return;
       }
 
-      const results = psDatabase.filter(item => item.keywords.some(kw => query.includes(kw)));
+      let results = [];
+
+      // NEW LOGIC: If they type 'list', show everything (except the clear command)
+      if (query.includes('list') || query === 'all') {
+        results = psDatabase.filter(item => item.script !== 'CLEAR_SCREEN');
+      } else {
+        // Otherwise, do the normal keyword search
+        results = psDatabase.filter(item => item.keywords.some(kw => query.includes(kw)));
+      }
 
       if (results.length > 0) {
         results.forEach(res => {
@@ -132,7 +140,7 @@ function App() {
           newHistory.push({ type: 'output', title: res.title, text: res.script });
         });
       } else {
-        newHistory.push({ type: 'error', text: `Term '${psInput}' is not recognized. Type 'help' for valid keywords.` });
+        newHistory.push({ type: 'error', text: `Term '${psInput}' is not recognized. Type 'help' for valid keywords, or 'list' for all commands.` });
       }
 
       setPsHistory(newHistory);
