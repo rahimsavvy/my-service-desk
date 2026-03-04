@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Home, Link as LinkIcon, Coffee, Newspaper, Ticket, Truck, TrendingUp,
   IdCard, AlertTriangle, Puzzle, Book, Users, Settings, Globe, User,
@@ -68,7 +68,7 @@ function App() {
   const [dgMessages, setDgMessages] = useState([
     { sender: 'bot', text: "Hi! I'm DeskGuru, your IT AI Assistant. Ask me anything about our knowledge base, like 'How do I map a printer?' or 'WiFi password'." }
   ]);
-  const dgChatEndRef = React.useRef(null);
+  const dgChatEndRef = useRef(null);
 
   const scrollToBottom = () => {
     dgChatEndRef.current?.scrollIntoView({ behavior: "smooth" });
