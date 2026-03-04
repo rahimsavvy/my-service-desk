@@ -5,7 +5,7 @@ import {
   Lock, Wrench, Laptop, Printer, MessageSquare, Folder, Smartphone,
   Monitor, ClipboardList, BookOpen, Lightbulb, Cloud, Bug, Key,
   BarChart, Calendar, MapPin, Flame, Search, AlertOctagon, AlertCircle,
-  FileText, Briefcase, Terminal, Square, Brain, Cpu, ThumbsUp, Trash2, Activity
+  FileText, Briefcase, Terminal, Square, Brain, Cpu, ThumbsUp, Trash2, Activity, Gauge
 } from 'lucide-react';
 import './App.css';
 
@@ -103,7 +103,17 @@ function App() {
     { keywords: ["serial", "bios", "tag"], title: "Get PC Serial Number", script: "Get-WmiObject win32_bios | select Serialnumber" },
     { keywords: ["restart", "reboot"], title: "Remote Restart Computer", script: "Restart-Computer -ComputerName 'PC-NAME' -Force" },
     { keywords: ["clear", "cls"], title: "Clear Screen", script: "CLEAR_SCREEN" },
-    { keywords: ["help"], title: "Help Menu", script: "Try typing: dns, ip, spooler, unlock, reset, gpupdate, uptime, serial, restart, clear" }
+    { keywords: ["port", "ping", "test", "telnet"], title: "Test Network Port Connection", script: "Test-NetConnection -ComputerName 'SERVER-NAME' -Port 443" },
+    { keywords: ["locked", "ad", "users", "search"], title: "Find All Locked AD Accounts", script: "Search-ADAccount -LockedOut | Select-Object Name, SamAccountName" },
+    { keywords: ["bitlocker", "encryption", "status"], title: "Check BitLocker Status (C: Drive)", script: "Get-BitLockerVolume -MountPoint 'C:' | Select-Object VolumeStatus, ProtectionStatus" },
+    { keywords: ["services", "stopped", "automatic"], title: "Find Stopped 'Automatic' Services", script: "Get-Service | Where-Object {$_.StartType -eq 'Automatic' -and $_.Status -eq 'Stopped'}" },
+    { keywords: ["reboot", "event", "logs", "reason"], title: "Get Last 5 Reboot Reasons", script: "Get-WinEvent -FilterHashtable @{LogName='System'; Id=1074} -MaxEvents 5 | Select-Object TimeCreated, Message" },
+    { keywords: ["software", "installed", "export"], title: "Export Installed Software to CSV", script: "Get-ItemProperty HKLM:\\Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\* | Select-Object DisplayName, DisplayVersion | Export-Csv -Path C:\\Temp\\InstalledApps.csv" },
+    { keywords: ["wifi", "password", "key"], title: "Reveal Saved Wi-Fi Password", script: "(netsh wlan show profile name='WIFI_NAME' key=clear | Select-String 'Key Content').Line.Split(':')[1].Trim()" },
+    { keywords: ["kill", "force", "task", "process"], title: "Force Kill Unresponsive Process", script: "Stop-Process -Name 'WINWORD' -Force" },
+    { keywords: ["update", "stuck", "wuauclt"], title: "Clear Stuck Windows Updates", script: "Stop-Service wuauserv; Remove-Item -Path 'C:\\Windows\\SoftwareDistribution\\Download\\*' -Recurse -Force; Start-Service wuauserv" },
+    { keywords: ["space", "disk", "storage", "large"], title: "Find Top 10 Largest Files on C:", script: "Get-ChildItem C:\\ -Recurse -ErrorAction SilentlyContinue | Sort-Object Length -Descending | Select-Object Name, Length -First 10" },
+    { keywords: ["help"], title: "Help Menu", script: "Try typing: dns, ip, spooler, unlock, reset, gpupdate, uptime, serial, restart, clear, port, locked, bitlocker, services, reboot, software, wifi, kill, update, disk" }
   ];
 
   const [psInput, setPsInput] = useState("");
@@ -473,9 +483,15 @@ function App() {
             <span className="status-text hide-on-mobile">PowerShell Zone</span>
           </div>
         </div>
-        <div className="status-indicator" onClick={() => navigateTo('outages')}>
-          <span className={`status-dot ${systemStatus}`}></span>
-          <span className="status-text">{systemStatus === 'operational' ? 'System Operational' : 'Active Outage'}</span>
+        <div className="right-controls">
+          <div className="speed-test-indicator" onClick={() => window.open('https://speed.cloudflare.com/', '_blank')}>
+            <Gauge size={14} className="speed-icon" />
+            <span className="status-text hide-on-mobile">Speed Test</span>
+          </div>
+          <div className="status-indicator" onClick={() => navigateTo('outages')}>
+            <span className={`status-dot ${systemStatus}`}></span>
+            <span className="status-text hide-on-mobile">{systemStatus === 'operational' ? 'System Operational' : 'Active Outage'}</span>
+          </div>
         </div>
 
         <h1 onClick={() => navigateTo('home')} style={{ cursor: 'pointer' }}>IT Knowledge Base</h1>

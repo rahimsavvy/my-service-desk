@@ -450,10 +450,43 @@ button {
   }
 }
 
-.status-indicator {
+.right-controls {
   position: absolute;
   top: 20px;
   right: 20px;
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+}
+
+.speed-test-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.speed-test-indicator:hover {
+  background: rgba(255, 149, 0, 0.15);
+  border-color: rgba(255, 149, 0, 0.6);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 149, 0, 0.4);
+}
+
+.speed-icon {
+  color: #FF9500;
+  /* Apple-style orange for the gauge */
+}
+
+.status-indicator {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1527,10 +1560,15 @@ button {
     padding: 40px 15px 30px;
   }
 
-  .status-indicator {
+  .right-controls {
     top: 15px;
     right: 15px;
-    padding: 6px 10px;
+    gap: 8px;
+  }
+
+  .status-indicator,
+  .speed-test-indicator {
+    padding: 8px;
   }
 
   .left-controls {
