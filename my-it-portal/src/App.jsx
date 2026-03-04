@@ -5,7 +5,8 @@ import {
   Lock, Wrench, Laptop, Printer, MessageSquare, Folder, Smartphone,
   Monitor, ClipboardList, BookOpen, Lightbulb, Cloud, Bug, Key,
   BarChart, Calendar, MapPin, Flame, Search, AlertOctagon, AlertCircle,
-  FileText, Briefcase, Terminal, Square, Brain, Cpu, ThumbsUp, Trash2, Activity, Gauge
+  FileText, Briefcase, Terminal, Square, Brain, Cpu, ThumbsUp, Trash2, Activity, Gauge,
+  Bot, Sparkles, Send, X
 } from 'lucide-react';
 import './App.css';
 
@@ -58,6 +59,63 @@ function App() {
 
   /* SYSTEM STATUS STATE */
   const [systemStatus, setSystemStatus] = useState("operational");
+
+  /* ========================================= */
+  /* DESKGURU AI ASSISTANT STATE & LOGIC       */
+  /* ========================================= */
+  const [isDgOpen, setIsDgOpen] = useState(false);
+  const [dgInput, setDgInput] = useState("");
+  const [dgMessages, setDgMessages] = useState([
+    { sender: 'bot', text: "Hi! I'm DeskGuru, your IT AI Assistant. Ask me anything about our knowledge base, like 'How do I map a printer?' or 'WiFi password'." }
+  ]);
+  const dgChatEndRef = React.useRef(null);
+
+  const scrollToBottom = () => {
+    dgChatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  useEffect(() => { scrollToBottom(); }, [dgMessages]);
+
+  const handleDgSubmit = (e) => {
+    if (e && e.key !== 'Enter' && e.type !== 'click') return;
+    if (!dgInput.trim()) return;
+
+    const query = dgInput.trim();
+    const newChat = [...dgMessages, { sender: 'user', text: query }];
+    setDgMessages(newChat);
+    setDgInput("");
+
+    // Artificial 'thinking' delay
+    setTimeout(() => {
+      let bestMatch = null;
+      let highestScore = 0;
+      const lowerQuery = query.toLowerCase();
+      const keywords = lowerQuery.split(' ').filter(w => w.length > 2);
+
+      articles.forEach(art => {
+        let score = 0;
+        const targetText = (art.title + " " + art.category + " " + art.content).toLowerCase();
+
+        keywords.forEach(kw => {
+          if (targetText.includes(kw)) score++;
+          if (art.title.toLowerCase().includes(kw)) score += 3; // Weight titles heavily
+        });
+
+        if (score > highestScore) {
+          highestScore = score;
+          bestMatch = art;
+        }
+      });
+
+      let botReply = "";
+      if (bestMatch && highestScore > 0) {
+        botReply = `I found a helpful guide titled **"${bestMatch.title}"** (${bestMatch.category}).\n\nHere are the instructions:\n${bestMatch.content}`;
+      } else {
+        botReply = "I couldn't find an exact match for that in the Knowledge Base. Could you try rephrasing with different keywords, or would you like to use the 'Submit a Ticket' button at the top of the page?";
+      }
+
+      setDgMessages([...newChat, { sender: 'bot', text: botReply }]);
+    }, 800);
+  };
 
   /* NETWORK DIAGNOSTIC STATE */
   const [isScanning, setIsScanning] = useState(false);
@@ -1154,6 +1212,51 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* DESKGURU FLOATING WIDGET */}
+      <div className="deskguru-container">
+        {isDgOpen && (
+          <div className="deskguru-window">
+            <div className="dg-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Bot size={20} color="#00C6FF" />
+                <span style={{ fontWeight: 600, color: 'white' }}>DeskGuru AI</span>
+              </div>
+              <button className="dg-close-btn" onClick={() => setIsDgOpen(false)}><X size={18} /></button>
+            </div>
+
+            <div className="dg-body">
+              {dgMessages.map((msg, idx) => (
+                <div key={idx} className={`dg-message-row ${msg.sender}`}>
+                  {msg.sender === 'bot' && <div className="dg-avatar"><Sparkles size={14} /></div>}
+                  <div className={`dg-bubble ${msg.sender}`}>
+                    {msg.text.split('\n').map((line, i) => (
+                      <p key={i} style={{ margin: '0 0 5px 0' }} dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+              <div ref={dgChatEndRef} />
+            </div>
+
+            <div className="dg-footer">
+              <input
+                type="text"
+                placeholder="Ask DeskGuru..."
+                value={dgInput}
+                onChange={(e) => setDgInput(e.target.value)}
+                onKeyDown={handleDgSubmit}
+              />
+              <button onClick={(e) => handleDgSubmit(e)}><Send size={18} /></button>
+            </div>
+          </div>
+        )}
+
+        <button className="deskguru-fab" onClick={() => setIsDgOpen(!isDgOpen)}>
+          {isDgOpen ? <X size={24} /> : <Sparkles size={24} />}
+        </button>
+      </div>
+
     </div>
   );
 }

@@ -1551,6 +1551,197 @@ button {
 }
 
 /* ========================================= */
+/* DESKGURU AI WIDGET                        */
+/* ========================================= */
+.deskguru-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+.deskguru-fab {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00C6FF, #0072ff);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 198, 255, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.deskguru-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 15px 35px rgba(0, 198, 255, 0.6);
+}
+
+.deskguru-window {
+  width: 350px;
+  height: 500px;
+  background: rgba(25, 25, 28, 0.95);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  animation: slideUpFade 0.3s ease forwards;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dg-header {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dg-close-btn {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.dg-close-btn:hover {
+  color: white;
+  transform: rotate(90deg);
+}
+
+.dg-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.dg-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dg-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.dg-message-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.dg-message-row.user {
+  justify-content: flex-end;
+}
+
+.dg-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1d1d1f, #333);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00C6FF;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dg-bubble {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: white;
+  word-wrap: break-word;
+}
+
+.dg-bubble.bot {
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom-left-radius: 4px;
+  text-align: left;
+}
+
+.dg-bubble.user {
+  background: #00C6FF;
+  color: #000;
+  border-bottom-right-radius: 4px;
+  font-weight: 500;
+}
+
+.dg-footer {
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dg-footer input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 10px 15px;
+  color: white;
+  outline: none;
+  transition: 0.2s;
+}
+
+.dg-footer input:focus {
+  border-color: #00C6FF;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dg-footer button {
+  background: #00C6FF;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.dg-footer button:hover {
+  transform: scale(1.05);
+  background: #00A3D9;
+}
+
+/* ========================================= */
 /* PRO MOBILE RESPONSIVENESS (SMARTPHONES)   */
 /* ========================================= */
 @media (max-width: 768px) {
