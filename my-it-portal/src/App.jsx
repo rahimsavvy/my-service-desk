@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Home, Link as LinkIcon, Coffee, Newspaper, Ticket, Truck, TrendingUp,
   IdCard, AlertTriangle, Puzzle, Book, Users, Settings, Globe, User,
@@ -57,9 +57,6 @@ function App() {
   /* 6. PACKET SNIFFER STATE */
   const [packetGuess, setPacketGuess] = useState("");
 
-  /* SYSTEM STATUS STATE */
-  const [systemStatus, setSystemStatus] = useState("operational");
-
   /* ========================================= */
   /* DESKGURU AI ASSISTANT STATE & LOGIC       */
   /* ========================================= */
@@ -68,7 +65,7 @@ function App() {
   const [dgMessages, setDgMessages] = useState([
     { sender: 'bot', text: "Hi! I'm DeskGuru, your IT AI Assistant. Ask me anything about our knowledge base, like 'How do I map a printer?' or 'WiFi password'." }
   ]);
-  const dgChatEndRef = useRef(null);
+  const dgChatEndRef = React.useRef(null);
 
   const scrollToBottom = () => {
     dgChatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -116,6 +113,9 @@ function App() {
       setDgMessages([...newChat, { sender: 'bot', text: botReply }]);
     }, 800);
   };
+
+  /* SYSTEM STATUS STATE */
+  const [systemStatus, setSystemStatus] = useState("operational");
 
   /* NETWORK DIAGNOSTIC STATE */
   const [isScanning, setIsScanning] = useState(false);
@@ -1230,6 +1230,7 @@ function App() {
                 <div key={idx} className={`dg-message-row ${msg.sender}`}>
                   {msg.sender === 'bot' && <div className="dg-avatar"><Sparkles size={14} /></div>}
                   <div className={`dg-bubble ${msg.sender}`}>
+                    {/* Simple markdown parsing for bolding */}
                     {msg.text.split('\n').map((line, i) => (
                       <p key={i} style={{ margin: '0 0 5px 0' }} dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
                     ))}
