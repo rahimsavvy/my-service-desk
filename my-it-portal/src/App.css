@@ -385,10 +385,17 @@ button {
 /* ========================================= */
 /* LIVE STATUS INDICATOR                     */
 /* ========================================= */
-.diagnostic-indicator {
+.left-controls {
   position: absolute;
   top: 20px;
   left: 20px;
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+}
+
+.diagnostic-indicator,
+.powershell-indicator {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -401,7 +408,6 @@ button {
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
-  z-index: 10;
 }
 
 .diagnostic-indicator:hover {
@@ -411,9 +417,20 @@ button {
   box-shadow: 0 0 20px rgba(0, 198, 255, 0.4);
 }
 
+.powershell-indicator:hover {
+  background: rgba(1, 36, 86, 0.8);
+  border-color: rgba(1, 36, 86, 1);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(1, 36, 86, 0.6);
+}
+
 .diagnostic-icon {
   color: #00C6FF;
   animation: heartbeat-pulse 2s infinite;
+}
+
+.powershell-icon {
+  color: #ffffff;
 }
 
 @keyframes heartbeat-pulse {
@@ -1400,11 +1417,16 @@ button {
     padding: 6px 10px;
   }
 
-  .diagnostic-indicator {
+  .left-controls {
     top: 15px;
     left: 15px;
+    gap: 8px;
+  }
+
+  .diagnostic-indicator,
+  .powershell-indicator {
     padding: 8px;
-    /* Circular pill for mobile */
+    /* Makes them perfect circles on mobile */
   }
 
   .status-text {

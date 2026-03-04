@@ -400,9 +400,15 @@ function App() {
   return (
     <div className="App">
       <header className="hero-section">
-        <div className="diagnostic-indicator" onClick={() => navigateTo('diagnostic')}>
-          <Activity size={14} className="diagnostic-icon" />
-          <span className="status-text hide-on-mobile">Run Diagnostics</span>
+        <div className="left-controls">
+          <div className="diagnostic-indicator" onClick={() => navigateTo('diagnostic')}>
+            <Activity size={14} className="diagnostic-icon" />
+            <span className="status-text hide-on-mobile">Run Diagnostics</span>
+          </div>
+          <div className="powershell-indicator" onClick={() => navigateTo('powershell')}>
+            <Terminal size={14} className="powershell-icon" />
+            <span className="status-text hide-on-mobile">PowerShell Zone</span>
+          </div>
         </div>
         <div className="status-indicator" onClick={() => navigateTo('outages')}>
           <span className={`status-dot ${systemStatus}`}></span>
@@ -942,6 +948,31 @@ function App() {
             </div>
           </div>
           <div style={{ textAlign: 'center' }}>
+            <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
+          </div>
+        </section>
+      )}
+
+      {/* POWERSHELL ZONE PAGE */}
+      {currentPage === 'powershell' && (
+        <section className="container puzzle-section">
+          <h2 className="section-title">
+            <Terminal size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />
+            PowerShell Zone
+          </h2>
+          <div className="puzzle-card" style={{ boxShadow: '0 20px 40px rgba(1, 36, 86, 0.3)' }}>
+            <div className="terminal-header" style={{ background: '#012456', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+              <span className="terminal-title" style={{ color: 'white', marginLeft: '0' }}>Administrator: Windows PowerShell</span>
+            </div>
+            <div className="terminal-body" style={{ background: '#012456', minHeight: '350px', textAlign: 'left' }}>
+              <p className="terminal-text" style={{ color: '#eeedf0', fontFamily: 'Consolas, monospace' }}>Windows PowerShell</p>
+              <p className="terminal-text" style={{ color: '#eeedf0', fontFamily: 'Consolas, monospace' }}>Copyright (C) Microsoft Corporation. All rights reserved.</p>
+              <p className="terminal-text" style={{ color: '#eeedf0', marginTop: '20px', fontFamily: 'Consolas, monospace' }}>
+                PS C:\Users\Admin&gt; <span style={{ animation: 'pulse 1s infinite' }}>_</span>
+              </p>
+            </div>
+          </div>
+          <div style={{ textAlign: 'center', marginTop: '30px' }}>
             <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
           </div>
         </section>
