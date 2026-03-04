@@ -90,6 +90,61 @@ function App() {
     setIsScanning(false);
   };
 
+  /* POWERSHELL COMMANDS DB & STATE */
+  const psDatabase = [
+    { keywords: ["flush", "dns", "cache"], title: "Flush DNS Cache", script: "Clear-DnsClientCache; ipconfig /flushdns" },
+    { keywords: ["ip", "address", "network"], title: "Get IP Configuration", script: "Get-NetIPConfiguration | Format-Table" },
+    { keywords: ["print", "spooler", "jam"], title: "Restart Print Spooler", script: "Restart-Service -Name Spooler -Force" },
+    { keywords: ["unlock", "ad", "account"], title: "Unlock AD Account", script: "Unlock-ADAccount -Identity 'username'" },
+    { keywords: ["password", "reset", "ad"], title: "Reset AD Password", script: "Set-ADAccountPassword -Identity 'username' -Reset:$true" },
+    { keywords: ["gpupdate", "policy", "group"], title: "Force GP Update", script: "gpupdate /force" },
+    { keywords: ["gpresult", "policy"], title: "Check Applied Group Policies", script: "gpresult /r /scope computer" },
+    { keywords: ["uptime", "boot"], title: "Check System Uptime", script: "(Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime" },
+    { keywords: ["serial", "bios", "tag"], title: "Get PC Serial Number", script: "Get-WmiObject win32_bios | select Serialnumber" },
+    { keywords: ["restart", "reboot"], title: "Remote Restart Computer", script: "Restart-Computer -ComputerName 'PC-NAME' -Force" },
+    { keywords: ["clear", "cls"], title: "Clear Screen", script: "CLEAR_SCREEN" },
+    { keywords: ["help"], title: "Help Menu", script: "Try typing: dns, ip, spooler, unlock, reset, gpupdate, uptime, serial, restart, clear" }
+  ];
+
+  const [psInput, setPsInput] = useState("");
+  const [psHistory, setPsHistory] = useState([
+    { type: 'system', text: "Windows PowerShell\nCopyright (C) Microsoft Corporation. All rights reserved.\n\nLoading IT Script Database... Done.\nType 'help' to see available keywords." }
+  ]);
+
+  const handlePsSubmit = (e) => {
+    if (e.key === 'Enter') {
+      const query = psInput.toLowerCase().trim();
+      if (!query) return;
+
+      const newHistory = [...psHistory, { type: 'input', text: `PS C:\\Users\\Admin> ${psInput}` }];
+
+      if (query === 'clear' || query === 'cls') {
+        setPsHistory([{ type: 'system', text: "Windows PowerShell\nCopyright (C) Microsoft Corporation. All rights reserved.\n\nType 'help' to see available keywords." }]);
+        setPsInput("");
+        return;
+      }
+
+      const results = psDatabase.filter(item => item.keywords.some(kw => query.includes(kw)));
+
+      if (results.length > 0) {
+        results.forEach(res => {
+          if (res.script === 'CLEAR_SCREEN') return;
+          newHistory.push({ type: 'output', title: res.title, text: res.script });
+        });
+      } else {
+        newHistory.push({ type: 'error', text: `Term '${psInput}' is not recognized. Type 'help' for valid keywords.` });
+      }
+
+      setPsHistory(newHistory);
+      setPsInput("");
+    }
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    alert("Command copied to clipboard!");
+  };
+
   /* SCRAPBOOK STATE */
   const [scraps, setScraps] = useState([
     { id: 1, author: "Guest User", text: "Welcome to the new IT Scrapbook! Let's keep the team spirit high. 🚀", time: "2 hours ago", upvotes: 5 },
@@ -955,21 +1010,44 @@ function App() {
 
       {/* POWERSHELL ZONE PAGE */}
       {currentPage === 'powershell' && (
-        <section className="container puzzle-section">
+        <section className="container powershell-section" style={{ maxWidth: '1000px' }}>
           <h2 className="section-title">
             <Terminal size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />
-            PowerShell Zone
+            PowerShell Command Library
           </h2>
-          <div className="puzzle-card" style={{ boxShadow: '0 20px 40px rgba(1, 36, 86, 0.3)' }}>
-            <div className="terminal-header" style={{ background: '#012456', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-              <span className="terminal-title" style={{ color: 'white', marginLeft: '0' }}>Administrator: Windows PowerShell</span>
+          <div className="ps-window">
+            <div className="ps-header">
+              <span className="ps-title">Administrator: Windows PowerShell</span>
             </div>
-            <div className="terminal-body" style={{ background: '#012456', minHeight: '350px', textAlign: 'left' }}>
-              <p className="terminal-text" style={{ color: '#eeedf0', fontFamily: 'Consolas, monospace' }}>Windows PowerShell</p>
-              <p className="terminal-text" style={{ color: '#eeedf0', fontFamily: 'Consolas, monospace' }}>Copyright (C) Microsoft Corporation. All rights reserved.</p>
-              <p className="terminal-text" style={{ color: '#eeedf0', marginTop: '20px', fontFamily: 'Consolas, monospace' }}>
-                PS C:\Users\Admin&gt; <span style={{ animation: 'pulse 1s infinite' }}>_</span>
-              </p>
+            <div className="ps-body">
+              {psHistory.map((line, index) => (
+                <div key={index} className={`ps-line ${line.type}`}>
+                  {line.type === 'output' ? (
+                    <div className="ps-script-block">
+                      <span className="ps-comment"># {line.title}</span>
+                      <div className="ps-code-row">
+                        <span className="ps-code">{line.text}</span>
+                        <button className="ps-copy-btn" onClick={() => copyToClipboard(line.text)}>Copy</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <span style={{ whiteSpace: 'pre-wrap' }}>{line.text}</span>
+                  )}
+                </div>
+              ))}
+              <div className="ps-input-row">
+                <span className="ps-prompt">PS C:\Users\Admin&gt;</span>
+                <input
+                  type="text"
+                  className="ps-input-field"
+                  value={psInput}
+                  onChange={(e) => setPsInput(e.target.value)}
+                  onKeyDown={handlePsSubmit}
+                  autoFocus
+                  autoComplete="off"
+                  spellCheck="false"
+                />
+              </div>
             </div>
           </div>
           <div style={{ textAlign: 'center', marginTop: '30px' }}>
