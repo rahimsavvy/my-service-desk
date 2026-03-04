@@ -1402,6 +1402,122 @@ button {
 }
 
 /* ========================================= */
+/* INTERACTIVE POWERSHELL ZONE               */
+/* ========================================= */
+.ps-window {
+  background: #012456;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(1, 36, 86, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 20px;
+}
+
+.ps-header {
+  background: #000000;
+  padding: 10px 15px;
+  border-bottom: 1px solid #333;
+  text-align: left;
+}
+
+.ps-title {
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 13px;
+}
+
+.ps-body {
+  padding: 20px;
+  height: 500px;
+  overflow-y: auto;
+  text-align: left;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 15px;
+  color: #eeedf0;
+}
+
+.ps-line {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.ps-line.error {
+  color: #ff6b6b;
+}
+
+.ps-line.system {
+  color: #eeedf0;
+  margin-bottom: 20px;
+}
+
+.ps-line.input {
+  color: #eeedf0;
+}
+
+.ps-script-block {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  border-left: 3px solid #00C6FF;
+  margin: 10px 0 20px 0;
+}
+
+.ps-comment {
+  color: #34c759;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.ps-code-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ps-code {
+  color: #ffcc00;
+  font-weight: bold;
+  word-break: break-all;
+  margin-right: 15px;
+}
+
+.ps-copy-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: 0.2s;
+}
+
+.ps-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #00C6FF;
+}
+
+.ps-input-row {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.ps-prompt {
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.ps-input-field {
+  background: transparent;
+  border: none;
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  flex: 1;
+  outline: none;
+}
+
+/* ========================================= */
 /* PRO MOBILE RESPONSIVENESS (SMARTPHONES)   */
 /* ========================================= */
 @media (max-width: 768px) {
