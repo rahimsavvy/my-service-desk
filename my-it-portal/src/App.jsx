@@ -6,7 +6,7 @@ import {
   Monitor, ClipboardList, BookOpen, Lightbulb, Cloud, Bug, Key,
   BarChart, Calendar, MapPin, Flame, Search, AlertOctagon, AlertCircle,
   FileText, Briefcase, Terminal, Square, Brain, Cpu, ThumbsUp, Trash2, Activity, Gauge,
-  Bot, Sparkles, Send, X
+  Bot, Sparkles, Send, X, Wifi, Zap
 } from 'lucide-react';
 import './App.css';
 
@@ -57,6 +57,9 @@ function App() {
   /* 6. PACKET SNIFFER STATE */
   const [packetGuess, setPacketGuess] = useState("");
 
+  /* 7. FIBER FIX STATE */
+  const [fiberRotation, setFiberRotation] = useState(0);
+
   /* ========================================= */
   /* DESKGURU AI ASSISTANT STATE & LOGIC       */
   /* ========================================= */
@@ -97,7 +100,7 @@ function App() {
         ...(typeof psDatabase !== 'undefined' ? psDatabase.map(ps => ({ type: 'PowerShell', title: ps.title, content: ps.script, category: 'Terminal' })) : []),
         { type: 'Site Info', title: 'System Status', content: `The current system status is: ${systemStatus}.`, category: 'Status' },
         { type: 'Site Info', title: 'Submit a Ticket', content: 'You can submit an IT support ticket using the "Submit a Ticket" button at the top of the page.', category: 'Help' },
-        { type: 'Site Info', title: 'Puzzles', content: 'We have IT puzzles like Port Mapper, Packet Sniffer, and Cache Flush in the Puzzle Zone.', category: 'Games' }
+        { type: 'Site Info', title: 'Puzzles', content: 'We have IT puzzles like Port Mapper, Packet Sniffer, Cache Flush, and Fiber Fix in the Refreshment Corner.', category: 'Games' }
       ];
 
       searchableContent.forEach(item => {
@@ -638,10 +641,6 @@ function App() {
                 <AlertTriangle className="dock-icon" size={24} />
                 <span className="dock-label">Outages</span>
               </div>
-              <div className="dock-item" onClick={() => navigateTo('puzzle')}>
-                <Puzzle className="dock-icon" size={24} />
-                <span className="dock-label">Puzzle Zone</span>
-              </div>
               <div className="dock-item" onClick={() => navigateTo('scrapbook')}>
                 <Book className="dock-icon" size={24} />
                 <span className="dock-label">Scrap Book</span>
@@ -760,6 +759,11 @@ function App() {
                 <div className="category-icon"><ClipboardList size={32} /></div>
                 <h3>Weekly Quiz</h3>
                 <p>Test your knowledge on this week's system updates!</p>
+              </div>
+              <div className="category-card" onClick={() => navigateTo('puzzle')}>
+                <div className="category-icon"><Brain size={32} /></div>
+                <h3>IT Puzzles</h3>
+                <p>IT mini-games: Cryptic Codes, Port Mapper, and more.</p>
               </div>
               <div className="category-card">
                 <div className="category-icon"><BookOpen size={32} /></div>
@@ -976,30 +980,23 @@ function App() {
         </section>
       )}
 
-      {/* PUZZLE ZONE PAGE */}
+      {/* IT PUZZLES PAGE */}
       {currentPage === 'puzzle' && (
         <section className="container puzzle-section">
-          <h2 className="section-title"><Puzzle size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />IT Puzzle Zone</h2>
+          <h2 className="section-title"><Puzzle size={28} style={{ verticalAlign: 'bottom', marginRight: '10px' }} />IT Puzzles</h2>
           {!activePuzzle ? (
             <>
-              <div className="category-grid" style={{ marginTop: '20px' }}>
-                <div className="category-card" onClick={() => setActivePuzzle('terminal')}><div className="category-icon"><Terminal size={32} /></div><h3>Terminal Recovery</h3><p>Decrypt the hex string.</p></div>
-                <div className="category-card" onClick={() => setActivePuzzle('cryptic')}><div className="category-icon"><Newspaper size={32} /></div><h3>Daily Cryptic</h3><p>Solve the IT crossword.</p></div>
-                <div className="category-card" onClick={() => setActivePuzzle('sliding')}><div className="category-icon"><Square size={32} /></div><h3>Server Rack</h3><p>Restore the Firewall.</p></div>
-                <div className="category-card" onClick={() => { setActivePuzzle('memory'); initMemoryGame(); }}><div className="category-icon"><Brain size={32} /></div><h3>Cache Flush</h3><p>Clear memory blocks.</p></div>
-                <div className="category-card" onClick={() => setActivePuzzle('bios')}><div className="category-icon"><Cpu size={32} /></div><h3>BIOS Sequence</h3><p>Memorize the boot pattern.</p></div>
-                <div className="category-card" onClick={() => setActivePuzzle('ports')}>
-                  <div className="category-icon"><Globe size={32} /></div>
-                  <h3>Port Mapper</h3>
-                  <p>Assign default ports.</p>
-                </div>
-                <div className="category-card" onClick={() => setActivePuzzle('packet')}>
-                  <div className="category-icon"><Lock size={32} /></div>
-                  <h3>Packet Sniffer</h3>
-                  <p>Decode the payload.</p>
-                </div>
+              <div className="category-grid puzzle-4-grid" style={{ marginTop: '20px' }}>
+                <div className="category-card" onClick={() => setActivePuzzle('terminal')}><div className="category-icon"><Terminal size={32} /></div><h3>Terminal</h3><p>Hex decryption.</p></div>
+                <div className="category-card" onClick={() => setActivePuzzle('cryptic')}><div className="category-icon"><Newspaper size={32} /></div><h3>Cryptic</h3><p>IT Crossword.</p></div>
+                <div className="category-card" onClick={() => setActivePuzzle('sliding')}><div className="category-icon"><Square size={32} /></div><h3>Server Rack</h3><p>Restore Firewall.</p></div>
+                <div className="category-card" onClick={() => { setActivePuzzle('memory'); initMemoryGame(); }}><div className="category-icon"><Brain size={32} /></div><h3>Cache Flush</h3><p>Clear memory.</p></div>
+                <div className="category-card" onClick={() => setActivePuzzle('bios')}><div className="category-icon"><Cpu size={32} /></div><h3>BIOS Boot</h3><p>Memorize pattern.</p></div>
+                <div className="category-card" onClick={() => setActivePuzzle('ports')}><div className="category-icon"><Globe size={32} /></div><h3>Port Mapper</h3><p>Assign ports.</p></div>
+                <div className="category-card" onClick={() => setActivePuzzle('packet')}><div className="category-icon"><Lock size={32} /></div><h3>Packet Sniff</h3><p>Decode payload.</p></div>
+                <div className="category-card" onClick={() => setActivePuzzle('fiber')}><div className="category-icon"><Wifi size={32} /></div><h3>Fiber Fix</h3><p>Align signals.</p></div>
               </div>
-              <button className="back-btn" onClick={() => navigateTo('home')}>← Back to Knowledge Base</button>
+              <button className="back-btn" onClick={() => navigateTo('refreshment')}>← Back to Refreshment Corner</button>
             </>
           ) : (
             <div>
@@ -1062,6 +1059,35 @@ function App() {
                       if (packetGuess === 'SecureP@ssw0rd') alert('✅ Payload decoded successfully! Threat neutralized.');
                       else alert('❌ Decryption failed. Try converting the Base64 string again.');
                     }}>Decrypt Payload</button>
+                  </div>
+                </div>
+              )}
+              {/* FIBER FIX */}
+              {activePuzzle === 'fiber' && (
+                <div className="puzzle-card">
+                  <div className="terminal-header">
+                    <span className="dot red"></span><span className="dot yellow"></span><span className="dot green"></span>
+                    <span className="terminal-title">signal_aligner.exe</span>
+                  </div>
+                  <div className="terminal-body" style={{ textAlign: 'center' }}>
+                    <p className="terminal-text" style={{ marginBottom: '30px' }}>&gt;&gt; SIGNAL_STATUS: MISALIGNED (Rotation: {fiberRotation}°)</p>
+                    <div
+                      onClick={() => setFiberRotation((prev) => (prev + 90) % 360)}
+                      style={{
+                        width: '100px', height: '100px', margin: '20px auto',
+                        border: '4px solid #00ff00', borderRadius: '50%',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        transform: `rotate(${fiberRotation}deg)`, transition: '0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        cursor: 'pointer', background: 'rgba(0, 255, 0, 0.1)'
+                      }}
+                    >
+                      <Zap size={40} color="#00ff00" />
+                    </div>
+                    <p className="terminal-text" style={{ marginTop: '20px', fontSize: '14px', color: '#888' }}>Tap the fiber core to align 180° for signal lock.</p>
+                    <button className="post-btn" style={{ marginTop: '30px' }} onClick={() => {
+                      if (fiberRotation === 180) alert('✅ Signal Locked! Fiber connectivity restored.');
+                      else alert('❌ Signal unstable. Keep rotating the core.');
+                    }}>Verify Signal</button>
                   </div>
                 </div>
               )}

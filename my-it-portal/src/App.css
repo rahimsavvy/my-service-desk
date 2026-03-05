@@ -206,6 +206,12 @@ button {
   gap: 30px;
 }
 
+/* Forces exactly 4 columns for specific grids */
+.puzzle-4-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+
 /* Floating Cards */
 .category-card {
   background: white;
@@ -1068,9 +1074,8 @@ button {
 /* PUZZLES (REFINED FOR CLOUD THEME)         */
 /* ========================================= */
 .puzzle-section {
-  max-width: 800px !important;
   margin: 50px auto;
-  /* Pushes it exactly 50px away from the blue header */
+  /* Removed the max-width: 800px restriction so it matches the 1100px default container */
 }
 
 /* Centers the "IT Puzzle Zone" title perfectly */
@@ -1833,10 +1838,8 @@ button {
     width: 55px;
   }
 
-  /* 3-in-a-row App Dashboard Layout */
-  /* 3-in-a-row App Dashboard Layout */
   .category-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
 
