@@ -460,6 +460,33 @@ button {
   z-index: 10;
 }
 
+.dashboard-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.dashboard-indicator:hover {
+  background: rgba(175, 82, 222, 0.15);
+  border-color: rgba(175, 82, 222, 0.6);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(175, 82, 222, 0.4);
+}
+
+.dashboard-icon {
+  color: #AF52DE;
+  /* Apple Purple */
+}
+
 .speed-test-indicator {
   display: flex;
   align-items: center;

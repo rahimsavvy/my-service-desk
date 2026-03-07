@@ -571,6 +571,10 @@ function App() {
           </div>
         </div>
         <div className="right-controls">
+          <div className="dashboard-indicator" onClick={() => alert("Loading Service Desk Dashboard...")}>
+            <BarChart size={14} className="dashboard-icon" />
+            <span className="status-text hide-on-mobile">Service Desk Dashboard</span>
+          </div>
           <div className="speed-test-indicator" onClick={() => window.open('https://speed.cloudflare.com/', '_blank')}>
             <Gauge size={14} className="speed-icon" />
             <span className="status-text hide-on-mobile">Speed Test</span>
