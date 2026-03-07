@@ -1903,7 +1903,7 @@ button {
   font-family: 'Courier New', Courier, monospace !important;
 }
 
-.hacker-theme body, 
+.hacker-theme body,
 .hacker-theme .App {
   background-color: #050505 !important;
   color: #00ff00 !important;
@@ -1915,10 +1915,10 @@ button {
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.2) !important;
 }
 
-.hacker-theme h1, 
-.hacker-theme h2, 
-.hacker-theme h3, 
-.hacker-theme p, 
+.hacker-theme h1,
+.hacker-theme h2,
+.hacker-theme h3,
+.hacker-theme p,
 .hacker-theme span {
   color: #00ff00 !important;
   background: transparent !important;
