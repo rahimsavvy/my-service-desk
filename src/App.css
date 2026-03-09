@@ -1785,6 +1785,7 @@ button {
   }
 
   .status-indicator,
+  .dashboard-indicator,
   .speed-test-indicator {
     padding: 8px;
   }
