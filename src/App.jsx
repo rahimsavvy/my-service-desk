@@ -667,6 +667,27 @@ function App() {
         </div>
       </header>
 
+      {/* LIVE SYSTEM TICKER */}
+      <div className="system-ticker hide-on-mobile">
+        <div className="ticker-track">
+          <span>🟢 Azure AD: Operational</span><span className="separator">|</span>
+          <span>🟢 VPN Gateways: Optimal (12ms)</span><span className="separator">|</span>
+          <span>🔴 Print Server 04: Offline</span><span className="separator">|</span>
+          <span>🔵 Active Tickets: 14</span><span className="separator">|</span>
+          <span>🟢 O365 Exchange: Operational</span><span className="separator">|</span>
+          <span>🟡 Core Switch 02: High Load</span><span className="separator">|</span>
+          <span>🟢 Last Backup: 04:00 AM</span><span className="separator">|</span>
+          {/* Duplicated for seamless infinite scrolling */}
+          <span>🟢 Azure AD: Operational</span><span className="separator">|</span>
+          <span>🟢 VPN Gateways: Optimal (12ms)</span><span className="separator">|</span>
+          <span>🔴 Print Server 04: Offline</span><span className="separator">|</span>
+          <span>🔵 Active Tickets: 14</span><span className="separator">|</span>
+          <span>🟢 O365 Exchange: Operational</span><span className="separator">|</span>
+          <span>🟡 Core Switch 02: High Load</span><span className="separator">|</span>
+          <span>🟢 Last Backup: 04:00 AM</span><span className="separator">|</span>
+        </div>
+      </div>
+
       {/* HOME PAGE */}
       {currentPage === 'home' && (
         <section className="container">
