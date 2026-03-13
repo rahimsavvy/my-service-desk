@@ -66,6 +66,8 @@ function App() {
   /* ========================================= */
   const [isDgOpen, setIsDgOpen] = useState(false);
   const [dgInput, setDgInput] = useState("");
+  const [dgTicketStep, setDgTicketStep] = useState(null);
+  const [dgTicketData, setDgTicketData] = useState({ title: '', category: '', priority: '' });
   const [dgMessages, setDgMessages] = useState([
     { sender: 'bot', text: "Hi! I'm DeskGuru, your IT AI Assistant. Ask me anything about our knowledge base, like 'How do I map a printer?' or 'WiFi password'." }
   ]);
@@ -85,34 +87,58 @@ function App() {
     setDgMessages(newChat);
     setDgInput("");
 
-    // Artificial 'thinking' delay
     setTimeout(() => {
+      const lowerQuery = query.toLowerCase();
+
+      /* --- CONVERSATIONAL TICKET FLOW --- */
+      if (dgTicketStep) {
+        if (dgTicketStep === 'title') {
+          setDgTicketData(prev => ({ ...prev, title: query }));
+          setDgTicketStep('category');
+          setDgMessages([...newChat, { sender: 'bot', text: "Got it. What category does this fall under?\n\nOptions: **Network**, **Account**, **Hardware**, **Software**" }]);
+          return;
+        }
+        if (dgTicketStep === 'category') {
+          setDgTicketData(prev => ({ ...prev, category: query }));
+          setDgTicketStep('priority');
+          setDgMessages([...newChat, { sender: 'bot', text: "Thanks. What is the priority of this issue?\n\nOptions: **Low**, **Medium**, **High**" }]);
+          return;
+        }
+        if (dgTicketStep === 'priority') {
+          setDgTicketStep(null);
+          setDgMessages([...newChat, { sender: 'bot', text: `✅ **Ticket Submitted Successfully!**\n\n**Issue:** ${dgTicketData.title}\n**Category:** ${dgTicketData.category}\n**Priority:** ${query}\n\nOur IT team has been notified and will reach out shortly.` }]);
+          setDgTicketData({ title: '', category: '', priority: '' });
+          return;
+        }
+      }
+
+      /* --- TRIGGER TICKET FLOW --- */
+      if (lowerQuery.includes('ticket') || lowerQuery.includes('create') || lowerQuery.includes('issue') || lowerQuery.includes('help')) {
+        setDgTicketStep('title');
+        setDgMessages([...newChat, { sender: 'bot', text: "I can help you submit a support ticket right here!\n\nFirst, please describe the issue you are experiencing (e.g., 'My monitor won't turn on')." }]);
+        return;
+      }
+
+      /* --- STANDARD OMNI-SEARCH (If not making a ticket) --- */
       let bestMatch = null;
       let highestScore = 0;
-      const lowerQuery = query.toLowerCase();
       const keywords = lowerQuery.split(' ').filter(w => w.length > 2);
 
-      // --- OMNI-SEARCH DATABASE ---
-      // Gathers data from Articles, Team, Projects, PowerShell, and Site Status
       const searchableContent = [
         ...articles.map(a => ({ type: 'Article', title: a.title, content: a.content, category: a.category })),
         ...teamMembers.map(t => ({ type: 'Team', title: t.name, content: `Role: ${t.role}`, category: 'Directory' })),
         ...projects.map(p => ({ type: 'Project', title: p.title, content: `Status: ${p.status}, Progress: ${p.progress}%.`, category: 'Roadmap' })),
         ...(typeof psDatabase !== 'undefined' ? psDatabase.map(ps => ({ type: 'PowerShell', title: ps.title, content: ps.script, category: 'Terminal' })) : []),
-        { type: 'Site Info', title: 'System Status', content: `The current system status is: ${systemStatus}.`, category: 'Status' },
-        { type: 'Site Info', title: 'Submit a Ticket', content: 'You can submit an IT support ticket using the "Submit a Ticket" button at the top of the page.', category: 'Help' },
-        { type: 'Site Info', title: 'Puzzles', content: 'We have IT puzzles like Port Mapper, Packet Sniffer, Cache Flush, and Fiber Fix in the Refreshment Corner.', category: 'Games' }
+        { type: 'Site Info', title: 'System Status', content: `The current system status is: ${systemStatus}.`, category: 'Status' }
       ];
 
       searchableContent.forEach(item => {
         let score = 0;
         const targetText = (item.title + " " + item.category + " " + item.content).toLowerCase();
-
         keywords.forEach(kw => {
           if (targetText.includes(kw)) score++;
-          if (item.title.toLowerCase().includes(kw)) score += 3; // Weight titles heavily
+          if (item.title.toLowerCase().includes(kw)) score += 3;
         });
-
         if (score > highestScore) {
           highestScore = score;
           bestMatch = item;
@@ -121,19 +147,9 @@ function App() {
 
       let botReply = "";
       if (bestMatch && highestScore > 0) {
-        if (bestMatch.type === 'Article') {
-          botReply = `I found a Knowledge Base guide: **"${bestMatch.title}"**.\n\n${bestMatch.content}`;
-        } else if (bestMatch.type === 'Team') {
-          botReply = `Found in Team Directory: **${bestMatch.title}** is a ${bestMatch.content}.`;
-        } else if (bestMatch.type === 'PowerShell') {
-          botReply = `Here is the PowerShell script for **${bestMatch.title}**:\n\n${bestMatch.content}`;
-        } else if (bestMatch.type === 'Project') {
-          botReply = `Project Update for **${bestMatch.title}**:\n${bestMatch.content}`;
-        } else {
-          botReply = `Here is what I found about **${bestMatch.title}**:\n\n${bestMatch.content}`;
-        }
+        botReply = `Here is what I found about **${bestMatch.title}**:\n\n${bestMatch.content}`;
       } else {
-        botReply = "I couldn't find an exact match for that anywhere on the Service Desk. Could you try different keywords, or use the 'Submit a Ticket' button?";
+        botReply = "I couldn't find an exact match for that. Would you like me to **create a ticket** for you instead?";
       }
 
       setDgMessages([...newChat, { sender: 'bot', text: botReply }]);
