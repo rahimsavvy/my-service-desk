@@ -6,7 +6,7 @@ import {
   Monitor, ClipboardList, BookOpen, Lightbulb, Cloud, Bug, Key,
   BarChart, Calendar, MapPin, Flame, Search, AlertOctagon, AlertCircle,
   FileText, Briefcase, Terminal, Square, Brain, Cpu, ThumbsUp, Trash2, Activity, Gauge,
-  Bot, Sparkles, Send, X, Wifi, Zap
+  Bot, Sparkles, Send, X, Wifi, Zap, Hash
 } from 'lucide-react';
 import './App.css';
 
@@ -584,6 +584,11 @@ function App() {
           <div className="powershell-indicator" onClick={() => navigateTo('powershell')}>
             <Terminal size={14} className="powershell-icon" />
             <span className="status-text hide-on-mobile">PowerShell Zone</span>
+          </div>
+          {/* NEW SLACK CHANNELS BUTTON */}
+          <div className="slack-indicator" onClick={() => alert("Slack Channels module coming soon!")}>
+            <Hash size={14} className="slack-icon" />
+            <span className="status-text hide-on-mobile">Slack Channels</span>
           </div>
         </div>
         <div className="right-controls">

@@ -452,6 +452,32 @@ button {
   box-shadow: 0 0 20px rgba(1, 36, 86, 0.6);
 }
 
+.slack-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.slack-indicator:hover {
+  background: rgba(224, 30, 90, 0.15); /* Slack Pink */
+  border-color: rgba(224, 30, 90, 0.6);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(224, 30, 90, 0.4);
+}
+
+.slack-icon {
+  color: #E01E5A; /* Slack Pink */
+}
+
 .diagnostic-icon {
   color: #00C6FF;
   animation: heartbeat-pulse 2s infinite;
