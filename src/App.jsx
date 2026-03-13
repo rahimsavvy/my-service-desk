@@ -6,7 +6,7 @@ import {
   Monitor, ClipboardList, BookOpen, Lightbulb, Cloud, Bug, Key,
   BarChart, Calendar, MapPin, Flame, Search, AlertOctagon, AlertCircle,
   FileText, Briefcase, Terminal, Square, Brain, Cpu, ThumbsUp, Trash2, Activity, Gauge,
-  Bot, Sparkles, Send, X, Wifi, Zap, Hash
+  Bot, Sparkles, Send, X, Wifi, Zap, Hash, Paperclip, Maximize, Minimize
 } from 'lucide-react';
 import './App.css';
 
@@ -65,6 +65,7 @@ function App() {
   /* DESKGURU AI ASSISTANT STATE & LOGIC       */
   /* ========================================= */
   const [isDgOpen, setIsDgOpen] = useState(false);
+  const [isDgExpanded, setIsDgExpanded] = useState(false);
   const [dgInput, setDgInput] = useState("");
   const [dgTicketStep, setDgTicketStep] = useState(null);
   const [dgTicketData, setDgTicketData] = useState({ title: '', category: '', priority: '' });
@@ -154,6 +155,27 @@ function App() {
 
       setDgMessages([...newChat, { sender: 'bot', text: botReply }]);
     }, 800);
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Create a local URL to display the image in the chat
+    const imageUrl = URL.createObjectURL(file);
+    const newChat = [...dgMessages, { sender: 'user', text: '', image: imageUrl }];
+    setDgMessages(newChat);
+    
+    // Simulate AI Vision Analysis
+    setTimeout(() => {
+      setDgMessages([...newChat, { 
+        sender: 'bot', 
+        text: "👀 **Analyzing screenshot...**\n\nI can see an 'ERR_CONNECTION_TIMED_OUT' error in that browser window. \n\nThis usually means your DNS cache is corrupted or the VPN disconnected. Would you like me to run the **Flush DNS** script, or create a High Priority ticket for you?" 
+      }]);
+    }, 1500);
+    
+    // Reset the file input
+    e.target.value = null;
   };
 
   /* SYSTEM STATUS STATE */
@@ -1347,13 +1369,23 @@ function App() {
       {/* DESKGURU FLOATING WIDGET */}
       <div className="deskguru-container">
         {isDgOpen && (
-          <div className="deskguru-window">
+          <div className={`deskguru-window ${isDgExpanded ? 'expanded' : ''}`}>
             <div className="dg-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Bot size={20} color="#00C6FF" />
                 <span style={{ fontWeight: 600, color: 'white' }}>DeskGuru AI</span>
               </div>
-              <button className="dg-close-btn" onClick={() => setIsDgOpen(false)}><X size={18} /></button>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button className="dg-close-btn" onClick={() => setIsDgExpanded(!isDgExpanded)}>
+                  {isDgExpanded ? <Minimize size={18} /> : <Maximize size={18} />}
+                </button>
+                <button className="dg-close-btn" onClick={() => {
+                  setIsDgOpen(false);
+                  setIsDgExpanded(false); // Reset size when closed
+                }}>
+                  <X size={18} />
+                </button>
+              </div>
             </div>
 
             <div className="dg-body">
@@ -1361,8 +1393,11 @@ function App() {
                 <div key={idx} className={`dg-message-row ${msg.sender}`}>
                   {msg.sender === 'bot' && <div className="dg-avatar"><Sparkles size={14} /></div>}
                   <div className={`dg-bubble ${msg.sender}`}>
-                    {/* Simple markdown parsing for bolding */}
-                    {msg.text.split('\n').map((line, i) => (
+                    {/* Render Image if it exists */}
+                    {msg.image && <img src={msg.image} alt="User Upload" className="dg-uploaded-image" />}
+                    
+                    {/* Render Text if it exists */}
+                    {msg.text && msg.text.split('\n').map((line, i) => (
                       <p key={i} style={{ margin: '0 0 5px 0' }} dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
                     ))}
                   </div>
@@ -1372,14 +1407,30 @@ function App() {
             </div>
 
             <div className="dg-footer">
+              <input 
+                type="file" 
+                id="dg-image-upload" 
+                accept="image/*" 
+                style={{ display: 'none' }} 
+                onChange={handleImageUpload} 
+              />
+              <button 
+                className="dg-attach-btn" 
+                onClick={() => document.getElementById('dg-image-upload').click()}
+                title="Upload Screenshot"
+              >
+                <Paperclip size={18} />
+              </button>
               <input
                 type="text"
-                placeholder="Ask DeskGuru..."
+                placeholder="Ask or upload an error..."
                 value={dgInput}
                 onChange={(e) => setDgInput(e.target.value)}
                 onKeyDown={handleDgSubmit}
               />
-              <button onClick={(e) => handleDgSubmit(e)}><Send size={18} /></button>
+              <button className="dg-send-btn" onClick={(e) => handleDgSubmit(e)}>
+                <Send size={18} />
+              </button>
             </div>
           </div>
         )}

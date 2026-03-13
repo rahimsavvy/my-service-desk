@@ -1677,6 +1677,14 @@ button {
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   animation: slideUpFade 0.3s ease forwards;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.deskguru-window.expanded {
+  width: 800px;
+  max-width: 90vw;
+  height: 80vh;
+  max-height: 900px;
 }
 
 @keyframes slideUpFade {
@@ -1817,6 +1825,45 @@ button {
 }
 
 .dg-footer button:hover {
+  transform: scale(1.05);
+  background: #00A3D9;
+}
+
+.dg-uploaded-image {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dg-attach-btn {
+  background: transparent !important;
+  color: #888 !important;
+  width: auto !important;
+  padding: 0 5px !important;
+}
+
+.dg-attach-btn:hover {
+  color: #00C6FF !important;
+  transform: scale(1.1);
+  background: transparent !important;
+}
+
+.dg-send-btn {
+  background: #00C6FF;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.dg-send-btn:hover {
   transform: scale(1.05);
   background: #00A3D9;
 }
